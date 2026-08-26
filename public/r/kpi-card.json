@@ -5,7 +5,7 @@
   "description": "Metric card composing label/value/delta/sparkline slots; variant and density from the System.",
   "dependencies": [],
   "registryDependencies": [
-    "chart-sparkline"
+    "@raya/chart-sparkline"
   ],
   "files": [
     {

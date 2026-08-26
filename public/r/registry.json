@@ -478,7 +478,7 @@
       ],
       "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet.",
       "registryDependencies": [
-        "chart-sparkline"
+        "@raya/chart-sparkline"
       ]
     },
     {
@@ -504,9 +504,9 @@
       "description": "Search + select filters + reset, wired to table state; density from the System.",
       "dependencies": [],
       "registryDependencies": [
-        "button",
-        "input",
-        "select"
+        "@raya/button",
+        "@raya/input",
+        "@raya/select"
       ],
       "files": [
         {

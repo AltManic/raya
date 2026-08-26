@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+npx tsx tools/roundtrip-fixture/check.sh

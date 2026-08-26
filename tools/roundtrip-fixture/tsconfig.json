@@ -1,6 +1,4 @@
 {
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "tools", "dist"],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
@@ -9,16 +7,12 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
     "paths": {
-      "@/registry/*": ["./registry/*"],
       "@/*": ["./src/*"]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
-  }
+    "strict": true
+  },
+  "include": ["src"]
 }

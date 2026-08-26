@@ -1,0 +1,9 @@
+# Tier 1–3: typecheck → registry validate + build → freshness of committed public/r
+npx tsx --version >/dev/null 2>&1 || true
+npm run typecheck || exit 1
+npx shadcn registry validate || exit 1
+npx shadcn build || exit 1
+git diff --exit-code -- public/r || {
+  echo "✗ public/r is stale — commit the regenerated registry output."
+  exit 1
+}

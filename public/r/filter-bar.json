@@ -5,9 +5,9 @@
   "description": "Search + select filters + reset, wired to table state; density from the System.",
   "dependencies": [],
   "registryDependencies": [
-    "button",
-    "input",
-    "select"
+    "@raya/button",
+    "@raya/input",
+    "@raya/select"
   ],
   "files": [
     {
