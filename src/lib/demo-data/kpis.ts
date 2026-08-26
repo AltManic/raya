@@ -1,5 +1,4 @@
 import type { Customer } from "./customers"
-import { customers } from "./customers"
 
 export type { Customer }
 
