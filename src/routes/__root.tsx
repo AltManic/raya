@@ -29,7 +29,7 @@ function RootComponent() {
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" data-raya="baseline">
+    <html lang="en">
       <head>
         <HeadContent />
       </head>

@@ -20,7 +20,7 @@ const features = tableFeatures({
   sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },
 })
 
-export function DataTable<TData extends Record<string, unknown>>({
+export function DataTable<TData extends object>({
   columns,
   data,
   pageSize = 15,
@@ -34,7 +34,7 @@ export function DataTable<TData extends Record<string, unknown>>({
   const table = useTable({
     features,
     columns: columns as never,
-    data,
+    data: data as never,
     initialState: { pagination: { pageIndex: 0, pageSize } },
   })
 

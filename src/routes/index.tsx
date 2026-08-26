@@ -1,23 +1,27 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router"
+import { Header } from "@/components/studio/header"
+import { Rail } from "@/components/studio/rail"
+import { Canvas } from "@/components/studio/canvas"
+import { ExportSlideOver } from "@/components/studio/export-panel"
+import { useStudio } from "@/lib/studio/use-studio"
 
-export const Route = createFileRoute('/')({
-  component: Home,
+export const Route = createFileRoute("/")({
+  component: StudioPage,
 })
 
-function Home() {
+function StudioPage() {
+  const studio = useStudio()
   return (
-    <main style={{ padding: '2rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <h1 style={{ width: '100%', fontFamily: 'var(--font-serif)', fontSize: 32 }}>Raya</h1>
-      <button className="raya-button" type="button">Default</button>
-      <button className="raya-button" type="button" style={{ ['--raya-button-bg' as string]: 'transparent', ['--raya-button-fg' as string]: 'var(--foreground)', ['--raya-button-border' as string]: 'var(--border)' }}>
-        Outline
-      </button>
-      <input className="raya-input" placeholder="Input" style={{ maxWidth: 220 }} />
-      <span className="raya-badge">Badge</span>
-      <div className="raya-card" style={{ width: 260 }}>
-        <div className="raya-card-title">Card</div>
-        <div className="raya-card-description">Token bridge smoke test — radius, fonts, and knob vars resolve from the Baseline System.</div>
+    <div
+      className={`flex h-dvh flex-col overflow-hidden ${studio.dark ? "dark" : ""}`}
+      data-raya={studio.activeSlug}
+    >
+      <Header studio={studio} />
+      <div className="flex min-h-0 flex-1">
+        <Rail studio={studio} />
+        <Canvas studio={studio} />
       </div>
-    </main>
+      <ExportSlideOver studio={studio} />
+    </div>
   )
 }
