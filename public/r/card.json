@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card",
+  "title": "Card",
+  "description": "Grouped surface with plain/outline/elevated variants and density knobs from the System.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/card.tsx",
+      "content": "import type { ComponentProps } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport function Card({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"card\" className={cx(\"raya-card\", className)} {...props} />\n}\n\nexport function CardTitle({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"card-title\" className={cx(\"raya-card-title\", className)} {...props} />\n}\n\nexport function CardDescription({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"card-description\" className={cx(\"raya-card-description\", className)} {...props} />\n}\n\nexport function CardAction({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"card-action\" className={cx(\"ml-auto self-start\", className)} {...props} />\n}\n\nexport function CardContent({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"card-content\" className={cx(\"flex flex-col gap-2\", className)} {...props} />\n}\n\nexport function CardFooter({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"card-footer\" className={cx(\"flex items-center justify-end gap-2\", className)} {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}

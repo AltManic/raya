@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "title": "Badge",
+  "description": "Compact status label; variant + size from the System.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/badge.tsx",
+      "content": "import type { ComponentProps } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport function Badge({ className, ...props }: ComponentProps<\"span\">) {\n  return <span data-slot=\"badge\" className={cx(\"raya-badge\", className)} {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}

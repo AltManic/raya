@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "field",
+  "title": "Field",
+  "description": "Label/description/error wrapper with input wiring; label size from the System.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/field.tsx",
+      "content": "import { Field as FieldPrimitive } from \"@base-ui/react/field\"\nimport type { ComponentProps } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport const Field = FieldPrimitive.Root\n\nexport function FieldLabel({ className, ...props }: ComponentProps<typeof FieldPrimitive.Label>) {\n  return <FieldPrimitive.Label data-slot=\"field-label\" className={cx(\"raya-label\", className)} {...props} />\n}\n\nexport function FieldDescription({ className, ...props }: ComponentProps<typeof FieldPrimitive.Description>) {\n  return <FieldPrimitive.Description data-slot=\"field-description\" className={cx(\"raya-field-description\", className)} {...props} />\n}\n\nexport function FieldError({ className, ...props }: ComponentProps<typeof FieldPrimitive.Error>) {\n  return <FieldPrimitive.Error data-slot=\"field-error\" className={cx(\"raya-field-error\", className)} {...props} />\n}\n\nexport function FieldControl({ className, ...props }: ComponentProps<typeof FieldPrimitive.Control>) {\n  return (\n    <FieldPrimitive.Control\n      data-slot=\"field-control\"\n      className={cx(\"raya-input\", className)}\n      {...props}\n    />\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}

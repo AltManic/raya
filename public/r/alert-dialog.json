@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert-dialog",
+  "title": "Alert Dialog",
+  "description": "Interruptive confirmation dialog riding on the dialog item.",
+  "dependencies": [],
+  "files": [
+    {
+      "path": "registry/default/ui/alert-dialog.tsx",
+      "content": "import { AlertDialog as AlertDialogPrimitive } from \"@base-ui/react/alert-dialog\"\nimport type { ComponentProps } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport const AlertDialog = AlertDialogPrimitive.Root\n\nexport function AlertDialogTrigger({ className, ...props }: ComponentProps<typeof AlertDialogPrimitive.Trigger>) {\n  return <AlertDialogPrimitive.Trigger data-slot=\"alert-dialog-trigger\" className={cx(\"\", className)} {...props} />\n}\n\nexport function AlertDialogBackdrop({ className, ...props }: ComponentProps<typeof AlertDialogPrimitive.Backdrop>) {\n  return (\n    <AlertDialogPrimitive.Backdrop\n      data-slot=\"alert-dialog-backdrop\"\n      className={cx(\"fixed inset-0 z-40 bg-black/50 transition-opacity duration-150\", className)}\n      {...props}\n    />\n  )\n}\n\nexport function AlertDialogPopup({ className, children, ...props }: ComponentProps<typeof AlertDialogPrimitive.Popup>) {\n  return (\n    <AlertDialogPrimitive.Portal>\n      <AlertDialogBackdrop />\n      <AlertDialogPrimitive.Popup data-slot=\"alert-dialog-popup\" className={cx(\"raya-dialog-popup fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50\", className)} {...props}>\n        {children}\n      </AlertDialogPrimitive.Popup>\n    </AlertDialogPrimitive.Portal>\n  )\n}\n\nexport function AlertDialogTitle({ className, ...props }: ComponentProps<typeof AlertDialogPrimitive.Title>) {\n  return <AlertDialogPrimitive.Title data-slot=\"alert-dialog-title\" className={cx(\"raya-dialog-title font-[family-name:var(--font-sans)]\", className)} {...props} />\n}\n\nexport function AlertDialogDescription({ className, ...props }: ComponentProps<typeof AlertDialogPrimitive.Description>) {\n  return <AlertDialogPrimitive.Description data-slot=\"alert-dialog-description\" className={cx(\"raya-dialog-description font-[family-name:var(--font-sans)]\", className)} {...props} />\n}\n\nexport function AlertDialogCancel({ className, ...props }: ComponentProps<typeof AlertDialogPrimitive.Close>) {\n  return <AlertDialogPrimitive.Close data-slot=\"alert-dialog-cancel\" className={cx(\"raya-button cursor-pointer\", className)} {...props} />\n}\n\nexport function AlertDialogAction({ className, ...props }: ComponentProps<\"button\">) {\n  return <button data-slot=\"alert-dialog-action\" className={cx(\"raya-button cursor-pointer\", className)} {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}

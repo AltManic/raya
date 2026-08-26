@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radio-group",
+  "title": "Radio Group",
+  "description": "Exclusive option set; size from the System.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/radio-group.tsx",
+      "content": "import { RadioGroup as RadioGroupPrimitive } from \"@base-ui/react/radio-group\"\nimport { Radio as RadioPrimitive } from \"@base-ui/react/radio\"\nimport type { ComponentProps } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport const RadioGroup = RadioGroupPrimitive\n\nexport function Radio({ className, ...props }: Omit<ComponentProps<typeof RadioPrimitive.Root>, \"className\"> & { className?: string }) {\n  return (\n    <RadioPrimitive.Root data-slot=\"radio\" className={cx(\"raya-radio\", className)} {...props}>\n      <RadioPrimitive.Indicator data-slot=\"radio-indicator\" className=\"raya-radio-indicator\" />\n    </RadioPrimitive.Root>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}

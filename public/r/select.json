@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "select",
+  "title": "Select",
+  "description": "Native-feel select built on Base UI; outline/ghost variant + size from the System.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/select.tsx",
+      "content": "import { Select as SelectPrimitive } from \"@base-ui/react/select\"\nimport type { ComponentProps } from \"react\"\n\nimport { IconPlaceholder } from \"@/registry/internal/icon-placeholder\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport const Select = SelectPrimitive.Root\n\nexport function SelectTrigger({ className, children, ...props }: ComponentProps<typeof SelectPrimitive.Trigger>) {\n  return (\n    <SelectPrimitive.Trigger\n      data-slot=\"select-trigger\"\n      className={cx(\"raya-select-trigger\", className)}\n      {...props}\n    >\n      {children}\n      <SelectPrimitive.Icon\n        render={\n          <IconPlaceholder\n            lucide=\"ChevronDownIcon\"\n            tabler=\"IconSelector\"\n            hugeicons=\"UnfoldMoreIcon\"\n            phosphor=\"CaretDownIcon\"\n            remixicon=\"RiArrowDownSLine\"\n            className=\"pointer-events-none opacity-60\"\n          />\n        }\n      />\n    </SelectPrimitive.Trigger>\n  )\n}\n\nexport function SelectValue({ className, ...props }: ComponentProps<typeof SelectPrimitive.Value>) {\n  return <SelectPrimitive.Value data-slot=\"select-value\" className={cx(\"flex-1 text-left\", className)} {...props} />\n}\n\nexport function SelectContent({ className, side = \"bottom\", sideOffset = 6, ...props }: ComponentProps<typeof SelectPrimitive.Popup> & Pick<ComponentProps<typeof SelectPrimitive.Positioner>, \"side\" | \"sideOffset\">) {\n  return (\n    <SelectPrimitive.Portal>\n      <SelectPrimitive.Positioner side={side} sideOffset={sideOffset} className=\"z-50\">\n        <SelectPrimitive.Popup data-slot=\"select-content\" className={cx(\"raya-select-content raya-menu-content\", className)} {...props} />\n      </SelectPrimitive.Positioner>\n    </SelectPrimitive.Portal>\n  )\n}\n\nexport function SelectGroup({ className, ...props }: ComponentProps<typeof SelectPrimitive.Group>) {\n  return <SelectPrimitive.Group data-slot=\"select-group\" className={cx(\"p-1\", className)} {...props} />\n}\n\nexport function SelectLabel({ className, ...props }: ComponentProps<typeof SelectPrimitive.GroupLabel>) {\n  return <SelectPrimitive.GroupLabel data-slot=\"select-label\" className={cx(\"raya-menu-group-label\", className)} {...props} />\n}\n\nexport function SelectItem({ className, children, ...props }: ComponentProps<typeof SelectPrimitive.Item>) {\n  return (\n    <SelectPrimitive.Item\n      data-slot=\"select-item\"\n      className={cx(\"raya-menu-item justify-between\", className)}\n      {...props}\n    >\n      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>\n      <SelectPrimitive.ItemIndicator render={<span className=\"flex items-center\" />}>\n        <IconPlaceholder\n          lucide=\"CheckIcon\"\n          tabler=\"IconCheck\"\n          hugeicons=\"Tick02Icon\"\n          phosphor=\"CheckIcon\"\n          remixicon=\"RiCheckLine\"\n        />\n      </SelectPrimitive.ItemIndicator>\n    </SelectPrimitive.Item>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}

@@ -8,7 +8,9 @@
       "type": "registry:theme",
       "title": "Raya Core",
       "description": "Token-to-Tailwind bridge and component classes shared by every System. Required by all Raya items.",
-      "meta": { "raya": "core" },
+      "meta": {
+        "raya": "core"
+      },
       "files": [
         {
           "path": "registry/default/styles/core.css",
@@ -44,7 +46,10 @@
       "type": "registry:theme",
       "title": "Raya System: Baseline",
       "description": "Raya's default look — quiet, rounded, blue-violet accent.",
-      "meta": { "raya": "system", "slug": "baseline" },
+      "meta": {
+        "raya": "system",
+        "slug": "baseline"
+      },
       "files": [
         {
           "path": "registry/default/systems/baseline.css",
@@ -64,7 +69,10 @@
       "type": "registry:theme",
       "title": "Raya System: Terminal",
       "description": "Monospaced, square-cornered, phosphor green on near-black.",
-      "meta": { "raya": "system", "slug": "terminal" },
+      "meta": {
+        "raya": "system",
+        "slug": "terminal"
+      },
       "files": [
         {
           "path": "registry/default/systems/terminal.css",
@@ -78,6 +86,291 @@
         }
       ],
       "docs": "Add to src/styles.css:\n\n@import \"./styles/raya/core.css\";\n@import \"./styles/raya/systems/terminal.css\";\n\nActivate with <html data-raya=\"terminal\"> (or any wrapper). Requires the core item."
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Primary action element with variant and size driven by the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Single-line text input; size from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Multi-line text input; size from the System.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/default/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Native-feel select built on Base UI; outline/ghost variant + size from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Binary check control; size from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Toggle control; size from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "Exclusive option set; size from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "Range input; thumb size from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/slider.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Label/description/error wrapper with input wiring; label size from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Grouped surface with plain/outline/elevated variants and density knobs from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Compact status label; variant + size from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "User image or initials fallback; shape (circle/rounded/square) is the flagship component-specific knob.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Tab navigation; underline/pills/enclosed variant + size from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Modal overlay; default max-width size knob from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "registryDependencies": [],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "Interruptive confirmation dialog riding on the dialog item.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/default/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "Action menu; comfortable/compact density from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Anchored non-modal surface. No knobs in v1.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Hover hint; dark/inverted variant from the System.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
     }
   ]
 }

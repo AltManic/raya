@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tooltip",
+  "title": "Tooltip",
+  "description": "Hover hint; dark/inverted variant from the System.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/tooltip.tsx",
+      "content": "import { Tooltip as TooltipPrimitive } from \"@base-ui/react/tooltip\"\nimport type { ComponentProps } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport const TooltipProvider = TooltipPrimitive.Provider\n\nexport const Tooltip = TooltipPrimitive.Root\n\nexport function TooltipTrigger({ className, ...props }: ComponentProps<typeof TooltipPrimitive.Trigger>) {\n  return <TooltipPrimitive.Trigger data-slot=\"tooltip-trigger\" className={cx(\"\", className)} {...props} />\n}\n\nexport function TooltipContent({\n  className,\n  side = \"top\",\n  sideOffset = 6,\n  children,\n  ...props\n}: ComponentProps<typeof TooltipPrimitive.Popup> & Pick<ComponentProps<typeof TooltipPrimitive.Positioner>, \"side\" | \"sideOffset\">) {\n  return (\n    <TooltipPrimitive.Portal>\n      <TooltipPrimitive.Positioner side={side} sideOffset={sideOffset} className=\"z-50\">\n        <TooltipPrimitive.Popup data-slot=\"tooltip-content\" className={cx(\"raya-tooltip-content font-[family-name:var(--font-sans)]\", className)} {...props}>\n          {children}\n        </TooltipPrimitive.Popup>\n      </TooltipPrimitive.Positioner>\n    </TooltipPrimitive.Portal>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}

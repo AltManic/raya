@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switch",
+  "title": "Switch",
+  "description": "Toggle control; size from the System.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/switch.tsx",
+      "content": "import { Switch as SwitchPrimitive } from \"@base-ui/react/switch\"\nimport type { ComponentProps } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport const Switch = ({ className, ...props }: ComponentProps<typeof SwitchPrimitive.Root>) => (\n  <SwitchPrimitive.Root data-slot=\"switch\" className={cx(\"raya-switch\", className)} {...props}>\n    <SwitchPrimitive.Thumb data-slot=\"switch-thumb\" className=\"raya-switch-thumb\" />\n  </SwitchPrimitive.Root>\n)\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}

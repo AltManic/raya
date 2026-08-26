@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar",
+  "title": "Avatar",
+  "description": "User image or initials fallback; shape (circle/rounded/square) is the flagship component-specific knob.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/avatar.tsx",
+      "content": "import { Avatar as AvatarPrimitive } from \"@base-ui/react/avatar\"\nimport type { ComponentProps } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport const Avatar = ({ className, ...props }: ComponentProps<typeof AvatarPrimitive.Root>) => (\n  <AvatarPrimitive.Root data-slot=\"avatar\" className={cx(\"raya-avatar\", className)} {...props} />\n)\n\nexport function AvatarImage({ className, ...props }: ComponentProps<typeof AvatarPrimitive.Image>) {\n  return <AvatarPrimitive.Image data-slot=\"avatar-image\" className={cx(\"raya-avatar-image\", className)} {...props} />\n}\n\nexport function AvatarFallback({ className, ...props }: ComponentProps<typeof AvatarPrimitive.Fallback>) {\n  return <AvatarPrimitive.Fallback data-slot=\"avatar-fallback\" className={cx(\"\", className)} {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "title": "Popover",
+  "description": "Anchored non-modal surface. No knobs in v1.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/popover.tsx",
+      "content": "import { Popover as PopoverPrimitive } from \"@base-ui/react/popover\"\nimport type { ComponentProps } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport const Popover = PopoverPrimitive.Root\n\nexport function PopoverTrigger({ className, ...props }: ComponentProps<typeof PopoverPrimitive.Trigger>) {\n  return <PopoverPrimitive.Trigger data-slot=\"popover-trigger\" className={cx(\"\", className)} {...props} />\n}\n\nexport function PopoverContent({\n  className,\n  side = \"bottom\",\n  sideOffset = 6,\n  align = \"center\",\n  children,\n  ...props\n}: ComponentProps<typeof PopoverPrimitive.Popup> & Pick<ComponentProps<typeof PopoverPrimitive.Positioner>, \"side\" | \"sideOffset\" | \"align\">) {\n  return (\n    <PopoverPrimitive.Portal>\n      <PopoverPrimitive.Positioner side={side} sideOffset={sideOffset} align={align} className=\"z-50\">\n        <PopoverPrimitive.Popup data-slot=\"popover-content\" className={cx(\"raya-popover-content raya-select-content font-[family-name:var(--font-sans)] text-sm\", className)} {...props}>\n          {children}\n        </PopoverPrimitive.Popup>\n      </PopoverPrimitive.Positioner>\n    </PopoverPrimitive.Portal>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System.",
+  "type": "registry:ui"
+}
