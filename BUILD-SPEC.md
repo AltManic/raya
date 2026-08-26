@@ -1,6 +1,6 @@
 # BUILD-SPEC.md — Raya
 
-**Status:** Locked by [Wayfinder map: Raya design-system studio](https://github.com/AltManic/raya/issues/1), synthesizing decisions from tickets [#2](https://github.com/AltManic/raya/issues/2) (registry/Base UI/HugeIcons facts), [#4](https://github.com/AltManic/raya/issues/4) (token vocabulary), [#8](https://github.com/AltManic/raya/issues/8) (fonts), [#3](https://github.com/AltManic/raya/issues/3) (inventory + knobs), [#5](https://github.com/AltManic/raya/issues/5) (export round-trip prototype), [#6](https://github.com/AltManic/raya/issues/6) (tuner UX). Every decision here is build-ready; an executing session makes implementation choices, not product ones. The only undecided points are in §14.
+**Status:** Locked by [Wayfinder map: Raya design-system studio](https://github.com/AltManic/raya/issues/1), synthesizing decisions from tickets [#2](https://github.com/AltManic/raya/issues/2) (registry/Base UI/HugeIcons facts), [#4](https://github.com/AltManic/raya/issues/4) (token vocabulary), [#8](https://github.com/AltManic/raya/issues/8) (fonts), [#3](https://github.com/AltManic/raya/issues/3) (inventory + knobs), [#5](https://github.com/AltManic/raya/issues/5) (export round-trip prototype), [#6](https://github.com/AltManic/raya/issues/6) (tuner UX), [#9](https://github.com/AltManic/raya/issues/9) (demo data). Every decision here is build-ready; an executing session makes implementation choices, not product ones. The only undecided point is in §13.
 
 **Terminology:** `CONTEXT.md` is normative. **System** (not theme/skin/preset) = named bundle of token values + component knobs. There is exactly one component set; Systems restyle it via CSS variables. **Studio** = the site. **Registry** = shadcn-style copy-source distribution at `/r/*.json`.
 
@@ -116,7 +116,7 @@ Cut from v1 candidacy: command palette, combobox, calendar/date-picker, accordio
 
 ### 5.3 BI Pack
 
-data table (TanStack Table) · KPI card · chart wrappers ×5 (**line, area, bar, pie/donut, sparkline**) · filter bar. The filter bar is **the only block** (`registry:block`) in v1.
+data table (TanStack Table) · KPI card · chart wrappers ×5 (**line, area, bar, pie/donut, sparkline**) · filter bar. The filter bar is **the only block** (`registry:block`) in v1. Preview demo data: §9.4.
 
 ### 5.4 Knob policy
 
@@ -247,6 +247,17 @@ Edits apply as **inline overrides** so they outrank every System scope and survi
 
 Create from current values, duplicate, rename, delete. Slug is immutable after creation (it names the stylesheet, the `data-raya` value, and the registry item). Baseline is the default System. Launch ships Baseline + Terminal demo Systems — concrete values liftable from `prototypes/export-roundtrip/studio-model/src/systems.ts` on the prototype branch.
 
+### 9.4 Demo data for BI Pack previews
+
+Per [#9](https://github.com/AltManic/raya/issues/9).
+
+- **Hand-authored fixtures** — typed TS constants checked into the repo at `src/lib/demo-data/`. No generator in v1: believability beats variety, and the needed volume is small.
+- **One coherent narrative** — fictional dev-tool SaaS analytics ("Signalpath Analytics" placeholder brand; invented companies and people only). USD / en-US. Mapping: line = MRR trend · area = traffic · bar = signups by channel · pie/donut = plan mix · sparklines ride inside KPI cards · data table = customers/subscriptions · filter bar = search + plan/status filters + reset.
+- **Studio-only** — fixtures never ship through the Registry. Sole exception honoring shadcn block convention: `filter-bar` ships one tiny self-contained `demo-filter-bar.tsx` with throwaway-looking data; ui items carry docs snippets only, no data files.
+- **Live behavior** — previews render the real registry components: the table sorts and paginates client-side; in Focus the filter bar filters the table through shared client state. No fake async/loading/empty/error states in v1 (happy path only).
+- **Deterministic** — module constants, zero randomness; identical data across Systems, light/dark, and reloads. Only styles ever change.
+- **Volumes** — table ≈45 rows × 6 cols (15/page) · line/area 24 monthly points × 2–3 series · bar 8 channels · pie 4 slices · sparkline ≈30 points per KPI card · 4 KPI cards.
+
 ## 10. Consumer experience
 
 ```sh
@@ -284,7 +295,6 @@ Carried from the map; do not build, do not relitigate:
 
 ## 13. Open items — pending final lock
 
-Two residual decisions remain on the map; neither blocks starting Studio scaffold or registry authoring, both gate final sign-off. Their resolutions amend this document.
+One residual decision remains on the map; it does not block starting Studio scaffold or registry authoring, but gates final sign-off. Its resolution amends this document. (Demo-data strategy resolved by [#9](https://github.com/AltManic/raya/issues/9) → §9.4.)
 
-1. **Demo-data strategy for BI Pack previews** — realistic hand-authored fixtures vs generated, for gallery/focus rendering of data table, KPI cards, charts, filter bar. Ticket: [#9](https://github.com/AltManic/raya/issues/9)
-2. **Registry testing strategy** — what automated checks guard items (round-trip `shadcn build` compile checks? tsc? preview smoke?) and where they run locally/pre-push given CI automation is out of scope (§12). Ticket: [#10](https://github.com/AltManic/raya/issues/10)
+1. **Registry testing strategy** — what automated checks guard items (round-trip `shadcn build` compile checks? tsc? preview smoke?) and where they run locally/pre-push given CI automation is out of scope (§12). Ticket: [#10](https://github.com/AltManic/raya/issues/10)

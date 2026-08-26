@@ -36,6 +36,10 @@ _Avoid_: global props, common options
 A knob only one component declares — e.g. Avatar's `shape`, data table's `zebra`.
 _Avoid_: custom prop, extra setting
 
+**Demo data**:
+Hand-authored fixture data that renders the BI Pack previews in the Studio — one coherent fictional scenario, identical across Systems and modes. Distinct from the small example files shipped alongside Registry blocks.
+_Avoid_: sample data, mock data, generated data
+
 **Block**:
 A precomposed section of several components shipped as one Registry item. The filter bar is v1's only block.
 _Avoid_: template, layout, example
