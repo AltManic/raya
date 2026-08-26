@@ -5,7 +5,7 @@ import {
   HeadContent,
   Scripts,
 } from '@tanstack/react-router'
-import styles from '../src/styles.css?url'
+import styles from '../styles.css?url'
 
 export const Route = createRootRoute({
   head: () => ({

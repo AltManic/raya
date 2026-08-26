@@ -3,6 +3,8 @@ node_modules/
 .nitro/
 .tanstack/
 .vinxi/
+.wrangler/
+dist/
 .env
 .env.*
 !.env.example
