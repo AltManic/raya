@@ -1,6 +1,6 @@
 # BUILD-SPEC.md — Raya
 
-**Status:** Locked by [Wayfinder map: Raya design-system studio](https://github.com/AltManic/raya/issues/1), synthesizing decisions from tickets [#2](https://github.com/AltManic/raya/issues/2) (registry/Base UI/HugeIcons facts), [#4](https://github.com/AltManic/raya/issues/4) (token vocabulary), [#8](https://github.com/AltManic/raya/issues/8) (fonts), [#3](https://github.com/AltManic/raya/issues/3) (inventory + knobs), [#5](https://github.com/AltManic/raya/issues/5) (export round-trip prototype), [#6](https://github.com/AltManic/raya/issues/6) (tuner UX), [#9](https://github.com/AltManic/raya/issues/9) (demo data). Every decision here is build-ready; an executing session makes implementation choices, not product ones. The only undecided point is in §13.
+**Status:** Locked by [Wayfinder map: Raya design-system studio](https://github.com/AltManic/raya/issues/1), synthesizing decisions from tickets [#2](https://github.com/AltManic/raya/issues/2) (registry/Base UI/HugeIcons facts), [#4](https://github.com/AltManic/raya/issues/4) (token vocabulary), [#8](https://github.com/AltManic/raya/issues/8) (fonts), [#3](https://github.com/AltManic/raya/issues/3) (inventory + knobs), [#5](https://github.com/AltManic/raya/issues/5) (export round-trip prototype), [#6](https://github.com/AltManic/raya/issues/6) (tuner UX), [#9](https://github.com/AltManic/raya/issues/9) (demo data). Every decision here is build-ready; an executing session makes implementation choices, not product ones. Fully locked — the last open point (registry guardrails) was decided by [#10](https://github.com/AltManic/raya/issues/10) → §13.
 
 **Terminology:** `CONTEXT.md` is normative. **System** (not theme/skin/preset) = named bundle of token values + component knobs. There is exactly one component set; Systems restyle it via CSS variables. **Studio** = the site. **Registry** = shadcn-style copy-source distribution at `/r/*.json`.
 
@@ -32,7 +32,10 @@ raya/
 │   └── default/
 │       ├── ui/*.tsx          # core primitives (§5)
 │       └── bi/*.tsx          # BI Pack (§5)
-└── public/r/                 # GENERATED — output of `npx shadcn build`; served statically
+├── public/r/                   # GENERATED + COMMITTED — `npx shadcn build` output,
+│                               #   freshness-gated (§13); served statically
+└── tools/
+    └── roundtrip-fixture/      # pre-push consumer round-trip harness (§13); dev-only
 ```
 
 Authoring convention inside `registry/`: internal imports are written as `@/registry/default/…`; the CLI rewrites them to consumer aliases at install time.
@@ -293,8 +296,28 @@ Carried from the map; do not build, do not relitigate:
 - CI provider selection / pipeline automation — deployment execution past the edge (§11 is the complete plan this effort owes)
 - In-Studio font uploads; HugeIcons Pro; vendoring any icon/font source files
 
-## 13. Open items — pending final lock
+## 13. Registry guardrails (testing strategy)
 
-One residual decision remains on the map; it does not block starting Studio scaffold or registry authoring, but gates final sign-off. Its resolution amends this document. (Demo-data strategy resolved by [#9](https://github.com/AltManic/raya/issues/9) → §9.4.)
+Per [#10](https://github.com/AltManic/raya/issues/10). Everything runs locally — CI automation stays out of scope (§12); hooks are advisory local gates (`--no-verify` exists, solo-dev posture accepted).
 
-1. **Registry testing strategy** — what automated checks guard items (round-trip `shadcn build` compile checks? tsc? preview smoke?) and where they run locally/pre-push given CI automation is out of scope (§12). Ticket: [#10](https://github.com/AltManic/raya/issues/10)
+### 13.1 Check tiers
+
+Cheapest first; each tier assumes the previous passed.
+
+1. **Typecheck** — `tsc --noEmit` across the Studio app and `registry/` sources.
+2. **Validate + build** — `npx shadcn registry validate` (item schema errors, duplicate names, missing item files — all reported in one run, no build required) then `npx shadcn build`, regenerating `public/r/`.
+3. **Freshness** — `git diff --exit-code -- public/r`: regenerated output must match the committed state. Depends on `public/r/` being committed (§2), so drift fails as a dirty tree.
+4. **Consumer round-trip** — the fixture app below must typecheck and build against a fresh install of every item.
+
+### 13.2 Fixture app (tier 4)
+
+Permanent dev-tooling harness at `tools/roundtrip-fixture/` — minimal Vite + React 19 + Tailwind v4 shell with its own `components.json` registering the local registry. Never deployed; `node_modules` persists locally (gitignored) so repeat installs are incremental. Check flow: regenerate `/r/*.json` → `shadcn add @raya/* --overwrite` for **all** items (`core`, `raya-fonts`, 16 primitives, BI Pack, `filter-bar`, one System theme) → an inventory page renders every item under both demo Systems (Baseline + Terminal) → `tsc --noEmit` + `vite build` must pass. Mechanism proven by the [#5 prototype](https://github.com/AltManic/raya/tree/prototype/export-roundtrip).
+
+### 13.3 Gate placement
+
+- **pre-commit** (husky): tiers 1–3 — seconds-fast, stops a bad commit before it lands.
+- **pre-push** (husky): tier 4 — cached round-trip; minutes cold, well under a minute warm.
+
+### 13.4 Explicitly none in v1
+
+No automated runtime/component tests (vitest, Playwright). Compile + round-trip is the contract; manual Studio browsing is the smoke test. Revisit if a regression ever bites.
