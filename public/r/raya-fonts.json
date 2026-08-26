@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "raya-fonts",
+  "title": "Raya Fonts",
+  "description": "Optional font wiring for the five built-in Raya faces (Inter, Space Grotesk, Instrument Serif, JetBrains Mono, Geist Mono). Skip if you self-host per System export instructions.",
+  "dependencies": [
+    "@fontsource-variable/inter",
+    "@fontsource-variable/space-grotesk",
+    "@fontsource/instrument-serif",
+    "@fontsource-variable/jetbrains-mono",
+    "@fontsource-variable/geist-mono"
+  ],
+  "files": [
+    {
+      "path": "registry/default/styles/raya-fonts.css",
+      "content": "/*\n * Raya fonts — one @import per built-in family.\n * Bundled via Fontsource npm packages; loading is the consuming app's job.\n */\n\n@import \"@fontsource-variable/inter\";\n@import \"@fontsource-variable/space-grotesk\";\n@import \"@fontsource/instrument-serif/400.css\";\n@import \"@fontsource/instrument-serif/400-italic.css\";\n@import \"@fontsource-variable/jetbrains-mono\";\n@import \"@fontsource-variable/geist-mono\";\n",
+      "type": "registry:file",
+      "target": "src/styles/raya/fonts.css"
+    }
+  ],
+  "docs": "Import in your styles.css (anywhere after tailwindcss):\n\n@import \"./styles/raya/fonts.css\";",
+  "type": "registry:theme"
+}

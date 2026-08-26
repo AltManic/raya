@@ -1,0 +1,83 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@raya",
+  "homepage": "https://raya.alfrizk.dev",
+  "items": [
+    {
+      "name": "core",
+      "type": "registry:theme",
+      "title": "Raya Core",
+      "description": "Token-to-Tailwind bridge and component classes shared by every System. Required by all Raya items.",
+      "meta": { "raya": "core" },
+      "files": [
+        {
+          "path": "registry/default/styles/core.css",
+          "type": "registry:file",
+          "target": "src/styles/raya/core.css"
+        }
+      ],
+      "docs": "Import in your styles.css AFTER `@import \"tailwindcss\"` and BEFORE any System stylesheet:\n\n@import \"./styles/raya/core.css\";"
+    },
+    {
+      "name": "raya-fonts",
+      "type": "registry:theme",
+      "title": "Raya Fonts",
+      "description": "Optional font wiring for the five built-in Raya faces (Inter, Space Grotesk, Instrument Serif, JetBrains Mono, Geist Mono). Skip if you self-host per System export instructions.",
+      "dependencies": [
+        "@fontsource-variable/inter",
+        "@fontsource-variable/space-grotesk",
+        "@fontsource/instrument-serif",
+        "@fontsource-variable/jetbrains-mono",
+        "@fontsource-variable/geist-mono"
+      ],
+      "files": [
+        {
+          "path": "registry/default/styles/raya-fonts.css",
+          "type": "registry:file",
+          "target": "src/styles/raya/fonts.css"
+        }
+      ],
+      "docs": "Import in your styles.css (anywhere after tailwindcss):\n\n@import \"./styles/raya/fonts.css\";"
+    },
+    {
+      "name": "baseline",
+      "type": "registry:theme",
+      "title": "Raya System: Baseline",
+      "description": "Raya's default look — quiet, rounded, blue-violet accent.",
+      "meta": { "raya": "system", "slug": "baseline" },
+      "files": [
+        {
+          "path": "registry/default/systems/baseline.css",
+          "type": "registry:file",
+          "target": "src/styles/raya/systems/baseline.css"
+        },
+        {
+          "path": "registry/default/systems/baseline.json",
+          "type": "registry:file",
+          "target": "src/raya/systems/baseline.json"
+        }
+      ],
+      "docs": "Add to src/styles.css:\n\n@import \"./styles/raya/core.css\";\n@import \"./styles/raya/systems/baseline.css\";\n\nBaseline is the default System: it fills :root/.dark directly. Activate explicitly with <html data-raya=\"baseline\"> if you also install other Systems."
+    },
+    {
+      "name": "terminal",
+      "type": "registry:theme",
+      "title": "Raya System: Terminal",
+      "description": "Monospaced, square-cornered, phosphor green on near-black.",
+      "meta": { "raya": "system", "slug": "terminal" },
+      "files": [
+        {
+          "path": "registry/default/systems/terminal.css",
+          "type": "registry:file",
+          "target": "src/styles/raya/systems/terminal.css"
+        },
+        {
+          "path": "registry/default/systems/terminal.json",
+          "type": "registry:file",
+          "target": "src/raya/systems/terminal.json"
+        }
+      ],
+      "docs": "Add to src/styles.css:\n\n@import \"./styles/raya/core.css\";\n@import \"./styles/raya/systems/terminal.css\";\n\nActivate with <html data-raya=\"terminal\"> (or any wrapper). Requires the core item."
+    }
+  ]
+}

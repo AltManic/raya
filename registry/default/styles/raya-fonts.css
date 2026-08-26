@@ -1,0 +1,11 @@
+/*
+ * Raya fonts — one @import per built-in family.
+ * Bundled via Fontsource npm packages; loading is the consuming app's job.
+ */
+
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/space-grotesk";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/geist-mono";

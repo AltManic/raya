@@ -1,0 +1,106 @@
+{
+  "slug": "terminal",
+  "name": "Terminal",
+  "description": "Monospaced, square-cornered, phosphor green on near-black.",
+  "isDefault": false,
+  "fonts": {
+    "sans": [
+      "JetBrains Mono",
+      "ui-monospace",
+      "monospace"
+    ],
+    "mono": [
+      "JetBrains Mono",
+      "ui-monospace",
+      "monospace"
+    ]
+  },
+  "radius": "0rem",
+  "ramp": {
+    "names": "--raya-accent-1..12",
+    "steps": 12
+  },
+  "knobs": {
+    "button": {
+      "variant": "outline",
+      "size": "sm"
+    },
+    "input": {
+      "size": "sm"
+    },
+    "textarea": {
+      "size": "sm"
+    },
+    "select": {
+      "variant": "ghost",
+      "size": "sm"
+    },
+    "checkbox": {
+      "size": "sm"
+    },
+    "switch": {
+      "size": "sm"
+    },
+    "radio-group": {
+      "size": "sm"
+    },
+    "slider": {
+      "size": "sm"
+    },
+    "field": {
+      "size": "sm"
+    },
+    "card": {
+      "variant": "outline",
+      "density": "compact"
+    },
+    "badge": {
+      "variant": "secondary",
+      "size": "sm"
+    },
+    "avatar": {
+      "shape": "square",
+      "size": "sm"
+    },
+    "tabs": {
+      "variant": "enclosed",
+      "size": "sm"
+    },
+    "dialog": {
+      "size": "md"
+    },
+    "dropdown-menu": {
+      "density": "compact"
+    },
+    "tooltip": {
+      "variant": "inverted"
+    },
+    "data-table": {
+      "density": "compact",
+      "zebra": "on"
+    },
+    "kpi-card": {
+      "variant": "plain",
+      "density": "compact"
+    },
+    "chart-line": {
+      "legend": "hide",
+      "grid": "hide"
+    },
+    "chart-area": {
+      "legend": "hide",
+      "grid": "hide"
+    },
+    "chart-bar": {
+      "legend": "hide",
+      "grid": "hide"
+    },
+    "chart-pie": {
+      "variant": "pie"
+    },
+    "filter-bar": {
+      "density": "compact"
+    }
+  },
+  "stylesheet": "src/styles/raya/systems/terminal.css"
+}
