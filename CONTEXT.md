@@ -28,9 +28,49 @@ _Avoid_: kit, package
 A per-component tunable default recorded on a System — e.g. Button's default variant or size.
 _Avoid_: prop override, setting, option
 
+**Universal axes**:
+The three knobs any component may declare — `variant`, `size`, `density`. Whether a component declares one is per-component; the axis names are shared vocabulary.
+_Avoid_: global props, common options
+
+**Component-specific knob**:
+A knob only one component declares — e.g. Avatar's `shape`, data table's `zebra`.
+_Avoid_: custom prop, extra setting
+
+**Block**:
+A precomposed section of several components shipped as one Registry item. The filter bar is v1's only block.
+_Avoid_: template, layout, example
+
 **BI Pack**:
 The dashboard/analytics-flavoured members of the component set: data table, KPI cards, chart wrappers, filter bar.
 _Avoid_: charts module, pro components
+
+### Token anatomy
+
+**Semantic tokens**:
+The shadcn-named variables (`--primary`, `--card`, `--border`, …) every System defines; the compatibility contract with consuming apps. Semantic tokens are single opaque colors, never gradients.
+_Avoid_: custom names for standard variables
+
+**Primitive scales**:
+The raw `--raya-*` color ramps semantic tokens reference; what the tuner slides. Namespaced so they never collide with shadcn names.
+_Avoid_: palette, swatches
+
+**Vocabulary**:
+The fixed layer all Systems share: variable names, `.dark` convention, radius derivation, prefix rules. Values are per-System; the vocabulary is not.
+_Avoid_: schema (overloaded), token spec
+
+**Density**:
+A per-component knob (size/density variants), not a global token. A global density multiplier may graduate later if needed.
+_Avoid_: compact mode system-wide
+
+### Fonts
+
+**Built-in roster**:
+The font families Raya ships; any System may point its font tokens at them. Small, curated, freely licensed.
+_Avoid_: font pack, bundled fonts
+
+**Bring-your-own font**:
+A System referencing a family outside the built-in roster. Legal anywhere; previews fall back to the stack and Export explains self-hosting.
+_Avoid_: custom fonts, font upload
 
 ### Export boundary
 
