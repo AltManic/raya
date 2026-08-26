@@ -1,0 +1,40 @@
+{
+  "slug": "terminal",
+  "name": "Terminal",
+  "description": "Monospaced, square-cornered, phosphor green on near-black.",
+  "isDefault": false,
+  "fonts": {
+    "sans": [
+      "JetBrains Mono",
+      "ui-monospace",
+      "monospace"
+    ],
+    "mono": [
+      "JetBrains Mono",
+      "ui-monospace",
+      "monospace"
+    ]
+  },
+  "radius": "0rem",
+  "ramp": {
+    "names": "--raya-accent-1..12",
+    "steps": 12
+  },
+  "knobs": {
+    "button": {
+      "variant": "outline",
+      "size": "sm"
+    },
+    "card": {
+      "density": "compact"
+    },
+    "badge": {
+      "size": "sm"
+    },
+    "avatar": {
+      "shape": "square",
+      "size": "sm"
+    }
+  },
+  "stylesheet": "src/styles/raya/systems/terminal.css"
+}

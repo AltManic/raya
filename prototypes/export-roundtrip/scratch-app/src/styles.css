@@ -1,0 +1,21 @@
+
+@import "tailwindcss";
+@import "./styles/raya/core.css";
+@import "./styles/raya/systems/baseline.css";
+@import "./styles/raya/systems/terminal.css";
+
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+

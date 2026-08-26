@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@raya",
+  "homepage": "http://localhost:4173",
+  "items": [
+    {
+      "name": "core",
+      "type": "registry:item",
+      "title": "Raya Core"
+    },
+    {
+      "name": "baseline",
+      "type": "registry:theme",
+      "title": "Raya System: Baseline"
+    },
+    {
+      "name": "terminal",
+      "type": "registry:theme",
+      "title": "Raya System: Terminal"
+    }
+  ]
+}

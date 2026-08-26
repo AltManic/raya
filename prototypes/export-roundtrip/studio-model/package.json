@@ -1,0 +1,11 @@
+{
+  "name": "@raya-prototype/studio-model",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "tsx src/generate.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  }
+}

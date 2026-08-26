@@ -1,0 +1,46 @@
+{
+  "slug": "baseline",
+  "name": "Baseline",
+  "description": "Raya's default look — quiet, rounded, blue-violet accent.",
+  "isDefault": true,
+  "fonts": {
+    "sans": [
+      "Inter",
+      "ui-sans-serif",
+      "system-ui",
+      "sans-serif"
+    ],
+    "serif": [
+      "Instrument Serif",
+      "Georgia",
+      "serif"
+    ],
+    "mono": [
+      "JetBrains Mono",
+      "ui-monospace",
+      "monospace"
+    ]
+  },
+  "radius": "0.625rem",
+  "ramp": {
+    "names": "--raya-accent-1..12",
+    "steps": 12
+  },
+  "knobs": {
+    "button": {
+      "variant": "default",
+      "size": "md"
+    },
+    "card": {
+      "density": "comfortable"
+    },
+    "badge": {
+      "size": "md"
+    },
+    "avatar": {
+      "shape": "circle",
+      "size": "md"
+    }
+  },
+  "stylesheet": "src/styles/raya/systems/baseline.css"
+}
