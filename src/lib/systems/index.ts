@@ -1,5 +1,5 @@
-import type { SemanticToken, System } from "./model"
-import { defaultKnobs } from "./model"
+import type { SemanticToken, System } from "../model/model"
+import { defaultKnobs } from "../model/model"
 
 const semantic = (
   pairs: Record<string, string>,
