@@ -388,14 +388,14 @@
 
 .raya-chart { font-family: var(--font-sans, ui-sans-serif, system-ui); font-size: 0.8125rem; color: var(--muted-foreground); }
 .raya-chart-legend {
-  display: var(--raya-chart-line-legend-display, none);
+  display: var(--raya-chart-legend-display, none);
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
 }
 .raya-chart-legend-item { display: inline-flex; align-items: center; gap: 0.375rem; }
 .raya-chart-legend-swatch { width: 0.625rem; height: 0.625rem; border-radius: 2px; background: var(--swatch, var(--chart-1)); }
-.raya-chart svg .recharts-cartesian-grid { visibility: var(--raya-chart-line-grid-visibility, visible); }
+.raya-chart svg .recharts-cartesian-grid { visibility: var(--raya-chart-grid-visibility, visible); }
 .raya-chart-tooltip {
   background: var(--popover);
   color: var(--popover-foreground);

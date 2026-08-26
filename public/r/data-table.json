@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-table",
+  "title": "Data Table",
+  "description": "Client-side sortable, paginated table built on TanStack Table; density and zebra stripes from the System.",
+  "dependencies": [
+    "@tanstack/react-table"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/data-table.tsx",
+      "content": "import { useState } from \"react\"\nimport {\n  flexRender,\n  getCoreRowModel,\n  getPaginationRowModel,\n  getSortedRowModel,\n  useReactTable,\n  type ColumnDef,\n  type SortingState,\n} from \"@tanstack/react-table\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport interface DataTableProps<TData> {\n  columns: ColumnDef<TData, unknown>[]\n  data: TData[]\n  pageSize?: number\n  className?: string\n}\n\nexport function DataTable<TData>({ columns, data, pageSize = 15, className }: DataTableProps<TData>) {\n  const [sorting, setSorting] = useState<SortingState>([])\n\n  const table = useReactTable({\n    data,\n    columns,\n    state: { sorting },\n    onSortingChange: setSorting,\n    getCoreRowModel: getCoreRowModel(),\n    getSortedRowModel: getSortedRowModel(),\n    getPaginationRowModel: getPaginationRowModel(),\n    initialState: { pagination: { pageSize } },\n  })\n\n  return (\n    <div data-slot=\"data-table\" className={cx(\"w-full\", className)}>\n      <table className=\"raya-table\">\n        <thead>\n          {table.getHeaderGroups().map((hg) => (\n            <tr key={hg.id}>\n              {hg.headers.map((header) => (\n                <th\n                  key={header.id}\n                  className={header.column.getCanSort() ? \"raya-table-sort\" : undefined}\n                  onClick={header.column.getToggleSortingHandler()}\n                >\n                  {flexRender(header.column.columnDef.header, header.getContext())}\n                  {{ asc: \" ↑\", desc: \" ↓\" }[header.column.getIsSorted() as string] ?? \"\"}\n                </th>\n              ))}\n            </tr>\n          ))}\n        </thead>\n        <tbody>\n          {table.getRowModel().rows.map((row) => (\n            <tr key={row.id}>\n              {row.getVisibleCells().map((cell) => (\n                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n      <div className=\"mt-3 flex items-center justify-between font-[family-name:var(--font-sans)] text-xs text-muted-foreground\">\n        <span>\n          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}\n        </span>\n        <span className=\"flex gap-2\">\n          <button className=\"raya-button\" style={{ height: \"1.75rem\", fontSize: \"0.75rem\", paddingInline: \"0.625rem\" }} onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>\n            Prev\n          </button>\n          <button className=\"raya-button\" style={{ height: \"1.75rem\", fontSize: \"0.75rem\", paddingInline: \"0.625rem\" }} onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\n            Next\n          </button>\n        </span>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet.",
+  "type": "registry:ui"
+}

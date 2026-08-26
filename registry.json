@@ -371,6 +371,154 @@
         }
       ],
       "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "chart-line",
+      "type": "registry:ui",
+      "title": "Chart: Line",
+      "description": "Trend line chart wrapper. Legend/grid visibility are System knobs.",
+      "dependencies": [
+        "recharts"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-line.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "registry/default/ui/chart-shared.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet."
+    },
+    {
+      "name": "chart-area",
+      "type": "registry:ui",
+      "title": "Chart: Area",
+      "description": "Layered area chart wrapper. Legend/grid visibility are System knobs.",
+      "dependencies": [
+        "recharts"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-area.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "registry/default/ui/chart-shared.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet."
+    },
+    {
+      "name": "chart-bar",
+      "type": "registry:ui",
+      "title": "Chart: Bar",
+      "description": "Grouped bar chart wrapper. Legend/grid visibility are System knobs.",
+      "dependencies": [
+        "recharts"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-bar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "registry/default/ui/chart-shared.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet."
+    },
+    {
+      "name": "chart-pie",
+      "type": "registry:ui",
+      "title": "Chart: Pie/Donut",
+      "description": "Pie/donut composition wrapper; variant is a System knob.",
+      "dependencies": [
+        "recharts"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-pie.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet."
+    },
+    {
+      "name": "chart-sparkline",
+      "type": "registry:ui",
+      "title": "Chart: Sparkline",
+      "description": "Minimal inline trend line for KPI cards. No knobs.",
+      "dependencies": [
+        "recharts"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-sparkline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet."
+    },
+    {
+      "name": "kpi-card",
+      "type": "registry:ui",
+      "title": "KPI Card",
+      "description": "Metric card composing label/value/delta/sparkline slots; variant and density from the System.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/default/ui/kpi-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet.",
+      "registryDependencies": [
+        "chart-sparkline"
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "Client-side sortable, paginated table built on TanStack Table; density and zebra stripes from the System.",
+      "dependencies": [
+        "@tanstack/react-table"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/data-table.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet."
+    },
+    {
+      "name": "filter-bar",
+      "type": "registry:block",
+      "title": "Filter Bar",
+      "description": "Search + select filters + reset, wired to table state; density from the System.",
+      "dependencies": [],
+      "registryDependencies": [
+        "button",
+        "input",
+        "select"
+      ],
+      "files": [
+        {
+          "path": "registry/blocks/filter-bar/filter-bar.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "registry/blocks/filter-bar/demo-filter-bar.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "docs": "Requires @raya/core plus button/input/select items. demo-filter-bar.tsx is a self-contained example with throwaway data."
     }
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-sparkline",
+  "title": "Chart: Sparkline",
+  "description": "Minimal inline trend line for KPI cards. No knobs.",
+  "dependencies": [
+    "recharts"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/chart-sparkline.tsx",
+      "content": "import { Line, LineChart, ResponsiveContainer } from \"recharts\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport interface SparklineProps {\n  data: Array<Record<string, unknown>>\n  valueKey: string\n  height?: number\n  colorVar?: string\n  className?: string\n}\n\nexport function Sparkline({ data, valueKey, height = 36, colorVar = \"--chart-1\", className }: SparklineProps) {\n  return (\n    <div data-slot=\"sparkline\" className={cx(\"raya-chart w-full\", className)} style={{ height }} aria-hidden=\"true\">\n      <ResponsiveContainer width=\"100%\" height=\"100%\">\n        <LineChart data={data} margin={{ top: 4, right: 0, bottom: 4, left: 0 }}>\n          <Line\n            type=\"monotone\"\n            dataKey={valueKey}\n            stroke={`var(${colorVar})`}\n            strokeWidth={1.5}\n            dot={false}\n            isAnimationActive={false}\n          />\n        </LineChart>\n      </ResponsiveContainer>\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet.",
+  "type": "registry:ui"
+}

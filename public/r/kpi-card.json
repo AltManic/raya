@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kpi-card",
+  "title": "KPI Card",
+  "description": "Metric card composing label/value/delta/sparkline slots; variant and density from the System.",
+  "dependencies": [],
+  "registryDependencies": [
+    "chart-sparkline"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/kpi-card.tsx",
+      "content": "import type { ReactNode } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport interface KpiCardProps {\n  label: ReactNode\n  value: ReactNode\n  delta?: { value: string; direction: \"up\" | \"down\" }\n  sparkline?: ReactNode\n  className?: string\n}\n\nexport function KpiCard({ label, value, delta, sparkline, className }: KpiCardProps) {\n  return (\n    <div data-slot=\"kpi-card\" className={cx(\"raya-kpi w-full\", className)}>\n      <span className=\"raya-kpi-label\">{label}</span>\n      <span className=\"raya-kpi-value\">{value}</span>\n      {(delta || sparkline) && (\n        <span className=\"flex items-center justify-between gap-2\">\n          {delta && (\n            <span className=\"raya-kpi-delta\" data-direction={delta.direction}>\n              {delta.direction === \"up\" ? \"▲\" : \"▼\"} {delta.value}\n            </span>\n          )}\n          {sparkline}\n        </span>\n      )}\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet.",
+  "type": "registry:ui"
+}

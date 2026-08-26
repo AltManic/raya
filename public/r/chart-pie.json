@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-pie",
+  "title": "Chart: Pie/Donut",
+  "description": "Pie/donut composition wrapper; variant is a System knob.",
+  "dependencies": [
+    "recharts"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/chart-pie.tsx",
+      "content": "import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, Tooltip } from \"recharts\"\nimport { useEffect, useState } from \"react\"\nimport type { CSSProperties } from \"react\"\n\nconst cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === \"string\").join(\" \")\n\nexport interface PieSlice {\n  key: string\n  label: string\n  colorVar?: string\n}\n\nexport interface PieChartProps {\n  data: Array<Record<string, unknown>>\n  nameKey: string\n  valueKey: string\n  slices?: PieSlice[]\n  height?: number\n  className?: string\n}\n\nexport function PieChartWrapper({ data, nameKey, valueKey, slices = [], height = 240, className }: PieChartProps) {\n  const [innerRadius, setInnerRadius] = useState(\"60%\")\n\n  useEffect(() => {\n    const probe = document.createElement(\"div\")\n    probe.style.display = \"none\"\n    document.body.appendChild(probe)\n    const v = getComputedStyle(probe).getPropertyValue(\"--raya-pie-inner-radius\").trim()\n    if (v) setInnerRadius(v)\n    probe.remove()\n  }, [])\n\n  return (\n    <div\n      data-slot=\"chart\"\n      className={cx(\"raya-chart w-full flex flex-col gap-3\", className)}\n      style={{ \"--raya-chart-legend-display\": \"flex\" } as CSSProperties}\n    >\n      <div className=\"raya-chart-legend\">\n        {(slices.length > 0\n          ? slices\n          : data.map((d, i) => ({ key: String(d[nameKey] ?? i), label: String(d[nameKey] ?? i), colorVar: undefined }))\n        ).map((s, idx) => (\n          <span key={s.key} className=\"raya-chart-legend-item\">\n            <span\n              className=\"raya-chart-legend-swatch\"\n              style={{ \"--swatch\": s.colorVar ? `var(${s.colorVar})` : `var(--chart-${(idx % 5) + 1})` } as Record<string, string>}\n            />\n            {s.label}\n          </span>\n        ))}\n      </div>\n      <div style={{ height }}>\n        <ResponsiveContainer width=\"100%\" height=\"100%\">\n          <RechartsPieChart>\n            <Tooltip content={<div className=\"raya-chart-tooltip\" />} />\n            <Pie\n              data={data}\n              dataKey={valueKey}\n              nameKey={nameKey}\n              innerRadius={innerRadius}\n              outerRadius=\"82%\"\n              paddingAngle={2}\n              stroke=\"none\"\n              label={false}\n            >\n              {data.map((_, i) => (\n                <Cell key={i} fill={`var(--chart-${(i % 5) + 1})`} />\n              ))}\n            </Pie>\n          </RechartsPieChart>\n        </ResponsiveContainer>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet.",
+  "type": "registry:ui"
+}
