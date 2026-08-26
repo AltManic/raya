@@ -1,0 +1,1087 @@
+<!doctype html>
+<!--
+  PROTOTYPE — throwaway. Answers wayfinder ticket #6:
+  "How does tuning feel?" — Studio theme-tuner UX.
+
+  Plan: three structurally different tuner layouts, switchable via ?variant=
+  (or the floating bottom bar): A Rail & Gallery · B Canvas-first · C Three-pane.
+  Single self-contained file — double-click to run, no build, no persistence.
+  Demo Systems + token vocabulary follow decisions in #4/#5; knob tables #3.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raya — tuner UX prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ chrome (the tool itself — deliberately NOT themed by systems) ============ */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  background: #101012;
+  color: #d4d4d8;
+  overflow: hidden;
+}
+h1,h2,h3,h4 { margin: 0; font-weight: 600; }
+button { font: inherit; cursor: pointer; }
+select, input[type=text] {
+  font: inherit; color: #e4e4e7; background: #26262b;
+  border: 1px solid #3f3f46; border-radius: 6px; padding: 4px 8px;
+}
+label.fld { display:flex; flex-direction:column; gap:4px; font-size:11px; color:#a1a1aa; text-transform:uppercase; letter-spacing:.06em; }
+
+#proto-banner {
+  position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+  z-index: 400; background: #f59e0b; color: #18180a; font-weight: 700;
+  font-size: 11px; letter-spacing: .08em; padding: 3px 12px; border-radius: 99px;
+}
+
+.variant { display: none; position: fixed; inset: 0; }
+.variant.active { display: flex; }
+
+/* generic chrome bits */
+.btn-c { background:#27272a; color:#e4e4e7; border:1px solid #3f3f46; border-radius:8px; padding:6px 12px; font-size:13px; }
+.btn-c:hover { background:#3f3f46; }
+.btn-c.primary { background:#e4e4e7; color:#111113; border-color:#e4e4e7; font-weight:600; }
+.chip { font-size:11px; color:#a1a1aa; border:1px solid #3f3f46; padding:2px 8px; border-radius:99px; white-space:nowrap; }
+.seg { display:inline-flex; background:#1c1c1f; border:1px solid #3f3f46; border-radius:8px; padding:2px; gap:2px; }
+.seg button { border:0; background:transparent; color:#a1a1aa; padding:4px 10px; border-radius:6px; font-size:12px; }
+.seg button.on { background:#3f3f46; color:#fff; }
+
+/* control panels shared by A rail / B dock / C editor */
+.panel-sec { border-bottom: 1px solid #26262b; padding: 12px 14px; }
+.panel-sec > h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: #71717a; margin-bottom: 10px; }
+.ramp { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; margin: 6px 0 10px; }
+.ramp i { height: 18px; border-radius: 3px; cursor: pointer; outline: 2px solid transparent; outline-offset: 1px; }
+.ramp i.picked { outline-color: #f4f4f5; }
+.knob-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 4px 0; }
+.knob-row .k { color: #a1a1aa; font-size: 12.5px; }
+.knob-row select { font-size: 12.5px; padding: 2px 6px; }
+input[type=range] { accent-color: #e4e4e7; width: 100%; }
+.swrow { display: flex; align-items: center; justify-content: space-between; padding: 3px 0; font-size: 12.5px; }
+.swrow code { color: #71717a; font-family: ui-monospace, monospace; font-size: 11px; }
+.swrow .sw { width: 22px; height: 22px; border-radius: 5px; border: 1px solid #3f3f46; cursor: pointer; padding: 0; }
+
+/* ============ demo component set (consumes System vars) ============ */
+
+/* ---- Demo Systems · vocabulary & encoding per ticket #4, artifact shape per #5.
+   Cascade order mirrors #5's finding: default System fills :root/.dark first,
+   attribute-scoped blocks after; each System stores light AND dark explicitly. ---- */
+:root, [data-raya='baseline'] {
+  --raya-neutral-1: oklch(.985 .004 260); --raya-neutral-2: oklch(.96 .005 260); --raya-neutral-3: oklch(.92 .007 260);
+  --raya-neutral-4: oklch(.87 .009 260); --raya-neutral-5: oklch(.81 .011 260); --raya-neutral-6: oklch(.74 .013 260);
+  --raya-neutral-7: oklch(.66 .015 260); --raya-neutral-8: oklch(.57 .016 260); --raya-neutral-9: oklch(.48 .015 260);
+  --raya-neutral-10: oklch(.40 .013 260); --raya-neutral-11: oklch(.31 .010 260); --raya-neutral-12: oklch(.22 .007 260);
+  --raya-primary-1: oklch(.97 .015 258); --raya-primary-2: oklch(.93 .028 258); --raya-primary-3: oklch(.89 .05 258);
+  --raya-primary-4: oklch(.84 .075 258); --raya-primary-5: oklch(.78 .10 258); --raya-primary-6: oklch(.71 .125 258);
+  --raya-primary-7: oklch(.64 .148 258); --raya-primary-8: oklch(.58 .165 258); --raya-primary-9: oklch(.54 .17 258);
+  --raya-primary-10: oklch(.49 .16 258); --raya-primary-11: oklch(.43 .14 258); --raya-primary-12: oklch(.36 .115 258);
+  --background: var(--raya-neutral-2); --foreground: var(--raya-neutral-12);
+  --card: oklch(1 0 0); --card-foreground: var(--raya-neutral-12);
+  --popover: oklch(1 0 0); --popover-foreground: var(--raya-neutral-12);
+  --primary: var(--raya-primary-9); --primary-foreground: oklch(.985 .005 258);
+  --secondary: var(--raya-neutral-4); --secondary-foreground: var(--raya-neutral-12);
+  --muted: var(--raya-neutral-4); --muted-foreground: var(--raya-neutral-10);
+  --accent: var(--raya-neutral-4); --accent-foreground: var(--raya-neutral-12);
+  --destructive: oklch(.55 .22 29); --destructive-foreground: oklch(.985 .01 29);
+  --border: var(--raya-neutral-7); --input: var(--raya-neutral-7); --ring: var(--raya-primary-8);
+  --chart-1: var(--raya-primary-9); --chart-2: oklch(.70 .12 195); --chart-3: oklch(.78 .14 85);
+  --chart-4: oklch(.60 .17 305); --chart-5: oklch(.65 .19 15);
+  --radius: 0.625rem;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --raya-shadow-sm: 0 1px 2px rgb(0 0 0 / .05);
+  --raya-shadow-md: 0 4px 12px rgb(0 0 0 / .10);
+  --raya-shadow-lg: 0 12px 32px rgb(0 0 0 / .16);
+}
+[data-raya='terminal'] {
+  --raya-neutral-1: oklch(.97 .006 155); --raya-neutral-2: oklch(.94 .008 155); --raya-neutral-3: oklch(.90 .010 155);
+  --raya-neutral-4: oklch(.85 .012 155); --raya-neutral-5: oklch(.79 .014 155); --raya-neutral-6: oklch(.72 .015 155);
+  --raya-neutral-7: oklch(.64 .016 155); --raya-neutral-8: oklch(.55 .015 155); --raya-neutral-9: oklch(.46 .013 155);
+  --raya-neutral-10: oklch(.38 .011 155); --raya-neutral-11: oklch(.30 .008 155); --raya-neutral-12: oklch(.21 .006 155);
+  --raya-primary-1: oklch(.96 .02 150); --raya-primary-2: oklch(.91 .04 150); --raya-primary-3: oklch(.86 .06 150);
+  --raya-primary-4: oklch(.80 .08 150); --raya-primary-5: oklch(.73 .105 150); --raya-primary-6: oklch(.66 .125 150);
+  --raya-primary-7: oklch(.59 .14 150); --raya-primary-8: oklch(.53 .15 150); --raya-primary-9: oklch(.49 .15 150);
+  --raya-primary-10: oklch(.44 .135 150); --raya-primary-11: oklch(.38 .115 150); --raya-primary-12: oklch(.31 .09 150);
+  --background: var(--raya-neutral-2); --foreground: var(--raya-neutral-12);
+  --card: oklch(.97 .006 150); --card-foreground: var(--raya-neutral-12);
+  --popover: oklch(.97 .006 150); --popover-foreground: var(--raya-neutral-12);
+  --primary: var(--raya-primary-8); --primary-foreground: oklch(.97 .02 150);
+  --secondary: var(--raya-neutral-5); --secondary-foreground: var(--raya-neutral-12);
+  --muted: var(--raya-neutral-4); --muted-foreground: var(--raya-neutral-9);
+  --accent: var(--raya-neutral-5); --accent-foreground: var(--raya-neutral-12);
+  --destructive: oklch(.55 .2 25); --destructive-foreground: oklch(.97 .01 25);
+  --border: var(--raya-neutral-7); --input: var(--raya-neutral-7); --ring: var(--raya-primary-7);
+  --chart-1: var(--raya-primary-8); --chart-2: oklch(.75 .12 110); --chart-3: oklch(.70 .10 200);
+  --chart-4: oklch(.65 .13 60); --chart-5: oklch(.55 .08 155);
+  --radius: 0rem;
+  --font-sans: 'JetBrains Mono', ui-monospace, monospace;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --raya-shadow-sm: none; --raya-shadow-md: none; --raya-shadow-lg: 0 8px 24px rgb(0 0 0 / .35);
+}
+.dark, [data-raya='baseline'].dark {
+  --raya-neutral-1: oklch(.22 .007 260); --raya-neutral-2: oklch(.26 .009 260); --raya-neutral-3: oklch(.30 .010 260);
+  --raya-neutral-4: oklch(.34 .012 260); --raya-neutral-5: oklch(.40 .013 260); --raya-neutral-6: oklch(.48 .015 260);
+  --raya-neutral-7: oklch(.57 .016 260); --raya-neutral-8: oklch(.66 .015 260); --raya-neutral-9: oklch(.74 .013 260);
+  --raya-neutral-10: oklch(.81 .011 260); --raya-neutral-11: oklch(.90 .008 260); --raya-neutral-12: oklch(.96 .005 260);
+  --raya-primary-1: oklch(.36 .115 258); --raya-primary-2: oklch(.41 .13 258); --raya-primary-3: oklch(.47 .15 258);
+  --raya-primary-4: oklch(.52 .165 258); --raya-primary-5: oklch(.57 .17 258); --raya-primary-6: oklch(.61 .165 258);
+  --raya-primary-7: oklch(.66 .15 258); --raya-primary-8: oklch(.71 .13 258); --raya-primary-9: oklch(.76 .11 258);
+  --raya-primary-10: oklch(.80 .09 258); --raya-primary-11: oklch(.85 .06 258); --raya-primary-12: oklch(.90 .04 258);
+  --background: oklch(.165 .008 260); --foreground: oklch(.93 .006 260);
+  --card: oklch(.205 .009 260); --card-foreground: oklch(.93 .006 260);
+  --popover: oklch(.23 .010 260); --popover-foreground: oklch(.93 .006 260);
+  --primary: oklch(.68 .14 258); --primary-foreground: oklch(.15 .03 258);
+  --secondary: oklch(.27 .012 260); --secondary-foreground: oklch(.93 .006 260);
+  --muted: oklch(.26 .011 260); --muted-foreground: oklch(.67 .010 260);
+  --accent: oklch(.27 .012 260); --accent-foreground: oklch(.93 .006 260);
+  --destructive: oklch(.62 .19 27); --destructive-foreground: oklch(.985 .01 27);
+  --border: oklch(.30 .012 260); --input: oklch(.33 .012 260); --ring: oklch(.64 .148 258);
+  --chart-1: oklch(.68 .14 258); --chart-2: oklch(.72 .12 195); --chart-3: oklch(.78 .14 85);
+  --chart-4: oklch(.64 .17 305); --chart-5: oklch(.68 .19 15);
+  --raya-shadow-sm: 0 1px 2px rgb(0 0 0 / .6); --raya-shadow-md: 0 4px 12px rgb(0 0 0 / .5); --raya-shadow-lg: 0 12px 32px rgb(0 0 0 / .45);
+}
+[data-raya='terminal'].dark {
+  --background: oklch(.17 .02 165); --foreground: oklch(.87 .06 145);
+  --card: oklch(.20 .025 163); --card-foreground: oklch(.87 .06 145);
+  --popover: oklch(.23 .025 162); --popover-foreground: oklch(.87 .06 145);
+  --primary: oklch(.76 .17 150); --primary-foreground: oklch(.18 .04 155);
+  --secondary: oklch(.27 .025 162); --secondary-foreground: oklch(.87 .06 145);
+  --muted: oklch(.25 .022 162); --muted-foreground: oklch(.65 .05 150);
+  --accent: oklch(.27 .025 162); --accent-foreground: oklch(.87 .06 145);
+  --destructive: oklch(.63 .19 27); --destructive-foreground: oklch(.97 .01 27);
+  --border: oklch(.30 .025 165); --input: oklch(.33 .025 165); --ring: oklch(.66 .13 150);
+  --chart-1: oklch(.76 .17 150); --chart-2: oklch(.78 .13 120); --chart-3: oklch(.74 .11 200);
+  --chart-4: oklch(.70 .13 80); --chart-5: oklch(.62 .10 155);
+  --raya-shadow-lg: 0 8px 24px rgb(0 0 0 / .5);
+}
+
+.demo-root {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  background: var(--background); color: var(--foreground);
+  transition: background .25s, color .25s;
+}
+.tile {
+  background: var(--card); color: var(--card-foreground);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 16px; display: flex; flex-direction: column; gap: 10px;
+  min-height: 86px; position: relative;
+}
+.tile > .t-name { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 12px; align-content: start; overflow:auto; padding: 16px; flex: 1; }
+.tile.pickable { cursor: pointer; }
+.tile.pickable:hover { border-color: var(--ring); }
+
+.d-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; font-weight:500; border:1px solid transparent; border-radius:var(--radius-md); font-family:inherit; transition: filter .15s; }
+.d-btn:hover { filter: brightness(.96); }
+.sz-sm.d-btn, .d-btn.sz-sm { height:28px; padding:0 10px; font-size:12.5px; }
+.sz-md.d-btn, .d-btn.sz-md { height:34px; padding:0 14px; font-size:13.5px; }
+.sz-lg.d-btn, .d-btn.sz-lg { height:40px; padding:0 18px; font-size:15px; }
+.v-default.d-btn { background:var(--primary); color:var(--primary-foreground); }
+.v-outline.d-btn { border-color:var(--border); color:var(--foreground); background:transparent; }
+.v-ghost.d-btn { background:transparent; color:var(--foreground); }
+.v-destructive.d-btn { background:var(--destructive); color:var(--destructive-foreground); }
+.v-secondary.d-btn { background:var(--secondary); color:var(--secondary-foreground); }
+.v-link.d-btn { background:transparent; color:var(--primary); text-decoration:underline; }
+
+.d-badge { display:inline-flex; align-items:center; border-radius:999px; font-weight:500; }
+.d-badge.sz-sm { font-size:11px; padding:1px 8px; } .d-badge.sz-md { font-size:12px; padding:2px 10px; }
+.d-badge.v-default { background:var(--primary); color:var(--primary-foreground); }
+.d-badge.v-secondary { background:var(--secondary); color:var(--secondary-foreground); }
+.d-badge.v-outline { border:1px solid var(--border); color:var(--foreground); }
+.d-badge.v-destructive { background:var(--destructive); color:white; }
+.inv { background:var(--foreground); color:var(--background); }
+
+.d-in { display:flex; flex-direction:column; gap:6px; }
+.d-in label { font-size:12px; color:var(--muted-foreground); }
+.d-input { background:transparent; color:var(--foreground); border:1px solid var(--input); border-radius:var(--radius-md); font:inherit; }
+.sz-sm.d-input, .d-input.sz-sm { height:30px; padding:0 9px; font-size:12.5px; }
+.sz-md.d-input, .d-input.sz-md { height:36px; padding:0 11px; font-size:13.5px; }
+.sz-lg.d-input, .d-input.sz-lg { height:42px; padding:0 13px; font-size:15px; }
+
+.d-checkline { display:flex; align-items:center; gap:8px; font-size:13px; }
+.d-box { border:1.5px solid var(--input); border-radius:max(3px, var(--radius-sm)); background:transparent; display:inline-flex; align-items:center; justify-content:center; color:var(--primary-foreground); }
+.d-box.on { background:var(--primary); border-color:var(--primary); }
+.d-box::after { content:'✓'; font-size:11px; visibility:hidden; } .d-box.on::after { visibility:visible; }
+.d-box.sz-sm { width:15px;height:15px; } .d-box.sz-md { width:18px;height:18px; } .d-box.sz-lg { width:21px;height:21px; }
+.d-switch { border-radius:999px; background:var(--input); position:relative; display:inline-block; transition:background .15s; }
+.d-switch.on { background:var(--primary); }
+.d-switch i { position:absolute; top:2px; left:2px; background:white; border-radius:999px; transition:left .15s; }
+.d-switch.on i { left:calc(100% - 2px); transform:translateX(-100%); }
+.d-switch.sz-sm { width:26px;height:15px; } .d-switch.sz-sm i { width:11px;height:11px; }
+.d-switch.sz-md { width:34px;height:19px; } .d-switch.sz-md i { width:15px;height:15px; }
+.d-switch.sz-lg { width:42px;height:23px; } .d-switch.sz-lg i { width:19px;height:19px; }
+
+.d-av { background:var(--secondary); color:var(--secondary-foreground); display:inline-flex; align-items:center; justify-content:center; font-weight:600; overflow:hidden; }
+.d-av.shape-circle { border-radius:999px; } .d-av.shape-rounded { border-radius:var(--radius-md); } .d-av.shape-square { border-radius:2px; }
+.d-av.sz-sm { width:24px;height:24px;font-size:10px; } .d-av.sz-md { width:32px;height:32px;font-size:12px; } .d-av.sz-lg { width:44px;height:44px;font-size:15px; }
+.av-row { display:flex; align-items:center; gap:6px; }
+
+.d-tabs { display:flex; gap:2px; border-bottom:1px solid transparent; }
+.d-tabs button { border:0; background:none; color:var(--muted-foreground); font:inherit; padding:6px 12px; border-radius:var(--radius-md) var(--radius-md) 0 0; }
+.d-tabs.tabs-underline { border-bottom:1px solid var(--border); }
+.d-tabs.tabs-underline button.on { color:var(--foreground); box-shadow: inset 0 -2px 0 var(--primary); border-radius:0; }
+.d-tabs.tabs-pills button.on { background:var(--primary); color:var(--primary-foreground); }
+.d-tabs.tabs-enclosed { background:var(--muted); border-radius:var(--radius-md); padding:3px; }
+.d-tabs.tabs-enclosed button.on { background:var(--background); color:var(--foreground); box-shadow: var(--raya-shadow-sm); }
+.d-tabs.sz-sm button { font-size:12px; padding:4px 9px; } .d-tabs.sz-md button { font-size:13px; padding:6px 12px; }
+
+[data-density="compact"] .pad { padding:10px 12px; }
+[data-density="comfortable"] .pad { padding:16px; }
+.d-card2 { background:var(--card); border-radius:var(--radius-lg); }
+.d-card2.v-outline { border:1px solid var(--border); }
+.d-card2.v-elevated { border:1px solid var(--border); box-shadow:var(--raya-shadow-md); }
+.d-card2 h5 { margin:0 0 4px; font-size:14px; } .d-card2 p { margin:0; font-size:12.5px; color:var(--muted-foreground); line-height:1.45; }
+
+.d-kpi .num { font-size:26px; font-weight:650; letter-spacing:-.02em; }
+.d-kpi .delta-up { color: oklch(.65 .17 150); font-size:12px; font-weight:600; }
+.bars { display:flex; align-items:flex-end; gap:5px; height:56px; }
+.bars i { flex:1; background:var(--primary); opacity:.85; border-radius:3px 3px 0 0; min-height:6px; }
+.bars i:nth-child(2n) { background:var(--chart-2); }
+
+.d-tablewrap { border:1px solid var(--border); border-radius:var(--radius-md); overflow:hidden; }
+table.d-table { width:100%; border-collapse:collapse; font-size:12.5px; }
+.d-table th { text-align:left; color:var(--muted-foreground); font-weight:500; background:var(--muted); }
+[data-density="compact"] .d-table th, [data-density="compact"] .d-table td { padding:4px 10px; }
+[data-density="comfortable"] .d-table th, [data-density="comfortable"] .d-table td { padding:8px 12px; }
+.d-table td, .d-table th { border-bottom:1px solid var(--border); }
+.d-table tr:last-child td { border-bottom:0; }
+.d-table.zebra tbody tr:nth-child(2n) { background:color-mix(in oklab, var(--muted) 55%, transparent); }
+
+.d-fbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.d-tip { position:relative; }
+.d-tip .tipbody { position:absolute; bottom:calc(100% + 6px); left:0; background:var(--popover); color:var(--popover-foreground); border:1px solid var(--border); border-radius:var(--radius-md); padding:5px 9px; font-size:12px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .12s; box-shadow:var(--raya-shadow-md); z-index:5;}
+.d-tip:hover .tipbody { opacity:1; }
+
+/* ============ switcher bar ============ */
+#switcher {
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+  z-index: 300; display: flex; align-items: center; gap: 4px;
+  background: #fafafa; color: #18181b; border-radius: 99px; padding: 5px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.55); border: 1px solid #fff;
+}
+#switcher button.arr { border:0; background:#e4e4e7; width:26px; height:26px; border-radius:99px; font-size:13px; }
+#switcher .lbl { padding: 0 10px; font-size: 12.5px; font-weight: 600; min-width: 210px; text-align: center; }
+#switcher .lbl small { display:block; font-weight:400; color:#71717a; font-size:10.5px; }
+
+/* state strip */
+#statestrip { position:fixed; top:10px; right:12px; z-index:300; display:flex; gap:6px; align-items:center; background:#1c1c1fdd; border:1px solid #3f3f46; padding:5px 8px; border-radius:10px; backdrop-filter: blur(4px);}
+#statestrip .chip b { color:#e4e4e7; }
+
+/* ============ overlays: export modal, palette, popover ============ */
+.overlay { position: fixed; inset:0; background:rgba(0,0,0,.55); z-index:350; display:none; align-items:center; justify-content:center; }
+.overlay.open { display:flex; }
+.modal { background:#1c1c1f; border:1px solid #3f3f46; border-radius:14px; width:min(680px, 92vw); max-height:84vh; display:flex; flex-direction:column; overflow:hidden; }
+.modal header { padding:14px 18px; border-bottom:1px solid #26262b; display:flex; justify-content:space-between; align-items:center; }
+.modal .body { padding:14px 18px; overflow:auto; display:flex; flex-direction:column; gap:12px; }
+.modal textarea { width:100%; height:180px; background:#111113; color:#a7f3d0; border:1px solid #3f3f46; border-radius:8px; font-family:ui-monospace,monospace; font-size:11.5px; padding:10px; resize:vertical; }
+.filetabs { display:flex; gap:6px; }
+.filetabs .btn-c.on { background:#3f3f46; color:#fff; }
+
+#palette .modal { width:min(520px,90vw); }
+#palette input { width:100%; background:#111113; border:1px solid #3f3f46; border-radius:8px; padding:10px 12px; font-size:15px; }
+#palette ul { list-style:none; margin:8px 0 0; padding:0; }
+#palette li { padding:9px 10px; border-radius:8px; cursor:pointer; display:flex; justify-content:space-between; }
+#palette li.sel, #palette li:hover { background:#27272a; }
+#palette li small { color:#71717a; }
+
+#pop { position:fixed; z-index:340; width:250px; background:#1c1c1f; border:1px solid #3f3f46; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,.6); display:none; padding:12px; }
+#pop.open { display:block; }
+#pop h4 { font-size:12px; margin-bottom:8px; color:#e4e4e7;}
+
+/* ============ VARIANT A — rail & gallery ============ */
+#variant-a { flex-direction: column; }
+#a-top { display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid #26262b; background:#161618; }
+#a-top h3 { font-size:14px; margin-right:6px; }
+#a-main { display:flex; flex:1; min-height:0; }
+#a-rail { width:320px; min-width:320px; background:#161618; border-right:1px solid #26262b; overflow-y:auto; }
+#a-canvas-wrap { flex:1; display:flex; flex-direction:column; min-width:0; }
+#a-canvas-bar { display:flex; align-items:center; gap:10px; padding:8px 16px; border-bottom:1px solid #26262b; background:#131315; }
+#a-stage { flex:1; min-height:0; display:flex; }
+#a-focuspane { flex:1; display:none; flex-direction:column; padding:26px; overflow:auto; }
+#a-focusknobs { display:flex; gap:14px; align-items:end; flex-wrap:wrap; background:#1c1c1f; border:1px solid #3f3f46; border-radius:12px; padding:14px; margin-bottom:22px; }
+#a-focusstage { flex:1; border-radius:14px; border:1px solid #26262b; padding:40px; display:flex; align-items:flex-start; justify-content:center; }
+
+/* slide-over export */
+#slideover { position:fixed; top:0; right:0; bottom:0; width:min(560px,94vw); background:#1c1c1f; border-left:1px solid #3f3f46; z-index:360; transform:translateX(105%); transition:transform .22s ease-out; display:flex; flex-direction:column; }
+#slideover.open { transform:none; }
+#slideover header { padding:14px 18px; border-bottom:1px solid #26262b; display:flex; justify-content:space-between; align-items:center;}
+#slideover .body { padding:16px 18px; overflow:auto; display:flex; flex-direction:column; gap:12px; }
+
+/* ============ VARIANT B — canvas-first ============ */
+#variant-b { flex-direction: column; }
+#b-top { display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid #26262b; background:#161618; }
+#b-stage { flex:1; min-height:0; position:relative; display:flex; }
+#b-dock { border-top:1px solid #26262b; background:#161618; }
+#b-dockbar { display:flex; align-items:center; gap:8px; padding:9px 14px 0; }
+#b-tray { padding: 4px 14px 14px; max-height: 240px; overflow-y:auto; }
+#b-hint { position:absolute; top:12px; left:50%; transform:translateX(-50%); z-index:20; }
+
+/* ============ VARIANT C — three-pane ============ */
+#variant-c { }
+#c-syscol { width:190px; min-width:190px; background:#141416; border-right:1px solid #26262b; display:flex; flex-direction:column; }
+#c-syscol .sec { padding:12px; border-bottom:1px solid #26262b; }
+.sys-item { display:flex; gap:8px; align-items:center; padding:7px 8px; border-radius:8px; cursor:pointer; font-size:13px; }
+.sys-item:hover { background:#222226; }
+.sys-item.on { background:#2c2c31; color:#fff; }
+.sys-sw { display:flex; border-radius:4px; overflow:hidden; border:1px solid #3f3f46; }
+.sys-sw i { width:9px; height:16px; }
+#c-groups { padding:8px; display:flex; flex-direction:column; gap:2px; }
+.g-item { text-align:left; background:none; border:0; color:#a1a1aa; padding:7px 9px; border-radius:8px; font-size:13px; }
+.g-item.on { background:#2c2c31; color:#fff; }
+#c-edit { flex:1; min-width:0; overflow-y:auto; border-right:1px solid #26262b; background:#17171a; }
+#c-edit .inner { max-width:520px; margin:0 auto; padding:22px; display:flex; flex-direction:column; gap:18px; }
+.big-ctl label.fld { font-size:12px; }
+#c-prev { width:380px; min-width:380px; display:flex; flex-direction:column; background:#121214; }
+#c-hero-head { padding:10px 14px; border-bottom:1px solid #26262b; display:flex; align-items:center; justify-content:space-between; }
+#c-hero { flex:0 0 auto; margin:14px; border-radius:12px; }
+#c-thumbs-label { padding: 4px 14px 8px; font-size:11px; color:#71717a; text-transform:uppercase; letter-spacing:.07em;}
+#c-thumbs { flex:1; overflow:auto; padding:0 14px 14px; display:grid; grid-template-columns:1fr 1fr; gap:8px; align-content:start; }
+#c-thumbs .tile { padding:10px; min-height:0; cursor:pointer; zoom:.78; }
+#c-thumbs .tile.on { outline:2px solid #e4e4e7; }
+
+/* wizard */
+.wiz-steps { display:flex; gap:8px; align-items:center; font-size:12px; color:#71717a; }
+.wiz-steps .st { padding:4px 10px; border-radius:99px; border:1px solid #3f3f46; }
+.wiz-steps .st.on { background:#e4e4e7; color:#111; border-color:#e4e4e7; font-weight:600; }
+.checkline { display:flex; gap:8px; align-items:center; padding:6px 0; font-size:13px;}
+</style>
+</head>
+<body>
+
+<div id="proto-banner">PROTOTYPE — THROWAWAY · ticket #6</div>
+
+<div id="statestrip">
+  <span class="chip">system <b id="ss-sys">baseline</b></span>
+  <span class="chip">mode <b id="ss-mode">light</b></span>
+  <span class="chip">edits <b id="ss-edits">0</b></span>
+  <button class="btn-c" id="ss-reset" title="discard all edits">reset</button>
+</div>
+
+<!-- ================= VARIANT A — RAIL & GALLERY ================= -->
+<section class="variant" id="variant-a">
+  <div id="a-top">
+    <h3>Raya</h3>
+    <select id="a-syspick" title="System"><option value="baseline">Baseline</option><option value="terminal">Terminal</option></select>
+    <button class="btn-c" id="a-dark">☾ dark</button>
+    <span style="flex:1"></span>
+    <button class="btn-c primary" id="a-export">Export system…</button>
+  </div>
+  <div id="a-main">
+    <aside id="a-rail">
+      <div id="a-controls"></div>
+    </aside>
+    <div id="a-canvas-wrap">
+      <div id="a-canvas-bar">
+        <div class="seg" id="a-viewseg">
+          <button data-v="gallery" class="on">Gallery</button>
+          <button data-v="focus">Focus</button>
+        </div>
+        <span class="chip" id="a-focushint">click a tile to focus it</span>
+      </div>
+      <div id="a-stage">
+        <div class="demo-root gallery" id="a-gallery" data-raya="baseline"></div>
+          <div id="a-focuspane">
+            <div id="a-focusknobs"></div>
+            <div class="demo-root" id="a-focusstage"></div>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VARIANT B — CANVAS-FIRST ================= -->
+<section class="variant" id="variant-b">
+  <div id="b-top">
+    <h3>Raya</h3>
+    <select id="b-syspick" title="System"><option value="baseline">Baseline</option><option value="terminal">Terminal</option></select>
+    <button class="btn-c" id="b-dark">☾ dark</button>
+    <span style="flex:1"></span>
+    <button class="btn-c" id="b-palette">⌘K</button>
+    <button class="btn-c primary" id="b-export">Export…</button>
+  </div>
+  <div id="b-stage">
+    <span class="chip" id="b-hint">click any component → its knobs pop over · tune tokens in the dock below</span>
+    <div class="demo-root gallery" id="b-gallery" data-raya="baseline" style="padding-top:44px"></div>
+  </div>
+  <div id="b-dock">
+    <div id="b-dockbar">
+      <div class="seg" id="b-groupseg">
+        <button data-g="colors" class="on">Color</button>
+        <button data-g="type">Type</button>
+        <button data-g="shape">Shape</button>
+        <button data-g="shadow">Shadow</button>
+        <button data-g="knobs">Knobs</button>
+      </div>
+      <span class="chip" id="b-dockstate"></span>
+    </div>
+    <div id="b-tray"><div id="b-controls"></div></div>
+  </div>
+</section>
+
+<!-- ================= VARIANT C — THREE-PANE ================= -->
+<section class="variant" id="variant-c">
+  <div id="c-syscol">
+    <div class="sec">
+      <label class="fld">Systems
+        <div id="c-syslist"></div>
+      </label>
+      <button class="btn-c" style="width:100%;margin-top:8px" disabled title="stub — new system flow not part of this question">＋ New system</button>
+    </div>
+    <div id="c-groups">
+      <button class="g-item on" data-g="colors">Color</button>
+      <button class="g-item" data-g="type">Type</button>
+      <button class="g-item" data-g="shape">Shape &amp; radius</button>
+      <button class="g-item" data-g="shadow">Shadow</button>
+      <button class="g-item" data-g="knobs">Component knobs</button>
+    </div>
+    <div style="flex:1"></div>
+    <div class="sec"><button class="btn-c primary" id="c-export" style="width:100%">Export…</button></div>
+  </div>
+  <div id="c-edit"><div class="inner" id="c-controls"></div></div>
+  <div id="c-prev">
+    <div id="c-hero-head">
+      <span class="chip" id="c-hero-name">hero: buttons</span>
+      <button class="btn-c" id="c-dark">☾ dark</button>
+    </div>
+    <div class="demo-root" id="c-hero" data-raya="baseline" style="border:1px solid #26262b"></div>
+    <div id="c-thumbs-label">everything else, live</div>
+    <div class="demo-root" id="c-thumbs" data-raya="baseline"></div>
+  </div>
+</section>
+
+<!-- ================= shared overlays ================= -->
+<div class="overlay" id="export-overlay">
+  <div class="modal">
+    <header>
+      <div><h3 id="ex-title">Export “baseline”</h3><small style="color:#71717a">registry:theme item → /r/&lt;slug&gt;.json (model from ticket #5)</small></div>
+      <button class="btn-c" data-close>✕</button>
+    </header>
+    <div class="body">
+      <div class="filetabs" data-exgroup>
+        <button class="btn-c on" data-f="css"><span class="slugname">baseline</span>.css</button>
+        <button class="btn-c" data-f="json"><span class="slugname">baseline</span>.json</button>
+      </div>
+      <textarea id="ex-out" readonly spellcheck="false"></textarea>
+      <div style="display:flex;gap:8px">
+        <button class="btn-c primary" id="ex-copy">Copy file</button>
+        <span class="chip">sketch serialization — real emitter lands with the build</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="slideover" aria-label="Export slide-over">
+  <header>
+    <div><h3 id="so-title">Export “baseline”</h3><small style="color:#71717a">registry:theme item → /r/&lt;slug&gt;.json (model from ticket #5)</small></div>
+    <button class="btn-c" id="so-close">✕</button>
+  </header>
+  <div class="body">
+    <div class="filetabs" data-exgroup>
+      <button class="btn-c on" data-f="css"><span class="slugname">baseline</span>.css</button>
+      <button class="btn-c" data-f="json"><span class="slugname">baseline</span>.json</button>
+    </div>
+    <textarea class="ex-out" readonly spellcheck="false"></textarea>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn-c primary ex-copy">Copy file</button>
+      <span class="chip">sketch serialization — real emitter lands with the build</span>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="wizard-overlay">
+  <div class="modal" style="width:min(520px,92vw)">
+    <header>
+      <div><h3>Export wizard</h3></div>
+      <button class="btn-c" data-close>✕</button>
+    </header>
+    <div class="body" id="wiz-body"></div>
+  </div>
+</div>
+
+<div class="overlay" id="palette">
+  <div class="modal">
+    <div class="body">
+      <input id="pal-q" placeholder="Type a command…" autocomplete="off">
+      <ul id="pal-list"></ul>
+    </div>
+  </div>
+</div>
+
+<div id="pop"></div>
+
+<div id="switcher">
+  <button class="arr" id="sw-prev">←</button>
+  <div class="lbl"><span id="sw-key">A — Rail &amp; Gallery</span><small id="sw-desc"></small></div>
+  <button class="arr" id="sw-next">→</button>
+</div>
+
+<script>
+'use strict';
+/* =================================================================
+  state — one object, no persistence (prototype rule 3)
+================================================================= */
+const SYSTEMS = {
+  baseline: { name: 'Baseline', slug: 'baseline' },
+  terminal: { name: 'Terminal', slug: 'terminal' },
+};
+
+const state = {
+  variant: 'A',
+  system: 'baseline',
+  mode: 'light',            // light | dark  (the .dark convention)
+  edits: {},                // cssVar -> value, inline overrides on preview roots
+  knobs: {                  // per #3 tables, only components present in the gallery
+    button:   { variant: 'default', size: 'md' },
+    badge:    { variant: 'default', size: 'md' },
+    input:    { size: 'md' },
+    select:   { variant: 'outline', size: 'md' },
+    check:    { size: 'md' },
+    avatar:   { shape: 'circle', size: 'md' },
+    tabs:     { variant: 'underline', size: 'md' },
+    card:     { variant: 'plain', density: 'comfortable' },
+    kpi:      { variant: 'plain', density: 'comfortable' },
+    table:    { density: 'comfortable', zebra: 'on' },
+    fbar:     { density: 'comfortable' },
+    tooltip:  { variant: 'dark' },
+  },
+  group: 'colors',
+  focusTile: null,
+  hero: 'button',
+};
+
+const KNOB_DEFS = { // label -> options, mirrors #3 resolution
+  button:  [['variant', ['default','outline','ghost','destructive','link','secondary']], ['size', ['sm','md','lg']]],
+  badge:   [['variant', ['default','secondary','outline','destructive']], ['size', ['sm','md']]],
+  input:   [['size', ['sm','md','lg']]],
+  select:  [['variant', ['outline','ghost']], ['size', ['sm','md','lg']]],
+  check:   [['size', ['sm','md','lg']]],
+  avatar:  [['shape', ['circle','rounded','square']], ['size', ['sm','md','lg']]],
+  tabs:    [['variant', ['underline','pills','enclosed']], ['size', ['sm','md']]],
+  card:    [['variant', ['plain','outline','elevated']], ['density', ['comfortable','compact']]],
+  kpi:     [['variant', ['plain','outline','elevated']], ['density', ['comfortable','compact']]],
+  table:   [['density', ['comfortable','compact']], ['zebra', ['off','on']]],
+  fbar:    [['density', ['comfortable','compact']]],
+  tooltip: [['variant', ['dark','inverted']]],
+};
+const TILE_LABEL = {
+  button:'Buttons', badge:'Badges', input:'Input', select:'Select', check:'Checkbox & Switch',
+  avatar:'Avatars', tabs:'Tabs', card:'Card', chart:'Bar chart', kpi:'KPI card',
+  table:'Data table', fbar:'Filter bar (block)', tip:'Tooltip',
+};
+const GROUPS = [
+  ['colors','Colors'], ['type','Type'], ['shape','Radius'], ['shadow','Shadows'], ['knobs','Component knobs'],
+];
+const FONTS = {
+  sans: [["Inter","'Inter', ui-sans-serif, system-ui, sans-serif"], ["Space Grotesk","'Space Grotesk', ui-sans-serif, sans-serif"], ["System UI","ui-sans-serif, system-ui, sans-serif"]],
+  serif:[["Instrument Serif","'Instrument Serif', Georgia, serif"], ["Georgia","Georgia, serif"]],
+  mono: [["JetBrains Mono","'JetBrains Mono', ui-monospace, monospace"], ["Geist Mono","'Geist Mono', ui-monospace, monospace"], ["System mono","ui-monospace, SFMono-Regular, monospace"]],
+};
+const SHADOW_PRESETS = {
+  'none':  'none',
+  'soft':  '0 1px 2px rgb(0 0 0 / .05)',
+  'lift':  '0 4px 12px rgb(0 0 0 / .10)',
+  'float': '0 12px 32px rgb(0 0 0 / .16)',
+};
+const SEMANTIC_MAP = [ // how semantics reference the ramps (#4) — shown, not editable directly
+  ['--primary','--raya-primary-9'], ['--primary-foreground','--raya-neutral-1'],
+  ['--background','--raya-neutral-1'], ['--foreground','--raya-neutral-12'],
+  ['--card','oklch(1 0 0)'], ['--muted','--raya-neutral-3'], ['--accent','--raya-primary-3'],
+  ['--border','--raya-neutral-6'], ['--input','--raya-neutral-7'], ['--ring','--raya-primary-8'],
+  ['--destructive','oklch(.58 .21 27)'],
+];
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+/* =================================================================
+  apply state → DOM
+================================================================= */
+function previewRoots() { return $$('.demo-root'); }
+
+function applyVars() {
+  for (const el of previewRoots()) {
+    el.dataset.raya = state.system;
+    el.classList.toggle('dark', state.mode === 'dark');
+    // clear old overrides then re-apply (keeps roots in sync)
+    for (const name of Object.keys(state.edits)) el.style.setProperty(name, state.edits[name]);
+  }
+  $('#ss-sys').textContent = state.system;
+  $('#ss-mode').textContent = state.mode;
+  $('#ss-edits').textContent = Object.keys(state.edits).length;
+}
+
+function knobClass(tile, comp) {
+  const k = state.knobs[comp]; if (!k) return '';
+  return Object.entries(k).map(([axis, val]) => `k-${axis}-${val}`).join(' ');
+}
+
+/* =================================================================
+  gallery tiles — hand-rolled stand-ins for the real component set
+================================================================= */
+function tileHTML(comp) {
+  switch (comp) {
+    case 'button': return `<div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="d-btn v-${state.knobs.button.variant} sz-${state.knobs.button.size}">Button</button>
+      <button class="d-btn v-outline sz-${state.knobs.button.size}">Outline</button>
+      <button class="d-btn v-ghost sz-${state.knobs.button.size}">Ghost</button>
+      <button class="d-btn v-destructive sz-${state.knobs.button.size}">Delete</button></div>`;
+    case 'badge': return `<div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span class="d-badge v-${state.knobs.badge.variant} sz-${state.knobs.badge.size}">Active</span>
+      <span class="d-badge v-secondary sz-${state.knobs.badge.size}">Beta</span>
+      <span class="d-badge v-outline sz-${state.knobs.badge.size}">v1.0</span></div>`;
+    case 'input': return `<div class="d-in"><label>Email</label>
+      <input class="d-input sz-${state.knobs.input.size}" placeholder="you@example.com"></div>`;
+    case 'select': return `<div class="d-in"><label>Role</label>
+      <select class="d-input sz-${state.knobs.select.size}" style="appearance:auto"><option>Owner</option><option>Editor</option></select></div>`;
+    case 'check': return `<div style="display:flex;flex-direction:column;gap:8px">
+      <span class="d-checkline"><span class="d-box on sz-${state.knobs.check.size}"></span> Email digests</span>
+      <span class="d-checkline"><span class="d-switch on sz-${state.knobs.check.size}"><i></i></span> Public profile</span></div>`;
+    case 'avatar': return `<div class="av-row">
+      <span class="d-av shape-${state.knobs.avatar.shape} sz-${state.knobs.avatar.size}">AK</span>
+      <span class="d-av shape-${state.knobs.avatar.shape} sz-${state.knobs.avatar.size}">MJ</span>
+      <span class="d-av shape-${state.knobs.avatar.shape} sz-${state.knobs.avatar.size}">+9</span></div>`;
+    case 'tabs': { const v = state.knobs.tabs.variant; return `<div style="display:flex;flex-direction:column;gap:8px">
+      <div class="d-tabs tabs-${v} sz-${state.knobs.tabs.size}">
+        <button class="on">Preview</button><button>Code</button><button>Props</button></div></div>`; }
+    case 'card': return `<div class="d-card2 v-${state.knobs.card.variant} pad" data-density="${state.knobs.card.density}">
+      <h5>Team plan</h5><p>Unlimited systems, registry hosting and exports for your workspace.</p></div>`;
+    case 'kpi': return `<div class="d-card2 d-kpi v-${state.knobs.kpi.variant} pad" data-density="${state.knobs.kpi.density}">
+      <div style="font-size:11px;color:var(--muted-foreground)">MRR</div>
+      <div class="num">$48.2k</div><div style="display:flex;justify-content:space-between;align-items:baseline">
+      <span class="delta-up">▲ 12.4%</span><small style="color:var(--muted-foreground)">vs last month</small></div></div>`;
+    case 'chart': { const h=[38,62,45,80,58,92,70]; return `<div class="bars">${h.map(p=>`<i style="height:${p}%"></i>`).join('')}</div>`; }
+    case 'table': return `<div class="d-tablewrap"><table class="d-table ${state.knobs.table.zebra==='on'?'zebra':''}" data-density="${state.knobs.table.density}">
+      <thead><tr><th>System</th><th>Installs</th></tr></thead>
+      <tbody><tr><td>Terminal</td><td>128</td></tr><tr><td>Soft</td><td>97</td></tr><tr><td>Brutal</td><td>41</td></tr></tbody></table></div>`;
+    case 'fbar': return `<div class="d-fbar pad" data-density="${state.knobs.fbar.density}" style="border:1px dashed var(--border);border-radius:var(--radius-md)">
+      <input class="d-input sz-sm" placeholder="Search…" style="width:110px">
+      <select class="d-input sz-sm" style="appearance:auto;width:auto;padding-right:6px"><option>Status: any</option></select>
+      <button class="d-btn v-secondary sz-sm">Clear</button></div>`;
+    case 'tip': return `<div class="d-tip"><button class="d-btn v-outline sz-sm">Hover me</button>
+      <span class="tipbody ${state.knobs.tooltip.variant==='inverted'?'inv':''}">Saved to registry ✓</span></div>`;
+  }
+  return '';
+}
+const TILES = ['button','badge','input','select','check','avatar','tabs','card','kpi','chart','table','fbar','tip'];
+
+function buildGallery(container, opts = {}) {
+  container.innerHTML = '';
+  for (const comp of TILES) {
+    const t = document.createElement('div');
+    t.className = 'tile' + (opts.pickable ? ' pickable' : '');
+    t.dataset.comp = comp;
+    if (opts.pickable && opts.hero === comp) t.classList.add('on');
+    t.innerHTML = `<span class="t-name">${TILE_LABEL[comp]}</span>${tileHTML(comp)}`;
+    if (opts.onPick) t.addEventListener('click', e => { opts.onPick(comp, t, e); });
+    container.appendChild(t);
+  }
+}
+
+function rebuildGalleries() {
+  buildGallery($('#a-gallery'), { pickable:true, onPick:(c)=>focusTile(c) });
+  buildGallery($('#b-gallery'), { pickable:true, onPick:openPop });
+  buildGallery($('#c-thumbs'), { pickable:true, hero:state.hero, onPick:(c)=>{ state.hero=c; rebuildGalleries(); } });
+  renderHero();
+  if (state.focusTile) renderFocus(); else { $('#a-focuspane').style.display='none'; $('#a-gallery').style.display=''; syncViewSeg(); }
+  applyVars();
+}
+
+/* ---------- Variant A: focus mode ---------- */
+function focusTile(comp) {
+  state.focusTile = comp;
+  renderFocus();
+  $('#a-gallery').style.display = 'none';
+  $('#a-focuspane').style.display = 'flex';
+  syncViewSeg();
+}
+function renderFocus() {
+  const comp = state.focusTile;
+  $('#a-focusknobs').innerHTML =
+    `<b style="font-size:13px">${TILE_LABEL[comp]}</b>` +
+    (KNOB_DEFS[comp]||[]).map(([axis,opts]) =>
+      `<label class="fld" style="min-width:130px">${axis}<select data-knob="${comp}.${axis}">${opts.map(o=>`<option ${state.knobs[comp][axis]===o?'selected':''}>${o}</option>`).join('')}</select></label>`
+    ).join('') ||
+    `<span class="chip">no knobs in v1 (per #3)</span>`;
+  $('#a-focusstage').innerHTML = `<div class="tile" style="max-width:420px;margin:0 auto"><span class="t-name">${TILE_LABEL[comp]}</span>${tileHTML(comp)}</div>`;
+}
+function syncViewSeg() {
+  $$('#a-viewseg button').forEach(b => b.classList.toggle('on', (b.dataset.v==='focus') === !!state.focusTile));
+  $('#a-focushint').textContent = state.focusTile ? `focused: ${TILE_LABEL[state.focusTile]} — Focus → back to gallery` : 'click a tile to focus it';
+}
+
+/* ---------- Variant B: popover ---------- */
+let popComp = null;
+function openPop(comp, tileEl) {
+  popComp = comp;
+  const pop = $('#pop');
+  const r = tileEl.getBoundingClientRect();
+  let x = Math.min(r.right - 250, innerWidth - 270), y = r.bottom + 8;
+  if (y + 220 > innerHeight) y = Math.max(10, r.top - 230);
+  pop.style.left = Math.max(10,x)+'px'; pop.style.top = y+'px';
+  pop.innerHTML = `<h4>${TILE_LABEL[comp]}</h4>` +
+    (KNOB_DEFS[comp]||[]).map(([axis,opts]) =>
+      `<div class="knob-row"><span class="k">${axis}</span><select data-knob="${comp}.${axis}">${opts.map(o=>`<option ${state.knobs[comp][axis]===o?'selected':''}>${o}</option>`).join('')}</select></div>`
+    ).join('') || `<span class="chip">no knobs in v1</span>`;
+  pop.classList.add('open');
+}
+document.addEventListener('click', e => {
+  const pop = $('#pop');
+  if (!pop.contains(e.target) && !e.target.closest('.tile')) pop.classList.remove('open');
+});
+
+/* ---------- Variant C: hero ---------- */
+function renderHero() {
+  $('#c-hero').innerHTML = `<div class="tile"><span class="t-name">${TILE_LABEL[state.hero]}</span>${tileHTML(state.hero)}</div>`;
+  $('#c-hero-name').textContent = 'hero: ' + TILE_LABEL[state.hero];
+}
+
+/* =================================================================
+  control builders — reused across all three variants
+================================================================= */
+function ctlKnobRow(comp, axis, opts) {
+  return `<div class="knob-row"><span class="k">${TILE_LABEL[comp]} · ${axis}</span>
+    <select data-knob="${comp}.${axis}">${opts.map(o=>`<option ${state.knobs[comp][axis]===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
+}
+function controlsFor(group, big=false) {
+  const div = document.createElement('div');
+  if (group === 'colors') {
+    div.innerHTML = `
+      ${big?'':'<div class="panel-sec"><h4>Primitive scales · what the tuner slides (#4)</h4>'}
+      <label class="fld">Primary hue<input type="range" min="0" max="360" value="255" data-tok="hue"></label>
+      <div class="ramp" id="ramp-primary">${rampHTML('primary')}</div>
+      <label class="fld">Neutral chroma<input type="range" min="0" max="24" value="4" data-tok="chroma"></label>
+      <div class="ramp" id="ramp-neutral">${rampHTML('neutral')}</div>
+      <p style="color:#71717a;font-size:11.5px;margin:2px 0 0">semantic tokens stay opaque colors that reference these steps — editing a step re-themes everything mapped to it:</p>
+      <div style="display:flex;flex-direction:column;margin-top:6px">
+        ${SEMANTIC_MAP.map(([sem,ref])=>`<div class="swrow"><code>${sem}</code><span style="display:flex;gap:6px;align-items:center"><code style="font-size:10px">${ref}</code><button class="sw" data-sem="${sem}" title="override directly"></button></span></div>`).join('')}
+      </div>${big?'':'</div>'}`;
+  } else if (group === 'type') {
+    div.innerHTML = `
+      ${big?'':'<div class="panel-sec"><h4>Typefaces · built-in roster (#8)</h4>'}
+      <label class="fld">Sans (--font-sans)<select data-font="sans">${FONTS.sans.map(([n])=>`<option>${n}</option>`).join('')}</select></label>
+      <div class="swrow"><code>specimen</code><b data-spec="sans" style="font-size:16px">Raya 0123</b></div>
+      <label class="fld">Serif (--font-serif)<select data-font="serif">${FONTS.serif.map(([n])=>`<option>${n}</option>`).join('')}</select></label>
+      <label class="fld">Mono (--font-mono)<select data-font="mono">${FONTS.mono.map(([n])=>`<option>${n}</option>`).join('')}</select></label>
+      <div class="swrow"><code>--font-mono</code><b data-spec="mono" style="font-size:13px">const ok = true;</b></div>
+      ${big?'':'</div>'}`;
+  } else if (group === 'shape') {
+    div.innerHTML = `
+      ${big?'':'<div class="panel-sec"><h4>Radius · single master token (#4)</h4>'}
+      <label class="fld">--radius&nbsp;&nbsp;<output>10px</output><input type="range" min="0" max="20" value="10" data-radius></label>
+      <div class="swrow"><code>--radius-sm/md/lg/xl</code><span class="chip">derived via shadcn calc()</span></div>
+      ${big?'':'</div>'}`;
+  } else if (group === 'shadow') {
+    div.innerHTML = `
+      ${big?'':'<div class="panel-sec"><h4>Shadows</h4>'}
+      ${['sm','md','lg'].map(s=>`<div class="knob-row"><span class="k">--raya-shadow-${s}</span>
+        <select data-shadow="${s}">${Object.keys(SHADOW_PRESETS).map(k=>`<option>${k}</option>`).join('')}</select></div>`).join('')}
+      ${big?'':'</div>'}`;
+  } else if (group === 'knobs') {
+    div.innerHTML = `
+      ${big?'':'<div class="panel-sec"><h4>Component knobs · closed schema (#3)</h4>'}
+      ${Object.entries(KNOB_DEFS).map(([comp,axes]) => axes.map(([axis,opts])=>ctlKnobRow(comp,axis,opts)).join('')).join('')}
+      ${big?'':'</div>'}`;
+  }
+  return div;
+}
+function mountControls() {
+  const a = $('#a-controls'); a.innerHTML='';
+  for (const [g] of GROUPS) a.appendChild(controlsFor(g));
+  $('#b-controls').innerHTML=''; $('#b-controls').appendChild(controlsFor(state.group));
+  const c = $('#c-controls'); c.innerHTML='';
+  c.appendChild(controlsFor(state.group, true));
+  wireControls();
+  paintSwatches();
+}
+function rampCSS(name) {
+  const hue = +(document.querySelector(`[data-tok=hue]`)?.value ?? 255);
+  const chroma = +(document.querySelector(`[data-tok=chroma]`)?.value ?? 4)/100;
+  if (name !== 'neutral') {
+    const Ls=[.97,.93,.88,.82,.76,.70,.64,.58,.53,.48,.42,.35];
+    return Ls.map((L,i)=>`oklch(${L} ${i>5?chroma:chroma*.6} ${hue})`);
+  }
+  const Ls=[.985,.96,.92,.87,.81,.74,.66,.57,.48,.40,.31,.22], c=chroma/3;
+  return Ls.map(L=>`oklch(${L} ${c} ${hue})`);
+}
+function rampHTML(name){ return rampCSS(name).map((c,i)=>`<i data-step="${name}-${i+1}" style="background:${c}"></i>`).join(''); }
+function paintSwatches() {
+  $$('#variant-a .sw, #variant-c .sw').forEach(b=>{
+    const cur = state.edits[b.dataset.sem];
+    b.style.background = cur || 'repeating-linear-gradient(45deg,#333 0 4px,#222 4px 8px)';
+  });
+  const cs = getComputedStyle($('.demo-root'));
+  $$('[data-spec]').forEach(el=>{
+    el.style.fontFamily = el.dataset.spec==='mono'
+      ? (state.edits['--font-mono'] || cs.getPropertyValue('--font-mono'))
+      : (state.edits['--font-sans'] || cs.getPropertyValue('--font-sans'));
+  });
+}
+function refreshRamps() {
+  $$('.ramp').forEach(r=>{ const name=r.id.replace('ramp-',''); r.innerHTML=rampHTML(name); });
+}
+function wireControls() {
+  // knob selects are wired by delegation below (they're injected in rails,
+  // popovers AND the focus pane — per-mount wiring would miss copies)
+  // semantic override swatches
+  $$('button.sw[data-sem]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const sem = b.dataset.sem;
+      const inp = document.createElement('input'); inp.type='color';
+      inp.value = '#6366f1';
+      inp.addEventListener('change', ()=>{ state.edits[sem] = inp.value; applyVars(); paintSwatches(); });
+      inp.click();
+    });
+  });
+  // ramp sliders — keep every mounted copy in sync, then regenerate
+  $$('[data-tok]').forEach(sl=>{
+    sl.addEventListener('input', ()=>{
+      $$(`[data-tok="${sl.dataset.tok}"]`).forEach(o=>{ if(o!==sl) o.value = sl.value; });
+      const prim = rampCSS('primary'), neut = rampCSS('neutral');
+      prim.forEach((c,i)=> state.edits[`--raya-primary-${i+1}`]=c);
+      neut.forEach((c,i)=> state.edits[`--raya-neutral-${i+1}`]=c);
+      applyVars(); refreshRamps();
+    });
+  });
+  // radius
+  $$('input[data-radius]').forEach(sl=>{
+    sl.addEventListener('input', ()=>{
+      const out = sl.previousElementSibling; if (out && out.tagName==='OUTPUT') out.textContent = sl.value+'px';
+      state.edits['--radius'] = sl.value+'px';
+      applyVars();
+    });
+  });
+  // shadows
+  $$('select[data-shadow]').forEach(sel=>{
+    sel.addEventListener('change', ()=>{
+      state.edits[`--raya-shadow-${sel.dataset.shadow}`] = SHADOW_PRESETS[sel.value];
+      applyVars();
+    });
+  });
+  // fonts
+  $$('select[data-font]').forEach(sel=>{
+    sel.addEventListener('change', ()=>{
+      const fam = FONTS[sel.dataset.font].find(([n])=>n===sel.value)[1];
+      state.edits[`--font-${sel.dataset.font}`] = fam;
+      applyVars(); paintSwatches();
+    });
+  });
+}
+
+/* =================================================================
+  export sketch — serializes current computed values (#5 artifact shape)
+================================================================= */
+const EXPORT_VARS = [
+  '--background','--foreground','--card','--card-foreground','--popover','--popover-foreground',
+  '--primary','--primary-foreground','--secondary','--secondary-foreground','--muted','--muted-foreground',
+  '--accent','--accent-foreground','--destructive','--border','--input','--ring',
+  '--chart-1','--chart-2','--chart-3','--chart-4','--chart-5',
+  '--radius','--font-sans','--font-serif','--font-mono',
+  '--raya-shadow-sm','--raya-shadow-md','--raya-shadow-lg',
+];
+function exportCss(slug) {
+  const cs = getComputedStyle($( '.demo-root'));
+  const lines = EXPORT_VARS.filter(v=>cs.getPropertyValue(v).trim()).map(v=>`  ${v}: ${cs.getPropertyValue(v).trim()};`);
+  return `/* ${slug}.css — sketch of the registry:theme stylesheet */\n`+
+    `[data-raya='${slug}'] {\n${lines.join('\n')}\n}\n\n`+
+    `[data-raya='${slug}'].dark {\n  /* second stored set — dark values here (nothing derived at runtime, #4) */\n}\n`;
+}
+function exportJson(slug) {
+  return JSON.stringify({ $schema:'registry-item', type:'registry:theme', name:SYSTEMS[state.system].name, slug,
+    css:`${slug}.css`, fonts:{ sans:state.edits['--font-sans']??'Inter', mono:state.edits['--font-mono']??'JetBrains Mono' },
+    radius: state.edits['--radius'] ?? '0.625rem',
+    knobs: state.knobs }, null, 2);
+}
+let exFile = 'css';
+function exTexts() {
+  const slug = state.system;
+  return { css: exportCss(slug), json: exportJson(slug) };
+}
+function paintExport() {
+  const t = exTexts()[exFile];
+  $('#ex-out').value = t;
+  $('.ex-out').value = t;
+  $('#so-title').textContent = `Export “${state.system}”`;
+  $('#ex-title').textContent = `Export “${state.system}”`;
+  $$('.slugname').forEach(s=>s.textContent = state.system);
+}
+function openExport(kind) { // kind: 'modal' | 'slideover' | 'wizard'
+  if (kind === 'wizard') { openWizard(); return; }
+  if (kind === 'slideover') $('#slideover').classList.add('open');
+  else $('#export-overlay').classList.add('open');
+  paintExport();
+}
+function openWizard() {
+  const body = $('#wiz-body');
+  let step = 1;
+  const files = { css:true, json:true };
+  const draw = () => {
+    if (step===1) body.innerHTML = `
+      <div class="wiz-steps"><span class="st on">1 · Choose artifacts</span><span class="st">2 · Review</span></div>
+      <label class="checkline"><input type="checkbox" ${files.css?'checked':''} id="wz-css"> <code>${state.system}.css</code> — token stylesheet ([data-raya]-scoped)</label>
+      <label class="checkline"><input type="checkbox" ${files.json?'checked':''} id="wz-json"> <code>${state.system}.json</code> — system config (fonts, radius, knobs)</label>
+      <label class="checkline"><input type="checkbox" checked disabled> <code>core.css</code> — always included (Tailwind bridge)</label>
+      <div style="display:flex;justify-content:flex-end"><button class="btn-c primary" id="wz-next">Next →</button></div>`;
+    else body.innerHTML = `
+      <div class="wiz-steps"><span class="st">✓ Artifacts</span><span class="st on">2 · Review</span></div>
+      <textarea readonly spellcheck="false" style="height:200px">${files.css ? exportCss(state.system).replace(/</g,'&lt;') : ''}\n${files.json ? exportJson(state.system).replace(/</g,'&lt;') : ''}</textarea>
+      <div style="display:flex;justify-content:space-between">
+        <button class="btn-c" id="wz-back">← Back</button>
+        <button class="btn-c primary" id="wz-done">Emit /r/${state.system}.json</button></div>`;
+    body.querySelector('#wz-next')?.addEventListener('click', ()=>{ files.css=body.querySelector('#wz-css').checked; files.json=body.querySelector('#wz-json').checked; step=2; draw(); });
+    body.querySelector('#wz-back')?.addEventListener('click', ()=>{ step=1; draw(); });
+    body.querySelector('#wz-done')?.addEventListener('click', ()=>{ $('#wizard-overlay').classList.remove('open'); });
+  };
+  $('#wizard-overlay').classList.add('open'); draw();
+}
+
+/* =================================================================
+  command palette (variant B)
+================================================================= */
+const COMMANDS = [
+  ['Export current system…', ()=>openExport('modal')],
+  ['Toggle light / dark', toggleDark],
+  ['Switch to Terminal', ()=>setSystem('terminal')],
+  ['Switch to Baseline', ()=>setSystem('baseline')],
+  ['Edit: Colors', ()=>{ state.group='colors'; mountControls(); syncGroupSeg(); }],
+  ['Edit: Type', ()=>{ state.group='type'; mountControls(); syncGroupSeg(); }],
+  ['Edit: Radius', ()=>{ state.group='shape'; mountControls(); syncGroupSeg(); }],
+];
+function openPalette(){ $('#palette').classList.add('open'); const q=$('#pal-q'); q.value=''; drawPal(''); q.focus(); }
+function drawPal(qs){
+  const list=$('#pal-list'); list.innerHTML='';
+  COMMANDS.filter(([l])=>l.toLowerCase().includes(qs.toLowerCase())).forEach(([lbl,fn],i)=>{
+    const li=document.createElement('li'); if(i===0)li.classList.add('sel');
+    li.innerHTML=`<span>${lbl}</span><small>enter</small>`;
+    li.addEventListener('click',()=>{$('#palette').classList.remove('open');fn();});
+    list.appendChild(li);
+  });
+}
+
+/* =================================================================
+  shared wiring
+================================================================= */
+function setSystem(sys){ state.system=sys; $('#a-syspick').value=sys; $('#b-syspick').value=sys; drawSysListC(); applyVars(); }
+function toggleDark(){ state.mode = state.mode==='light'?'dark':'light'; syncDarkBtns(); applyVars(); }
+function syncDarkBtns(){ ['#a-dark','#b-dark','#c-dark'].forEach(id=>{ $(id).textContent = state.mode==='dark' ? '☀ light' : '☾ dark'; }); }
+function drawSysListC(){
+  $('#c-syslist').innerHTML = Object.entries(SYSTEMS).map(([slug,s])=>`
+    <div class="sys-item ${slug===state.system?'on':''}" data-sys="${slug}">
+      <span class="sys-sw"><i style="background:var(--primary)"></i><i style="background:var(--background)"></i><i style="background:var(--foreground)"></i></span>${s.name}</div>`).join('');
+  $$('#c-syslist .sys-item').forEach(el=>el.addEventListener('click',()=>setSystem(el.dataset.sys)));
+}
+function syncGroupSeg(){ $$('#b-groupseg button,#c-groups .g-item').forEach(b=>b.classList.toggle('on', b.dataset.g===state.group)); }
+
+// variant switcher
+const VARIANTS = {
+  A: ['A — Rail & Gallery', 'persistent control rail · gallery ↔ focus toggle · export slide-over'],
+  B: ['B — Canvas-first', 'no rail · click-to-popover knobs · dock trays · ⌘K palette'],
+  C: ['C — Three-pane', 'systems column · big editor pane · live hero + thumbnail strip · export wizard'],
+};
+function setVariant(v){
+  state.variant = v;
+  $$('.variant').forEach(s=>s.classList.toggle('active', s.id === 'variant-'+v.toLowerCase()));
+  $('#sw-key').textContent = VARIANTS[v][0];
+  $('#sw-desc').textContent = VARIANTS[v][1];
+  const url = new URL(location); url.searchParams.set('variant', v);
+  try { history.replaceState(null,'',url); } catch { /* file:// origins may refuse — variant still applies */ }
+  applyVars();
+}
+function cycle(d){
+  const keys = Object.keys(VARIANTS);
+  const i = keys.indexOf(state.variant);
+  setVariant(keys[(i+d+keys.length)%keys.length]);
+}
+
+/* ---- global listeners ---- */
+// knob changes from ANY surface (rail, dock, popover, focus pane, wizard)
+document.addEventListener('change', e => {
+  const sel = e.target.closest && e.target.closest('select[data-knob]');
+  if (!sel || !sel.matches('select[data-knob]')) return;
+  const [comp, axis] = sel.dataset.knob.split('.');
+  state.knobs[comp][axis] = sel.value;
+  $$(`select[data-knob="${comp}.${axis}"]`).forEach(s=>{ s.value = sel.value; }); // keep copies in sync
+  rebuildGalleries();
+});
+$('#sw-prev').addEventListener('click',()=>cycle(-1));
+$('#sw-next').addEventListener('click',()=>cycle(1));
+document.addEventListener('keydown',e=>{
+  if (e.key==='Escape'){ $$('.overlay').forEach(o=>o.classList.remove('open')); $('#pop').classList.remove('open'); $('#slideover').classList.remove('open'); }
+  if ((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k' && state.variant==='B'){ e.preventDefault(); openPalette(); return; }
+  const typing = /input|textarea|select/i.test(e.target.tagName) || e.target.isContentEditable;
+  if (typing) return;
+  if (e.key==='ArrowLeft') cycle(-1);
+  if (e.key==='ArrowRight') cycle(1);
+});
+$('#pal-q').addEventListener('input',e=>drawPal(e.target.value));
+$('#pal-q').addEventListener('keydown',e=>{
+  if (e.key==='Enter'){ const first=$('#pal-list li'); if(first) first.click(); }
+});
+$('#palette').addEventListener('click',e=>{ if(e.target.id==='palette') e.currentTarget.classList.remove('open'); });
+
+// systems + dark toggles (all variants)
+[['#a-syspick'],['#b-syspick']].forEach(([id])=>$(id).addEventListener('change',e=>setSystem(e.target.value)));
+['#a-dark','#b-dark','#c-dark'].forEach(id=>$(id).addEventListener('click',toggleDark));
+
+// exports
+$('#a-export').addEventListener('click',()=>openExport('slideover'));
+$('#b-export').addEventListener('click',()=>openExport('modal'));
+$('#b-palette').addEventListener('click',openPalette);
+$('#c-export').addEventListener('click',()=>openExport('wizard'));
+$$('#export-overlay [data-close]').forEach(b=>b.addEventListener('click',()=>$('#export-overlay').classList.remove('open')));
+$('#so-close').addEventListener('click',()=>$('#slideover').classList.remove('open'));
+$('#export-overlay').addEventListener('click',e=>{ if(e.target.id==='export-overlay') e.currentTarget.classList.remove('open'); });
+$('#wizard-overlay').addEventListener('click',e=>{ if(e.target.id==='wizard-overlay') e.currentTarget.classList.remove('open'); });
+
+// file tabs (both export surfaces) + copy buttons
+$$('[data-exgroup] button').forEach(b=>b.addEventListener('click',()=>{
+  exFile=b.dataset.f;
+  $$(`[data-exgroup] button`).forEach(x=>x.classList.toggle('on', x.dataset.f===exFile));
+  paintExport();
+}));
+function wireCopy(btn, get){ btn.addEventListener('click',()=>{ navigator.clipboard?.writeText(get()); const t=btn.textContent; btn.textContent='Copied ✓'; setTimeout(()=>btn.textContent=t,900); }); }
+wireCopy($('#ex-copy'), ()=>$('#ex-out').value);
+wireCopy($('.ex-copy'), ()=>$('.ex-out').value);
+
+// variant-A view segment
+$$('#a-viewseg button').forEach(b=>b.addEventListener('click',()=>{
+  if (b.dataset.v==='gallery'){ state.focusTile=null; rebuildGalleries(); } else focusTile(state.focusTile ?? 'button');
+}));
+
+// dock / groups
+$$('#b-groupseg button, #c-groups .g-item').forEach(b=>b.addEventListener('click',()=>{
+  state.group=b.dataset.g; mountControls(); syncGroupSeg();
+}));
+
+// reset
+$('#ss-reset').addEventListener('click',()=>{
+  state.edits={}; Object.assign(state.knobs, JSON.parse(JSON.stringify({
+    button:{variant:'default',size:'md'},badge:{variant:'default',size:'md'},input:{size:'md'},
+    select:{variant:'outline',size:'md'},check:{size:'md'},avatar:{shape:'circle',size:'md'},
+    tabs:{variant:'underline',size:'md'},card:{variant:'plain',density:'comfortable'},kpi:{variant:'plain',density:'comfortable'},
+    table:{density:'comfortable',zebra:'on'},fbar:{density:'comfortable'},tooltip:{variant:'dark'}})));
+  mountControls(); rebuildGalleries();
+});
+
+/* =================================================================
+  boot
+================================================================= */
+rebuildGalleries();   // creates the .demo-root elements first…
+mountControls();      // …so control builders can read computed styles
+syncDarkBtns();
+drawSysListC();
+setVariant(new URLSearchParams(location.search).get('variant')?.toUpperCase() in VARIANTS
+  ? new URLSearchParams(location.search).get('variant').toUpperCase() : 'A');
+</script>
+</body>
+</html>
