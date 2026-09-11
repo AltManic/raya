@@ -519,6 +519,110 @@
         }
       ],
       "docs": "Requires @raya/core plus button/input/select items. demo-filter-bar.tsx is a self-contained example with throwaway data."
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils (cn)",
+      "description": "PROTOTYPE coss port: the `cn` class-merge helper (clsx + tailwind-merge) every ported component imports.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "registry/default/lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "docs": "Internal helper item for the coss-ported components; the real port ships this as `utils`."
+    },
+    {
+      "name": "coss-spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "PROTOTYPE coss port: loading indicator authored with the HugeIcons IconPlaceholder.",
+      "registryDependencies": [
+        "@raya/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/coss-spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "coss-button",
+      "type": "registry:ui",
+      "title": "Button (coss port)",
+      "description": "PROTOTYPE coss port: cva variants + useRender, with the loading-state Spinner.",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "@raya/utils",
+        "@raya/coss-spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/coss-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires @raya/core for tokens. Prototype item name; the real port replaces raya's `button`."
+    },
+    {
+      "name": "coss-input",
+      "type": "registry:ui",
+      "title": "Input (coss port)",
+      "description": "PROTOTYPE coss port: Base UI input in a bordered control shell.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "@raya/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/coss-input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "coss-field",
+      "type": "registry:ui",
+      "title": "Field (coss port)",
+      "description": "PROTOTYPE coss port: Base UI Field parts (label/description/error).",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "@raya/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/coss-field.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "coss-card",
+      "type": "registry:ui",
+      "title": "Card (coss port)",
+      "description": "PROTOTYPE coss port: Card + CardFrame families with useRender.",
+      "registryDependencies": [
+        "@raya/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/coss-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

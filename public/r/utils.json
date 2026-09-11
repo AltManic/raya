@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "utils",
+  "title": "Utils (cn)",
+  "description": "PROTOTYPE coss port: the `cn` class-merge helper (clsx + tailwind-merge) every ported component imports.",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "files": [
+    {
+      "path": "registry/default/lib/utils.ts",
+      "content": "/*\n * PROTOTYPE (#25) — port of coss ui's `registry/default/lib/utils.ts` @ e937bec (MIT surface).\n * This is the `utils` registry item the real port adds; it is the `cn` helper every\n * coss component imports.\n */\nimport { type ClassValue, clsx } from \"clsx\";\nimport { twMerge } from \"tailwind-merge\";\n\nexport function cn(...inputs: ClassValue[]): string {\n  return twMerge(clsx(inputs));\n}\n",
+      "type": "registry:lib"
+    }
+  ],
+  "docs": "Internal helper item for the coss-ported components; the real port ships this as `utils`.",
+  "type": "registry:lib"
+}

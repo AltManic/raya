@@ -33,6 +33,9 @@
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
   --font-mono: var(--font-mono);
+  /* PROTOTYPE (#25): coss's Card/Dialog titles use `font-heading`; values published MIT at
+     coss apps/ui/content/docs/(root)/styling.mdx and apps/ui/registry/registry-styles.ts. */
+  --font-heading: var(--font-sans);
 }
 
 /* ---- button ---- */

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "coss-spinner",
+  "title": "Spinner",
+  "description": "PROTOTYPE coss port: loading indicator authored with the HugeIcons IconPlaceholder.",
+  "registryDependencies": [
+    "@raya/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/coss-spinner.tsx",
+      "content": "/*\n * PROTOTYPE (#25) — port of coss ui's `registry/default/ui/spinner.tsx` @ e937bec (MIT surface).\n * One change from coss: lucide-react's `Loader2Icon` is authored through raya's\n * `IconPlaceholder`, so the shadcn CLI swaps it for the consumer's HugeIcons at install:\n *\n *   <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} aria-label=\"Loading\" className=\"animate-spin\" role=\"status\" />\n */\nimport type React from \"react\";\nimport { cn } from \"@/registry/default/lib/utils\";\nimport { IconPlaceholder } from \"@/registry/internal/icon-placeholder\";\n\nexport function Spinner({\n  className,\n  ...props\n}: React.ComponentProps<typeof IconPlaceholder>): React.ReactElement {\n  return (\n    <IconPlaceholder\n      aria-label=\"Loading\"\n      className={cn(\"animate-spin\", className)}\n      hugeicons=\"Loading03Icon\"\n      role=\"status\"\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}
