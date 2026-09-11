@@ -28,6 +28,18 @@ npm run dev
 # → http://localhost:3000/coss-proto  (System switching + dark toggle in the header)
 ```
 
+## Porting rules the roundtrip fixture forced
+
+1. **Never reference `typeof IconPlaceholder` in exported types.** The CLI strips the
+   placeholder import at install; any type reference to it is left dangling (the fixture caught
+   `Cannot find name 'IconPlaceholder'`). Type props explicitly instead.
+2. **Keep exported props narrow when they are spread onto the placeholder.** After install the
+   spread lands on an SVG component (`HugeiconsIcon`); a broad span-props type cannot satisfy
+   SVG event-target variance. `SpinnerProps` is `{ className?: string }` for this reason.
+3. Authored placeholders carry every icon-library name (`lucide`, `tabler`, `hugeicons`,
+   `phosphor`, `remixicon`) — the CLI picks the consumer's library and removes the rest.
+
+
 ## Verify
 
 ```sh
