@@ -29,8 +29,9 @@ Pinned references:
   requires **vendored woff2 + `@font-face`** (Vite fingerprints `url()` assets), pinned
   by upstream commit **and** sha256. coss's own files come from these upstream projects:
   Paper Mono is byte-identical to the upstream `v0.100` release asset; Cal Sans is an
-  upstream **v1.998 (2026-06-15, WORDMARK)** variable build whose exact bytes are no
-  longer in upstream `main` (its `fonts/` directory is regenerated on every build).
+  upstream **v1.998 (2026-06-15, WORDMARK)** variable build that matches
+  `fonts/calsans-cossui/CalSansVF.woff2` at upstream commit `b5d86f05` (2026-07-02) —
+  no longer in upstream `main`, whose `fonts/` directory is regenerated on every build.
 - The current upstream `calsans-cossui` build is **v2.001** (upright + italic, 5 axes,
   `wght` 400–700); upstream Paper Mono is **v0.320** with a single variable
   `wght` 100–800 woff2 (52.6 KB). Raya should pin one of these rather than coss's
@@ -125,12 +126,16 @@ Current `calsans-cossui` build (upstream main @ `bdff1d7`): **v2.001**, build st
 | `fonts/calsans-cossui/CalSansVF.woff2` | 133,556 | `8fd76dcde6c4ff3d5ac3ab3f61a10ec72cd491467439ee64d9bbe6bd56bb5d1d` |
 | `fonts/calsans-cossui/CalSansVF-Italic.woff2` | 144,776 | `ed74d0088b3f8644f551ecfd2ef45b4123310fdc7f742ebd25a30b1a35b30ff9` |
 
-The exact coss bytes are not byte-identical to any revision reachable in current
-upstream `main`: the nearest revision is commit `2df6cb5a4e` (2026-06-21), whose
-`calsans-cossui/CalSansVF.woff2` carries the **same build stamp** (`1998-CalSansWORD-2026-06-15`)
-at 183,364 bytes. The likely cause is upstream force-pushes/regenerations of `fonts/`
-(commits after that date rebuild the directory). For exact coss parity, vendor from
-coss pinned commit + checksum; for a maintained copy, vendor upstream v2.001.
+The exact coss bytes **are** reachable in upstream history:
+`fonts/calsans-cossui/CalSansVF.woff2` at commit
+[`b5d86f05`](https://github.com/calcom/sans/blob/b5d86f057dce21735d0cfe2fbca35de615095121/fonts/calsans-cossui/CalSansVF.woff2)
+(2026-07-02) is byte-identical — same 185,744 bytes, same sha256 `986ab414…`. coss's
+[`feat: update fonts (#810)`](https://github.com/cosscom/coss/commit/bd3777acfb44921d4a90b43693a9e26b970b2ecb)
+commit (2026-07-13) added precisely this build and removed the older
+`CalSans-Regular.woff2` / `CalSansUI[wght,GEOM].woff2`. Upstream rebuilt the directory
+from `c9bc104bdd` (2026-07-03) onward, so current `main` is v2.001 with different bytes.
+For exact coss parity, vendor upstream `b5d86f05` (or coss's copy) + checksum; for a
+maintained copy, vendor upstream v2.001.
 
 ### Distribution channels
 
@@ -197,7 +202,7 @@ Fontsource/Google cut. Full coss parity ⇒ vendored woff2.
 | channel | what it carries |
 |---|---|
 | [paper-design/paper-mono](https://github.com/paper-design/paper-mono) repo + [releases](https://github.com/paper-design/paper-mono/releases) | statics (otf/ttf/webfonts), `fonts/variable/PaperMono[wght].ttf`, `fonts/webfonts/*.woff2` — **only first-party channel** |
-| npm / Fontsource | **none**: npm search finds no Paper Mono font package; `@fontsource/paper-mono` 404; Fontsource API 404 |
+| npm / Fontsource | **none**: npm search finds no Paper Mono font package; `@fontsource/paper-mono` 404; Fontsource API 404. Warning: the bare `paper-mono` npm name is taken by an unrelated MIT CLI (`paper-mono@0.62.5`, “Paper Desktop design-to-code specialist”) — `npm i paper-mono` does **not** install the font |
 | Google Fonts API | **not available** — `css2?family=Paper+Mono` returns HTTP 400 |
 
 Readme instructs users to “download the latest release”, so vendoring + OFL text is the
@@ -381,6 +386,9 @@ git -C "$COSS" show HEAD:packages/ui/src/fonts/PaperMono-Regular.woff2 | shasum 
 # Paper Mono: coss copy == v0.100 release asset
 curl -sL https://github.com/paper-design/paper-mono/releases/download/v0.100/PaperMono-Regular.woff2 | shasum -a 256
 
+# coss's exact Cal Sans bytes == upstream calsans-cossui @ b5d86f05 (2026-07-02)
+curl -sL https://raw.githubusercontent.com/calcom/sans/b5d86f057dce21735d0cfe2fbca35de615095121/fonts/calsans-cossui/CalSansVF.woff2 | shasum -a 256
+
 # current upstream builds
 curl -sL https://raw.githubusercontent.com/calcom/sans/bdff1d708ffb7b43d1f3006699d913fbffba08a9/fonts/calsans-cossui/CalSansVF.woff2 | shasum -a 256
 curl -sL https://raw.githubusercontent.com/paper-design/paper-mono/9fbc4d9877798252494ad517a5db9ee89f4fd972/fonts/webfonts/PaperMono%5Bwght%5D.woff2 | shasum -a 256
@@ -397,7 +405,7 @@ PY
 ## Primary sources
 
 - coss pinned rev `e937becd2d5ffb5c621eed6f8b1f223cbb6051e7`: [`packages/ui/src/fonts/index.ts`](https://github.com/cosscom/coss/blob/e937becd2d5ffb5c621eed6f8b1f223cbb6051e7/packages/ui/src/fonts/index.ts) · [`fonts/README.md`](https://github.com/cosscom/coss/blob/e937becd2d5ffb5c621eed6f8b1f223cbb6051e7/packages/ui/src/fonts/README.md) · [`LICENSING.md`](https://github.com/cosscom/coss/blob/e937becd2d5ffb5c621eed6f8b1f223cbb6051e7/LICENSING.md) · [get-started](https://github.com/cosscom/coss/blob/e937becd2d5ffb5c621eed6f8b1f223cbb6051e7/apps/ui/content/docs/%28root%29/get-started.mdx) · [styling](https://github.com/cosscom/coss/blob/e937becd2d5ffb5c621eed6f8b1f223cbb6051e7/apps/ui/content/docs/%28root%29/styling.mdx) · [registry fonts](https://github.com/cosscom/coss/tree/e937becd2d5ffb5c621eed6f8b1f223cbb6051e7/apps/ui/public/r) (font-sans/mono/heading, style)
-- Cal Sans: [repo](https://github.com/calcom/sans) · [`OFL.txt`](https://github.com/calcom/sans/blob/bdff1d708ffb7b43d1f3006699d913fbffba08a9/OFL.txt) · [`AUTHORS.txt`](https://github.com/calcom/sans/blob/bdff1d708ffb7b43d1f3006699d913fbffba08a9/AUTHORS.txt) · [`fonts/README.md`](https://github.com/calcom/sans/blob/bdff1d708ffb7b43d1f3006699d913fbffba08a9/fonts/README.md) · [`README.md`](https://github.com/calcom/sans/blob/bdff1d708ffb7b43d1f3006699d913fbffba08a9/README.md) · [`calsans-cossui/`](https://github.com/calcom/sans/tree/bdff1d708ffb7b43d1f3006699d913fbffba08a9/fonts/calsans-cossui) · [releases](https://github.com/calcom/sans/releases) · npm [`@calcom/cal-sans-ui`](https://registry.npmjs.org/@calcom%2Fcal-sans-ui) · [`cal-sans`](https://registry.npmjs.org/cal-sans) · [`@fontsource/cal-sans`](https://registry.npmjs.org/@fontsource%2Fcal-sans) · [Fontsource API](https://api.fontsource.org/v1/fonts/cal-sans) · [Google Fonts css2](https://fonts.googleapis.com/css2?family=Cal+Sans)
+- Cal Sans: [repo](https://github.com/calcom/sans) · [`OFL.txt`](https://github.com/calcom/sans/blob/bdff1d708ffb7b43d1f3006699d913fbffba08a9/OFL.txt) · [`AUTHORS.txt`](https://github.com/calcom/sans/blob/bdff1d708ffb7b43d1f3006699d913fbffba08a9/AUTHORS.txt) · [`fonts/README.md`](https://github.com/calcom/sans/blob/bdff1d708ffb7b43d1f3006699d913fbffba08a9/fonts/README.md) · [`README.md`](https://github.com/calcom/sans/blob/bdff1d708ffb7b43d1f3006699d913fbffba08a9/README.md) · [`calsans-cossui/`](https://github.com/calcom/sans/tree/bdff1d708ffb7b43d1f3006699d913fbffba08a9/fonts/calsans-cossui) · [coss-exact build @ `b5d86f05`](https://github.com/calcom/sans/blob/b5d86f057dce21735d0cfe2fbca35de615095121/fonts/calsans-cossui/CalSansVF.woff2) · [releases](https://github.com/calcom/sans/releases) · npm [`@calcom/cal-sans-ui`](https://registry.npmjs.org/@calcom%2Fcal-sans-ui) · [`cal-sans`](https://registry.npmjs.org/cal-sans) · [`@fontsource/cal-sans`](https://registry.npmjs.org/@fontsource%2Fcal-sans) · [Fontsource API](https://api.fontsource.org/v1/fonts/cal-sans) · [Google Fonts css2](https://fonts.googleapis.com/css2?family=Cal+Sans)
 - Paper Mono: [repo](https://github.com/paper-design/paper-mono) · [`OFL.txt`](https://github.com/paper-design/paper-mono/blob/9fbc4d9877798252494ad517a5db9ee89f4fd972/OFL.txt) · [`LICENSE.txt`](https://github.com/paper-design/paper-mono/blob/9fbc4d9877798252494ad517a5db9ee89f4fd972/LICENSE.txt) · [`AUTHORS.txt`](https://github.com/paper-design/paper-mono/blob/9fbc4d9877798252494ad517a5db9ee89f4fd972/AUTHORS.txt) · [`readme.md`](https://github.com/paper-design/paper-mono/blob/9fbc4d9877798252494ad517a5db9ee89f4fd972/readme.md) · [releases v0.100/v0.320](https://github.com/paper-design/paper-mono/releases) · Fontsource API 404 (`/v1/fonts/paper-mono`) · Google Fonts css2 HTTP 400
 - Raya: [`registry.json`](https://github.com/AltManic/raya/blob/research/coss-fonts/registry.json) (`raya-fonts` item) · [`registry/default/styles/raya-fonts.css`](https://github.com/AltManic/raya/blob/research/coss-fonts/registry/default/styles/raya-fonts.css) · [`src/lib/model/export.ts`](https://github.com/AltManic/raya/blob/research/coss-fonts/src/lib/model/export.ts) · BUILD-SPEC.md §1, §4, §7 (local, read-only)
 - Tooling/docs: [Vite — Static Asset Handling](https://vite.dev/guide/assets) · [Next.js font module](https://nextjs.org/docs/app/api-reference/components/font) · [shadcn registry-item.json](https://ui.shadcn.com/docs/registry/registry-item-json) · [SIL OFL 1.1](https://openfontlicense.org)
