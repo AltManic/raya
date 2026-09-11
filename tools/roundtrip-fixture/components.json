@@ -18,6 +18,6 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@raya": "http://localhost:4870/r/{name}.json"
+    "@raya": "http://127.0.0.1:4870/r/{name}.json"
   }
 }

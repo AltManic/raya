@@ -16,7 +16,14 @@ npx shadcn build
 
 python3 -m http.server "$PORT" --directory "$ROOT/public" >/dev/null 2>&1 &
 SERVER_PID=$!
-sleep 1
+for _ in $(seq 1 50); do
+  curl -sf "http://127.0.0.1:$PORT/r/registry.json" >/dev/null 2>&1 && break
+  sleep 0.2
+done
+curl -sf "http://127.0.0.1:$PORT/r/registry.json" >/dev/null 2>&1 || {
+  echo "✗ fixture registry server failed to start on port $PORT" >&2
+  exit 1
+}
 
 if [ ! -d "$FIXTURE/node_modules" ]; then
   echo "[fixture] installing dependencies (cold)…"
