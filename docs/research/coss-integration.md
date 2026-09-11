@@ -8,9 +8,12 @@ fact base the component-port prototype and the System-model decision will lean o
 
 - coss: `e937becd2d5ffb5c621eed6f8b1f223cbb6051e7` (2026-09-08, `feat: migrate TanStack Table to v9 (#848)`).
   Citations below use `coss:<path>` and all resolve at that commit (read via the shared blobless
-  clone, `git -C <clone> show HEAD:<path>`). `packages/ui` and `apps/www` are **out of bounds**
-  (AGPLv3 per `coss:LICENSING.md`); the MIT surface is `apps/ui` (and `apps/origin`), per
-  `coss:apps/ui/package.json` (`"license": "MIT"`) and `coss:LICENSING.md`.
+  clone, `git -C <clone> show HEAD:<path>`). `packages/ui` is **out of bounds**: the repo default
+  is AGPL-3.0 (`coss:LICENSE`), and `coss:LICENSING.md` scopes the MIT surface to `apps/origin`
+  and `apps/ui`; `coss:packages/ui/package.json` confirms `"license": "AGPL-3.0-or-later"`. Only
+  `apps/ui` exists in the clone at this commit (`apps/origin` and an `apps/www` do not exist);
+  `coss:apps/ui/package.json` declares `"license": "MIT"`. Treat the docs chrome's `@coss/ui/*`
+  imports (`packages/ui`) as unportable without a license decision.
 - raya: `origin/main` at `bcaf0f71cdb5b8f60dfe45af4ec0b7655f51d485` (2026-09-12). Citations use
   `raya:<path>`.
 - Installed CLI: `raya:node_modules/shadcn@4.19.0` (raya's `package.json` pins `shadcn: ^4.19.0`).
@@ -93,12 +96,20 @@ export function cn(...inputs: ClassValue[]): string {
 }
 ```
 
-- 53 of 54 components import `cn` from `@/registry/default/lib/utils`; `form.tsx` uses no `cn`.
-- `group.tsx` is the one inconsistency: it imports `cn` from `@/lib/utils` (`coss:apps/ui/registry/default/ui/group.tsx:5`).
+- 52 of 54 components import `cn` from `@/registry/default/lib/utils`; `group.tsx` imports it
+  from `@/lib/utils` (so 53 importers in total); `form.tsx` uses no `cn`.
+- `group.tsx` is the one inconsistency: it imports `cn` from `@/lib/utils` (`coss:apps/ui/registry/default/ui/group.tsx:8`).
   In raya's repo, `@/*` maps to `./src/*` (`raya:tsconfig.json`), where `src/lib/utils.ts` does
   not exist — the port must either add `src/lib/utils.ts` or normalise the import. For
   consumers the shadcn CLI rewrites `@/lib/utils` to the consumer's `aliases.utils` anyway
   (`raya:node_modules/shadcn/dist/chunk-CDOZT3OO.js`, `Bc()`), so this is an in-repo-only fix.
+- **Only `sidebar` declares `@coss/utils` in `registryDependencies`** (`coss:apps/ui/registry/registry-ui.ts:626`).
+  The other 51 registry-path importers and `group.tsx` do not. shadcn resolves only declared
+  `registryDependencies` — there is no import-driven inference (`packages/shadcn/src/registry/resolver.ts`,
+  `resolveDependenciesRecursively`) — so raya must add `@raya/utils` to those 52 items (and ship
+  a `utils` item), or a standalone `shadcn add @raya/accordion` leaves a dangling `@/lib/utils`
+  import. Tabs already declares `@coss/segmented-control` and sidebar declares
+  `@coss/use-media-query`, so those two edges only need the namespace rewrite.
 - No component imports `clsx` or `tailwind-merge` directly.
 
 ### 1.2 Icons to swap (lucide → raya's IconPlaceholder/HugeIcons)
@@ -126,6 +137,13 @@ lucide export below (candidates in parentheses; verify against `@hugeicons/core-
 
 `button.tsx` and friends style icons via `[&_svg:...]` selectors and assume no `size` prop, so
 `HugeiconsIcon` wrappers need the same treatment raya already uses for dialog/checkbox/select.
+
+Placeholder mechanics (shadcn CLI `transform-icons.ts`, `packages/shadcn/src/utils/transformers/`):
+the transformer only rewrites an `<IconPlaceholder>` that carries the consumer's configured
+library attr (`hugeicons` here), removes all library attrs, and strips the `icon-placeholder`
+import **unconditionally**. A placeholder without a `hugeicons` value survives the element pass
+but loses its import, becoming an undefined component. Every converted icon must therefore get
+both `lucide` and `hugeicons` props, exactly as raya's existing dialog/checkbox/select files do.
 
 ### 1.3 Cross-file registry graph
 
@@ -170,6 +188,9 @@ dependency is `react-day-picker@10.0.1` (npm metadata for `@daypicker/react@10.0
 - `coss:apps/ui/scripts/validate-registry-deps.mts` is a bespoke ts-morph parser that compares
   each item's declared `dependencies`/`registryDependencies` against the imports in its source
   files. Raya has no equivalent; with 54 hand-ported items, drift is likely (see §8).
+- The built outputs are committed at this commit (`coss:apps/ui/public/r/*.json`), so the port
+  can lift each built item JSON directly (file `content` inlined, `$schema` stamped) without
+  running coss's generator.
 
 ### 2.2 Shape comparison
 
@@ -251,6 +272,15 @@ when `shadcn add` runs (unknown registry error above). The roundtrip fixture is 
 - Two hygiene gaps to fix at port time: fixture `package.json` has no `cva`/`clsx`/`tailwind-merge`
   (must come from item `dependencies`), and the fixture lockfile pins `@base-ui/react@1.7.0`
   (`raya:tools/roundtrip-fixture/package-lock.json:44`), which must be refreshed to 1.8.
+- If raya ports `use-copy-to-clipboard` as a `registry:hook` item, note it types its timeout as
+  `React.useRef<NodeJS.Timeout | null>`
+  (`coss:apps/ui/registry/default/hooks/use-copy-to-clipboard.ts:13`), while the fixture tsconfig
+  declares only `"types": ["vite/client"]` (`raya:tools/roundtrip-fixture/tsconfig.json`) — so
+  `tsc --noEmit` would fail on `NodeJS`. Retype it as `ReturnType<typeof setTimeout>` or add
+  `@types/node` to the fixture. None of the 54 components touch `NodeJS`.
+- The fixture's `src/App.tsx` and raya's `src/components/studio/canvas.tsx` import the current
+  component APIs; both must be updated alongside the port for the renamed/removed exports and
+  new composition (see §6).
 - Verified for this audit: a clean copy of the fixture builds under Vite 8.2.2 without extra
   config, `@/` aliases resolve, and a module with a top-level `"use client"` builds with no
   warning or error (rolldown 1.2.5). The fixture's own `vite.config.ts` has no
@@ -288,7 +318,8 @@ component set. `raya:src/styles.css` imports `tailwindcss` → `core.css` → Sy
 
 ### 3.3 Bridge gap (exact)
 
-Diffing the two `@theme inline` blocks: coss declares **31 properties raya's core.css does not** —
+Diffing the two `@theme inline` blocks: coss declares **31 properties raya's core.css does not**
+(plus `--tw-shadow-color`, noted below) —
 
 - `--color-sidebar`, `--color-sidebar-{foreground,primary,primary-foreground,accent,accent-foreground,border,ring}` (8)
 - `--color-chart-1..5` (5)
@@ -337,7 +368,11 @@ The 54 have no `next/*` imports; the only Next-specific marker is the `"use clie
 (47/54). coss's own contributor guidance (`coss:apps/ui/AGENTS.md` §13) tells authors to keep
 particles framework-agnostic and avoid `next/link`/`next/image`. `"use client"` is a no-op
 outside React Server Components; TanStack Start does not use RSC, so ported files can keep it
-(verified harmless in a Vite 8 build) or drop it when touching files.
+(verified harmless in a Vite 8 build) or drop it when touching files. The CLI itself strips a
+leading directive at install time whenever the consumer's `components.json` has `rsc: false` —
+both raya's and the fixture's configs do — via `transformRsc`
+(`packages/shadcn/src/utils/transformers/transform-rsc.ts`). Keeping the lines verbatim is
+therefore safe for consumers and keeps diffs against coss minimal.
 
 ### 4.2 Docs chrome inventory (`apps/ui/components/*`, `app/layout.tsx`)
 
@@ -461,6 +496,18 @@ TanStack Start (SSR-by-default) Studio:
 - **`"use client"`** can be left in place: TanStack Start doesn't use RSC and Vite/rolldown
   build it without warnings (verified).
 
+### Consumer API deltas the Studio and fixture must absorb
+
+| Component | raya today | coss port | Impact on `src/components/studio/canvas.tsx` / fixture `App.tsx` |
+| --- | --- | --- | --- |
+| Checkbox | `Checkbox` + `CheckboxIndicator` | indicator is rendered internally; no `CheckboxIndicator` export | both call sites use `<Checkbox><CheckboxIndicator /></Checkbox>` — drop the child |
+| Tabs | `Tab` | `TabsTab` (`TabsPanel` unchanged) | rename `Tab` → `TabsTab` in both files |
+| Tooltip | `TooltipContent` | `TooltipPopup` | rename in `canvas.tsx`; provider/trigger unchanged |
+| Select | `SelectContent` | `SelectPopup`, with `SelectContent` kept as an alias (`coss:.../select.tsx:257`) | no rename; both call sites already pass `items` on `Select.Root`, which coss needs for value labels |
+| Card | `CardContent` | `CardPanel`; richer `CardFrame*`/`CardHeader`/`CardFooter` parts | not used in either file today; relevant when porting new examples |
+| Dialog / AlertDialog | `Dialog*`/`AlertDialog*` | same names plus `Viewport`/`Portal`/`Header`/`Footer` parts; `AlertDialogCancel`/`Action` are gone, use `AlertDialogClose` | not used in either file today |
+| Dropdown menu | `dropdown-menu` item (`DropdownMenu*`) | coss ships `menu` + `context-menu` (`Menu*`/`ContextMenu*`), no `dropdown-menu` item | any consumer importing `DropdownMenu*` must migrate names; the `dropdown-menu` registry item disappears or needs a compat shim |
+
 ---
 
 ## 7. What converts cleanly vs what needs reshaping
@@ -474,19 +521,24 @@ Clean:
 
 Needs reshaping:
 
-1. `@coss/*` → `@raya/*` registry deps; add `utils`, `segmented-control`, `use-media-query` items.
+1. `@coss/*` → `@raya/*` registry deps; add the `utils`, `segmented-control`,
+   `use-media-query` items, and add `@raya/utils` to the 52 component items that import `cn`
+   without declaring it (only `sidebar` declares it today).
 2. Common npm deps (`@base-ui/react`, `class-variance-authority`, `clsx`, `tailwind-merge`,
    `@hugeicons/*`) hoisted into `core`/utils items; `@daypicker/react` on calendar only;
    drop `lucide-react` after icon conversion.
 3. Theme: extend `core.css` with coss's full bridge + keyframes + `--tw-shadow-color` +
    `@utility container`; decide `cssVars` policy (fixture overwrites injected vars).
-4. Icons → `IconPlaceholder` conversions for 17 files.
+4. Icons → `IconPlaceholder` conversions for 17 files (19 lucide exports; every placeholder
+   needs a `hugeicons` value — see §1.2).
 5. Fix `group.tsx`'s `@/lib/utils` import (or add `src/lib/utils.ts` in raya).
 6. Base UI 1.8 bump + lock refresh (combobox `createItems` requires it).
 7. Optional guardrail: port coss's `validate-registry-deps` idea into raya CI/pre-commit so 54
    hand-authored items don't drift (raya's current `shadcn registry validate` won't catch it).
 8. Docs chrome: rebuild on TanStack + Fumadocs; replace every `@coss/ui/*` (AGPL) import; drop
    Next APIs; keep the layout/classes as the visual reference.
+9. Update the Studio canvas and fixture inventory page for the consumer API deltas in §6
+   (`CheckboxIndicator`, `Tab`, `TooltipContent`, `DropdownMenu*`).
 
 ## 8. Open items the next tickets must answer
 
