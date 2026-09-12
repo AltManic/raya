@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CossProtoRouteImport } from './routes/coss-proto'
+import { Route as StudioShellProtoRouteImport } from './routes/studio-shell-proto'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const CossProtoRoute = CossProtoRouteImport.update({
   path: '/coss-proto',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudioShellProtoRoute = StudioShellProtoRouteImport.update({
+  id: '/studio-shell-proto',
+  path: '/studio-shell-proto',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/coss-proto': typeof CossProtoRoute
+  '/studio-shell-proto': typeof StudioShellProtoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/coss-proto': typeof CossProtoRoute
+  '/studio-shell-proto': typeof StudioShellProtoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/coss-proto': typeof CossProtoRoute
+  '/studio-shell-proto': typeof StudioShellProtoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/coss-proto'
+  fullPaths: '/' | '/coss-proto' | '/studio-shell-proto'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/coss-proto'
-  id: '__root__' | '/' | '/coss-proto'
+  to: '/' | '/coss-proto' | '/studio-shell-proto'
+  id: '__root__' | '/' | '/coss-proto' | '/studio-shell-proto'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CossProtoRoute: typeof CossProtoRoute
+  StudioShellProtoRoute: typeof StudioShellProtoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CossProtoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/studio-shell-proto': {
+      id: '/studio-shell-proto'
+      path: '/studio-shell-proto'
+      fullPath: '/studio-shell-proto'
+      preLoaderRoute: typeof StudioShellProtoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CossProtoRoute: CossProtoRoute,
+  StudioShellProtoRoute: StudioShellProtoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

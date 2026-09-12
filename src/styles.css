@@ -6,3 +6,5 @@
 @import "./styles/raya/core.css";
 @import "./styles/raya/systems/baseline.css";
 @import "./styles/raya/systems/terminal.css";
+/* PROTOTYPE (#26): coss's real theme for the Studio-shell prototype — throwaway. */
+@import "../prototypes/studio-shell/coss-theme.css";
