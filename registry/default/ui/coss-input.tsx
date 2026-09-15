@@ -1,5 +1,5 @@
 /*
- * PROTOTYPE (#25) — port of coss ui's `registry/default/ui/input.tsx` @ e937bec (MIT surface).
+ * COSS-aligned port of coss ui's `registry/default/ui/input.tsx` @ e937bec (MIT surface).
  * Identical to coss except the file name/import wiring.
  */
 "use client";

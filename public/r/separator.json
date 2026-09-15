@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "title": "Separator",
+  "description": "A visual divider for separating groups of related content.",
+  "files": [
+    {
+      "path": "registry/default/ui/separator.tsx",
+      "content": "import type { HTMLAttributes } from \"react\"\n\nexport function Separator({ orientation = \"horizontal\", className, ...props }: HTMLAttributes<HTMLDivElement> & { orientation?: \"horizontal\" | \"vertical\" }) {\n  return (\n    <div\n      role=\"separator\"\n      aria-orientation={orientation}\n      data-slot=\"separator\"\n      className={[\n        \"shrink-0 bg-border\",\n        orientation === \"horizontal\" ? \"h-px w-full\" : \"h-full w-px\",\n        className,\n      ].filter(Boolean).join(\" \")}\n      {...props}\n    />\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "A standalone structural primitive with horizontal and vertical orientations.",
+  "type": "registry:ui"
+}

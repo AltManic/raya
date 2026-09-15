@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "preview-card",
+  "title": "Preview Card",
+  "description": "An anchored rich preview for a linked resource.",
+  "registryDependencies": [
+    "@raya/popover"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/preview-card.tsx",
+      "content": "export {\n  Popover as PreviewCard,\n  PopoverContent as PreviewCardContent,\n  PopoverTrigger as PreviewCardTrigger,\n} from \"@/registry/default/ui/popover\"\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

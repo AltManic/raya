@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-area",
+  "title": "Scroll Area",
+  "description": "A constrained region with predictable overflow scrolling.",
+  "files": [
+    {
+      "path": "registry/default/ui/scroll-area.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function ScrollArea({ className, ...props }: ComponentProps<\"div\">) { return <div data-slot=\"scroll-area\" className={cn(\"overflow-auto\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

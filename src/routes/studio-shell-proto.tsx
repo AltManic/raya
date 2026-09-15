@@ -1,7 +1,7 @@
 /*
- * PROTOTYPE (#26) — throwaway Studio shell as coss's docs layout.
- * Route: /studio-shell-proto?variant=A|B|C|D  (arrows or the bottom pill switch variants)
- * See prototypes/studio-shell/README.md and issue #26. Not production.
+ * COSS-style Studio shell and component documentation surface.
+ * Route: /studio-shell-proto?variant=A|B|C|D&prototype=true (prototype switcher is opt-in)
+ * The variants remain available as a local layout workbench.
  *
  * Variants differ only in the tuner's home:
  *   A — the docs right rail becomes the tuner ("On this page" moves to a tab)
@@ -9,17 +9,23 @@
  *   C — tuner docked inline under the header, pushing the page
  *   D — a Browse / Tune mode switch, Tune swapping the docs world for a workbench
  */
-import { useEffect, useState } from "react"
+import { lazy, Suspense, useEffect, useState } from "react"
 import type { ReactNode } from "react"
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useLocation } from "@tanstack/react-router"
 import { PrototypeSwitcher } from "@/components/prototype-switcher"
-import { ExportSlideOver } from "@/components/studio/export-panel"
+const ExportSlideOver = lazy(() => import("@/components/studio/export-panel").then((module) => ({ default: module.ExportSlideOver })))
+import { FocusPreview } from "@/components/studio/canvas"
+import { COMPONENT_DESCRIPTIONS, COMPONENT_GROUPS, COMPONENT_NAMES, HOOKS } from "@/lib/model/components"
+import { KNOBBED_COMPONENTS, type Knobs } from "@/lib/model/model"
 import type { Studio } from "@/lib/studio/use-studio"
 import { useStudio } from "@/lib/studio/use-studio"
 import { Button } from "@/registry/default/ui/coss-button"
 import { Card, CardFrame, CardPanel } from "@/registry/default/ui/coss-card"
 import { Field, FieldControl, FieldDescription, FieldLabel } from "@/registry/default/ui/coss-field"
 import { Input } from "@/registry/default/ui/coss-input"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/registry/default/ui/breadcrumb"
+import { Command } from "@/registry/default/ui/command"
+import { useCopyToClipboard } from "@/registry/default/hooks/use-copy-to-clipboard"
 
 const cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === "string").join(" ")
 
@@ -67,18 +73,27 @@ const VARIANTS = [
 ] as const
 
 export const Route = createFileRoute("/studio-shell-proto")({
+  head: () => ({
+    meta: [
+      { title: "Raya Docs — COSS-aligned components" },
+      { name: "description", content: "Browse, preview, tune, and install Raya's COSS-aligned component registry." },
+    ],
+  }),
   validateSearch: (search: Record<string, unknown>) => ({
     variant: typeof search.variant === "string" ? search.variant.toUpperCase() : "A",
+    component: typeof search.component === "string" && COMPONENT_NAMES.some((name) => name === search.component) ? search.component : undefined,
+    prototype: search.prototype === "true" || search.prototype === true,
+    catalog: search.catalog === "true" || search.catalog === true,
   }),
   component: StudioShellProto,
 })
 
 function StudioShellProto() {
   const studio = useStudio()
-  const { variant: requested } = Route.useSearch()
+  const { variant: requested, component: requestedComponent, prototype, catalog } = Route.useSearch()
   const navigate = Route.useNavigate()
   const variant = VARIANTS.find((v) => v.key === requested) ?? VARIANTS[0]
-  const [selected, setSelected] = useState("button")
+  const [selected, setSelected] = useState(requestedComponent ?? "button")
   const [tuneOpen, setTuneOpen] = useState(false)
   const [dockOpen, setDockOpen] = useState(false)
   const [tuneMode, setTuneMode] = useState(false)
@@ -87,8 +102,20 @@ function StudioShellProto() {
     setTuneOpen(false)
   }, [variant.key])
 
+  useEffect(() => {
+    if (requestedComponent) setSelected(requestedComponent)
+  }, [requestedComponent])
+
+  useEffect(() => {
+    document.title = catalog ? "Raya UI — COSS-aligned components" : `Raya Docs — ${selected}`
+  }, [catalog, selected])
+
   const setVariant = (key: string) => {
-    void navigate({ search: { variant: key }, replace: true })
+    void navigate({ search: { variant: key, component: selected, prototype, catalog: false }, replace: true })
+  }
+  const selectComponent = (component: string) => {
+    setSelected(component)
+    void navigate({ search: { variant: variant.key, component, prototype, catalog: false }, replace: true })
   }
 
   return (
@@ -101,6 +128,7 @@ function StudioShellProto() {
       <Rails />
       <SiteHeader
         studio={studio}
+        onSelect={selectComponent}
         right={
           <>
             {variant.key === "B" && (
@@ -112,32 +140,45 @@ function StudioShellProto() {
           </>
         }
       />
-      {variant.key === "D" && tuneMode ? (
-        <TuneWorkbench studio={studio} selected={selected} onSelect={setSelected} variant={variant} />
+      {catalog ? (
+        <CatalogPage />
+      ) : variant.key === "D" && tuneMode ? (
+        <TuneWorkbench studio={studio} selected={selected} onSelect={selectComponent} variant={variant} />
       ) : (
-        <DocsShell
-          studio={studio}
-          variant={variant}
-          selected={selected}
-          onSelect={setSelected}
+            <DocsShell
+              studio={studio}
+              variant={variant}
+              selected={selected}
+              onSelect={selectComponent}
           dockOpen={dockOpen}
           setDockOpen={setDockOpen}
         />
       )}
       <SlideOverTuner studio={studio} open={variant.key === "B" && tuneOpen} onClose={() => setTuneOpen(false)} />
-      <ExportSlideOver studio={studio} />
-      <PrototypeSwitcher
-        variants={VARIANTS.map(({ key, name }) => ({ key, name }))}
-        current={variant.key}
-        onSelect={setVariant}
-      />
+      {studio.exportOpen && <Suspense fallback={null}><ExportSlideOver studio={studio} /></Suspense>}
+      <footer className="border-t border-border/64 bg-sidebar/60 px-4 py-8 text-xs text-muted-foreground sm:px-6">
+        <div className="coss-container flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p>Raya is a COSS-aligned studio for tuning and owning your components.</p>
+          <nav aria-label="Footer" className="flex items-center gap-3">
+            <a href="/ui/docs" className="hover:text-foreground">Docs</a>
+            <a href="/ui" className="hover:text-foreground">Components</a>
+            <a href="/r/registry.json" className="hover:text-foreground">Registry</a>
+            <a href="/" className="hover:text-foreground">Studio</a>
+          </nav>
+        </div>
+      </footer>
+      {prototype && <PrototypeSwitcher
+          variants={VARIANTS.map(({ key, name }) => ({ key, name }))}
+          current={variant.key}
+          onSelect={setVariant}
+        />}
     </div>
   )
 }
 
 /* ------------------------------------------------------------------ chrome */
 
-function Rails() {
+export function Rails() {
   return (
     <>
       <div
@@ -152,14 +193,56 @@ function Rails() {
   )
 }
 
-function SiteHeader({ studio, right }: { studio: Studio; right?: ReactNode }) {
+export function SiteHeader({ studio, right, onSelect }: { studio: Studio; right?: ReactNode; onSelect?: (component: string) => void }) {
+  const [searchOpen, setSearchOpen] = useState(false)
+  const { pathname } = useLocation()
+  const isCurrent = (path: string) => pathname === path || pathname.startsWith(`${path}/`)
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault()
+        setSearchOpen(true)
+      }
+      if (event.key === "Escape") setSearchOpen(false)
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [])
   return (
     <header className="sticky top-0 z-40 w-full bg-sidebar/80 backdrop-blur-sm before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-border/64">
+      <a href="#components" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:text-foreground focus:shadow-lg">
+        Skip to components
+      </a>
       <div className="coss-container relative flex h-(--header-height) items-center justify-between gap-2">
         <div className="flex shrink-0 items-center gap-2.5">
-          <span className="font-heading text-2xl font-bold tracking-tight">raya</span>
+          <a href="/" className="font-heading text-2xl font-bold tracking-tight hover:opacity-80">raya</a>
           <span className="rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground">studio</span>
         </div>
+        <nav aria-label="Primary" className="hidden items-center gap-1 text-sm text-muted-foreground sm:flex">
+          <a href="/ui/docs" aria-current={isCurrent("/ui/docs") ? "page" : undefined} className="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-accent-foreground">Docs</a>
+          <a href="/ui" aria-current={pathname === "/ui" ? "page" : undefined} className="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-accent-foreground">Components</a>
+          <a href="/ui/particles" aria-current={isCurrent("/ui/particles") ? "page" : undefined} className="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-accent-foreground">Particles</a>
+          <a href="https://github.com/AltManic/raya" target="_blank" rel="noreferrer" className="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-accent-foreground">GitHub</a>
+        </nav>
+        <details className="relative sm:hidden">
+          <summary className="cursor-pointer list-none rounded-md border border-border px-2.5 py-1.5 text-xs text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Menu</summary>
+          <nav aria-label="Mobile primary" className="absolute right-0 top-10 z-50 flex min-w-44 flex-col gap-1 rounded-lg border border-border bg-popover p-1 text-sm text-popover-foreground shadow-lg">
+            <a href="/ui/docs" aria-current={isCurrent("/ui/docs") ? "page" : undefined} className="rounded-md px-3 py-2 hover:bg-accent">Docs</a>
+            <a href="/ui" aria-current={pathname === "/ui" ? "page" : undefined} className="rounded-md px-3 py-2 hover:bg-accent">Components</a>
+            <a href="/ui/particles" aria-current={isCurrent("/ui/particles") ? "page" : undefined} className="rounded-md px-3 py-2 hover:bg-accent">Particles</a>
+            <a href="/ui/docs/get-started" className="rounded-md px-3 py-2 hover:bg-accent">Get started</a>
+            <a href="/ui/docs/roadmap" className="rounded-md px-3 py-2 hover:bg-accent">Roadmap</a>
+            <a href="/ui/docs/radix-shadcn-migration" className="rounded-md px-3 py-2 hover:bg-accent">Migration</a>
+            <a href="/r/registry.json" className="rounded-md px-3 py-2 hover:bg-accent">Registry</a>
+            <a href="https://github.com/AltManic/raya" target="_blank" rel="noreferrer" className="rounded-md px-3 py-2 hover:bg-accent">GitHub</a>
+          </nav>
+        </details>
+        <Button size="sm" variant="outline" className="hidden sm:inline-flex" onClick={() => setSearchOpen(true)}>
+          Search components <span className="ml-2 text-[10px] text-muted-foreground">⌘K</span>
+        </Button>
+        <Button size="icon" variant="outline" className="sm:hidden" aria-label="Search components" onClick={() => setSearchOpen(true)}>
+          ⌕
+        </Button>
         <div className="ms-auto flex items-center gap-2">
           <label className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
             System
@@ -189,8 +272,19 @@ function SiteHeader({ studio, right }: { studio: Studio; right?: ReactNode }) {
           </Button>
         </div>
       </div>
+      {searchOpen && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-background/60 px-4 pt-[12vh] backdrop-blur-sm" onClick={() => setSearchOpen(false)}>
+          <div onClick={(event) => event.stopPropagation()}>
+            <Command items={COMPONENT_NAMES} onSelect={(component) => { onSelect?.(component); setSearchOpen(false) }} />
+          </div>
+        </div>
+      )}
     </header>
   )
+}
+
+export function SiteFooter() {
+  return <footer className="border-t border-border/64 bg-sidebar/60 px-4 py-8 text-xs text-muted-foreground sm:px-6"><div className="coss-container flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><p>Raya is a COSS-aligned studio for tuning and owning your components.</p><nav aria-label="Footer" className="flex items-center gap-3"><a href="/ui/docs" className="hover:text-foreground">Docs</a><a href="/ui" className="hover:text-foreground">Components</a><a href="/r/registry.json" className="hover:text-foreground">Registry</a><a href="/" className="hover:text-foreground">Studio</a></nav></div></footer>
 }
 
 function ModeSwitch({ tune, onChange }: { tune: boolean; onChange: (v: boolean) => void }) {
@@ -215,14 +309,49 @@ function ModeSwitch({ tune, onChange }: { tune: boolean; onChange: (v: boolean) 
 
 /* ------------------------------------------------------------- docs shell */
 
-const NAV = [
-  { group: "Forms", items: ["button", "input", "textarea", "select", "checkbox", "switch", "radio-group", "slider", "field"] },
-  { group: "Display", items: ["card", "badge", "avatar", "tabs", "dialog", "alert-dialog", "dropdown-menu", "popover", "tooltip"] },
-  { group: "Data", items: ["data-table", "kpi-card", "chart-line", "chart-area", "chart-bar", "chart-pie", "chart-sparkline"] },
-  { group: "Blocks", items: ["filter-bar"] },
-] as const
+export function CatalogPage() {
+  return (
+    <main id="components" className="coss-container flex w-full flex-1 flex-col px-4 py-12 sm:px-6 lg:py-16">
+      <div className="max-w-2xl">
+        <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Raya UI</p>
+        <h1 className="font-heading text-4xl font-semibold tracking-tight sm:text-5xl">Components for your next interface.</h1>
+        <p className="mt-3 text-sm font-medium text-foreground">Built for developers and AI.</p>
+        <p className="mt-3 max-w-xl text-base leading-7 text-muted-foreground">Accessible, composable components built on Base UI and styled through Raya Systems. Browse a component, tune it, and copy the source into your app.</p>
+      </div>
+      <div className="mt-12 flex flex-col gap-10">
+        {COMPONENT_GROUPS.map((group) => (
+          <section key={group.title} aria-labelledby={`catalog-${group.title.toLowerCase()}`}>
+            <h2 id={`catalog-${group.title.toLowerCase()}`} className="mb-3 border-b border-border pb-2 font-heading text-xl font-semibold">{group.title}</h2>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {group.items.map((component) => (
+                <a key={component} href={`/ui/docs/components/${component}`} className="group rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-ring/60 hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <span className="font-medium group-hover:text-foreground">{component}</span>
+                  <span className="mt-1 block text-sm leading-5 text-muted-foreground">{COMPONENT_DESCRIPTIONS[component]}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        ))}
+        <section aria-labelledby="catalog-hooks">
+          <h2 id="catalog-hooks" className="mb-3 border-b border-border pb-2 font-heading text-xl font-semibold">Hooks</h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {HOOKS.map((hook) => (
+                <a key={hook.name} href={`/ui/docs/hooks/${hook.name}`} className="group rounded-lg border border-border bg-card p-4 text-left transition-colors hover:border-ring/60 hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <span className="font-mono text-sm font-medium group-hover:text-foreground">{hook.title}</span>
+                <span className="mt-1 block text-sm leading-5 text-muted-foreground">{hook.description}</span>
+                <span className="mt-3 block text-xs text-muted-foreground">Read hook docs →</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </main>
+  )
+}
 
-function SidebarNav({
+const NAV = COMPONENT_GROUPS.map(({ title: group, items }) => ({ group, items }))
+
+export function SidebarNav({
   selected,
   onSelect,
   className,
@@ -271,7 +400,7 @@ function VariantNote({ variant, className }: { variant: (typeof VARIANTS)[number
   return (
     <div className={cx("rounded-xl border border-dashed border-border bg-muted/50 p-4 text-xs leading-relaxed text-muted-foreground", className)}>
       <p className="mb-1 font-semibold uppercase tracking-wider text-foreground/80">
-        Prototype note — variant {variant.key}: {variant.name}
+        Studio layout — variant {variant.key}: {variant.name}
       </p>
       <p>{variant.idea}</p>
       <ul className="mt-2 list-disc space-y-0.5 ps-4">
@@ -299,7 +428,20 @@ function DocsShell({
   setDockOpen: (v: boolean) => void
 }) {
   return (
-    <main className="coss-container flex w-full flex-1 flex-col">
+    <main id="components" className="coss-container flex w-full flex-1 flex-col">
+      <div className="px-4 pt-4 lg:hidden">
+        <label className="flex items-center gap-2 text-xs text-muted-foreground">
+          Component
+          <select
+            aria-label="Choose component"
+            value={selected}
+            onChange={(event) => onSelect(event.target.value)}
+            className="min-w-0 flex-1 rounded-md border border-input bg-background px-2 py-2 text-sm text-foreground"
+          >
+            {COMPONENT_NAMES.map((item) => <option key={item} value={item}>{item}</option>)}
+          </select>
+        </label>
+      </div>
       <div className="grid items-start lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[240px_minmax(0,1fr)_288px]">
         <SidebarNav selected={selected} onSelect={onSelect} className="hidden lg:block" />
         <div className="flex min-w-0 flex-col lg:mt-8 lg:mb-8">
@@ -331,25 +473,36 @@ function DocsShell({
 
 /* --------------------------------------------------------------- content */
 
-const DESCRIPTIONS: Record<string, string> = {
-  button: "Triggers an action. Ported from coss ui as Tailwind + cva; icons arrive via raya's placeholder mechanism.",
-  input: "Single-line text entry on Base UI, wearing coss's input recipe.",
-  card: "A container for grouped content; CardFrame composes nested cards with clipping.",
-}
-
-function ComponentPage({ studio, selected }: { studio: Studio; selected: string }) {
-  const description = DESCRIPTIONS[selected] ?? "On raya's inventory. This prototype wired live previews for button, input, and card."
+export function ComponentPage({ studio, selected }: { studio: Studio; selected: string }) {
+  const { copyToClipboard, isCopied } = useCopyToClipboard({ timeout: 1600 })
+  const description = COMPONENT_DESCRIPTIONS[selected] ?? "A component in Raya's COSS-aligned registry."
+  const knobShape = KNOBBED_COMPONENTS.includes(selected as never)
+    ? studio.active.knobs[selected as keyof Knobs]
+    : undefined
+  const apiAxes = knobShape && typeof knobShape === "object" ? Object.keys(knobShape).join(" · ") : "content and event props"
   return (
     <article className="flex flex-col gap-8">
       <header>
+        <Breadcrumb className="mb-3">
+          <BreadcrumbList>
+            <BreadcrumbItem><BreadcrumbLink href="/ui">Components</BreadcrumbLink><BreadcrumbSeparator /></BreadcrumbItem>
+            <BreadcrumbItem><BreadcrumbPage>{selected}</BreadcrumbPage></BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <h1 className="scroll-m-20 font-heading text-3xl font-bold xl:text-4xl">{selected}</h1>
         <p className="mt-2 text-muted-foreground sm:text-lg">{description}</p>
         <div className="mt-4 flex items-center gap-2">
-          <Button size="xs" variant="outline">
+          <Button size="xs" variant="outline" onClick={() => document.getElementById("api")?.scrollIntoView({ behavior: "smooth" })}>
             API reference
           </Button>
-          <Button size="xs" variant="ghost">
-            Copy page
+          <Button
+            size="xs"
+            variant="ghost"
+            onClick={() => {
+              copyToClipboard(`npx shadcn@latest add https://raya.alfrizk.dev/r/${selected}.json`)
+            }}
+          >
+            {isCopied ? "Copied" : "Copy install command"}
           </Button>
         </div>
       </header>
@@ -397,18 +550,42 @@ npx shadcn@latest add https://raya.alfrizk.dev/r/${selected}.json`}
         <dl className="flex flex-col gap-3 text-sm">
           <div className="grid grid-cols-[8rem_1fr] gap-2">
             <dt className="font-mono text-xs text-muted-foreground">variant</dt>
-            <dd>default · secondary · outline · ghost · destructive · destructive-outline · link</dd>
+            <dd>{apiAxes}</dd>
           </div>
           <div className="grid grid-cols-[8rem_1fr] gap-2">
             <dt className="font-mono text-xs text-muted-foreground">size</dt>
-            <dd>xs · sm · default · lg · icon</dd>
+            <dd>System defaults with component-level overrides where declared.</dd>
           </div>
           <div className="grid grid-cols-[8rem_1fr] gap-2">
             <dt className="font-mono text-xs text-muted-foreground">props</dt>
-            <dd>loading · render (Base UI composition)</dd>
+            <dd>Base UI composition props plus the component’s native React attributes.</dd>
           </div>
         </dl>
       </Section>
+
+      <nav aria-label="Component navigation" className="flex items-center justify-between border-t border-border pt-6 text-sm">
+        {(() => {
+          const index = COMPONENT_NAMES.indexOf(selected as never)
+          const previous = index > 0 ? COMPONENT_NAMES[index - 1] : undefined
+          const next = index >= 0 && index < COMPONENT_NAMES.length - 1 ? COMPONENT_NAMES[index + 1] : undefined
+          return (
+            <>
+              {previous ? (
+                <a href={`/ui/docs/components/${previous}`} className="group flex flex-col gap-1 rounded-md px-2 py-1 hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <span className="text-xs text-muted-foreground">Previous</span>
+                  <span className="font-medium">← {previous}</span>
+                </a>
+              ) : <span />}
+              {next ? (
+                <a href={`/ui/docs/components/${next}`} className="group flex flex-col items-end gap-1 rounded-md px-2 py-1 text-right hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <span className="text-xs text-muted-foreground">Next</span>
+                  <span className="font-medium">{next} →</span>
+                </a>
+              ) : <span />}
+            </>
+          )
+        })()}
+      </nav>
     </article>
   )
 }
@@ -445,9 +622,7 @@ function Preview({ selected }: { selected: string }) {
           <Button loading>Deploy dashboard</Button>
         </div>
         <p className="text-xs leading-relaxed text-muted-foreground">
-          Two artifacts, kept visible on purpose: the loading button's spinner is an invisible in-repo placeholder
-          (#25), and destructive-outline renders near-invisible because raya's <code>--destructive-foreground</code> is
-          near-white where coss expects a red — a token-role collision for the token-vocabulary ticket.
+          The loading state keeps an icon-library placeholder in the source package and resolves to a real spinner when installed.
         </p>
       </div>
     )
@@ -473,11 +648,7 @@ function Preview({ selected }: { selected: string }) {
       </Card>
     )
   }
-  return (
-    <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-      “{selected}” is on the inventory; this prototype wired previews for button, input, and card only.
-    </div>
-  )
+  return <FocusPreview component={selected} />
 }
 
 /* ------------------------------------------------------------- TOC rail */
@@ -671,7 +842,7 @@ function Tuner({ studio, className }: { studio: Studio; className?: string }) {
         </div>
       </TunerSection>
 
-      <TunerSection title="Component knobs — fate pending #27">
+      <TunerSection title="Component knobs">
         <div className="flex flex-col gap-2">
           <label className="flex items-center justify-between gap-2 text-xs">
             button.variant

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "title": "Label",
+  "description": "An accessible label for a form control.",
+  "files": [
+    {
+      "path": "registry/default/ui/label.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function Label({ className, ...props }: ComponentProps<\"label\">) { return <label data-slot=\"label\" className={cn(\"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

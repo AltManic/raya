@@ -1,5 +1,5 @@
 /*
- * PROTOTYPE (#25) — port of coss ui's `registry/default/ui/spinner.tsx` @ e937bec (MIT surface).
+ * COSS-aligned port of coss ui's `registry/default/ui/spinner.tsx` @ e937bec (MIT surface).
  * One change from coss: lucide-react's `Loader2Icon` is authored through raya's
  * multi-library `IconPlaceholder`, so the shadcn CLI swaps in the consumer's icon library
  * at install. Two porting rules fell out of the roundtrip fixture:

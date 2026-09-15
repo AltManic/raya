@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "menu",
+  "title": "Menu",
+  "description": "A discoverable list of actions anchored to a trigger.",
+  "registryDependencies": [
+    "@raya/dropdown-menu"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/menu.tsx",
+      "content": "export {\n  DropdownMenu as Menu,\n  DropdownMenuContent as MenuContent,\n  DropdownMenuItem as MenuItem,\n  DropdownMenuSeparator as MenuSeparator,\n  DropdownMenuTrigger as MenuTrigger,\n} from \"@/registry/default/ui/dropdown-menu\"\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

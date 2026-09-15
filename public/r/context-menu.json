@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "context-menu",
+  "title": "Context Menu",
+  "description": "A pointer-anchored menu of actions for the current context.",
+  "registryDependencies": [
+    "@raya/dropdown-menu"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/context-menu.tsx",
+      "content": "export {\n  DropdownMenu as ContextMenu,\n  DropdownMenuContent as ContextMenuContent,\n  DropdownMenuItem as ContextMenuItem,\n  DropdownMenuSeparator as ContextMenuSeparator,\n  DropdownMenuTrigger as ContextMenuTrigger,\n} from \"@/registry/default/ui/dropdown-menu\"\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

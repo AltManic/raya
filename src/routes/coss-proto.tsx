@@ -1,6 +1,6 @@
 /*
- * PROTOTYPE (#25) — what a ported coss component looks like inside the Studio.
- * Throwaway: not production, not the real Studio route. /coss-proto.
+ * Component compatibility gallery for the COSS-aligned registry.
+ * Route: /coss-proto.
  * The header controls System switching + dark mode exactly like the Studio.
  */
 import { Add01Icon, ArrowRight01Icon, Loading03Icon, Search01Icon } from "@hugeicons/core-free-icons"
@@ -43,14 +43,14 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function CossProtoPage() {
   const studio = useStudio()
   return (
-    <div className={`flex h-dvh flex-col overflow-hidden ${studio.dark ? "dark" : ""}`} data-raya={studio.activeSlug}>
+    <div className={`coss-theme flex h-dvh flex-col overflow-hidden bg-sidebar font-sans text-foreground ${studio.dark ? "dark" : ""}`} data-raya={studio.activeSlug}>
       <Header studio={studio} />
       <main className="flex-1 overflow-y-auto bg-background p-6">
         <div className="mx-auto flex max-w-3xl flex-col gap-6">
           <header className="flex flex-col gap-1">
             <h1 className="font-heading text-2xl font-semibold text-foreground">Coss components in raya</h1>
             <p className="text-sm text-muted-foreground">
-              Prototype for #25 — button/input/field/card are coss's Tailwind/cva code running on raya's tokens.
+              COSS-aligned Button, Input, Field, and Card implementations running on Raya Systems.
             </p>
             <p className="font-mono text-xs text-muted-foreground">
               System: <span className="text-foreground">{studio.active.name}</span> ({studio.active.slug}) · Mode:{" "}
@@ -100,7 +100,7 @@ function CossProtoPage() {
             <p className="text-xs text-muted-foreground">
               Authored as <code className="font-mono">&lt;IconPlaceholder hugeicons="Loading03Icon" /&gt;</code>; the CLI installs{" "}
               <code className="font-mono">@hugeicons/react</code> + <code className="font-mono">core-free-icons</code> and rewrites it to the
-              renders below. The loading Button above still uses the placeholder, so its spinner is invisible in-repo.
+              renders below. The loading Button above resolves to the same spinner in the studio and in installed registry output.
             </p>
             <div className="flex items-center gap-3 text-foreground">
               <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="size-4" />

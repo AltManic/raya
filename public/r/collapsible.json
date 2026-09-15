@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "collapsible",
+  "title": "Collapsible",
+  "description": "A single content section that can be expanded or tucked away.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/collapsible.tsx",
+      "content": "\"use client\"\n\nimport { Collapsible as Primitive } from \"@base-ui/react/collapsible\"\nimport type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport const Collapsible = Primitive.Root\nexport function CollapsibleTrigger({ className, ...props }: ComponentProps<typeof Primitive.Trigger>) { return <Primitive.Trigger data-slot=\"collapsible-trigger\" className={cn(\"text-sm font-medium underline-offset-4 hover:underline\", className)} {...props} /> }\nexport function CollapsiblePanel({ className, ...props }: ComponentProps<typeof Primitive.Panel>) { return <Primitive.Panel data-slot=\"collapsible-panel\" className={cn(\"overflow-hidden text-sm text-muted-foreground\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

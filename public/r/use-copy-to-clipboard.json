@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-copy-to-clipboard",
+  "title": "useCopyToClipboard",
+  "description": "Copy text to the clipboard with a temporary copied state and optional callback.",
+  "files": [
+    {
+      "path": "registry/default/hooks/use-copy-to-clipboard.ts",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nexport function useCopyToClipboard({ timeout = 2000, onCopy }: { timeout?: number; onCopy?: () => void } = {}) {\n  const [isCopied, setIsCopied] = React.useState(false)\n  const timeoutIdRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)\n\n  const copyToClipboard = (value: string) => {\n    if (typeof window === \"undefined\" || !navigator.clipboard?.writeText || !value) return\n    navigator.clipboard.writeText(value).then(() => {\n      if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current)\n      setIsCopied(true)\n      onCopy?.()\n      if (timeout !== 0) {\n        timeoutIdRef.current = setTimeout(() => {\n          setIsCopied(false)\n          timeoutIdRef.current = null\n        }, timeout)\n      }\n    }).catch(() => undefined)\n  }\n\n  React.useEffect(() => () => {\n    if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current)\n  }, [])\n\n  return { copyToClipboard, isCopied }\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

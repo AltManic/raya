@@ -11,7 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CossProtoRouteImport } from './routes/coss-proto'
+import { Route as DocsRouteImport } from './routes/docs'
 import { Route as StudioShellProtoRouteImport } from './routes/studio-shell-proto'
+import { Route as UiRouteImport } from './routes/ui'
+import { Route as UiDocsRouteImport } from './routes/ui/docs'
+import { Route as UiParticlesRouteImport } from './routes/ui/particles'
+import { Route as UiDocsGetStartedRouteImport } from './routes/ui/docs/get-started'
+import { Route as UiDocsRadixShadcnMigrationRouteImport } from './routes/ui/docs/radix-shadcn-migration'
+import { Route as UiDocsRoadmapRouteImport } from './routes/ui/docs/roadmap'
+import { Route as UiDocsComponentsComponentRouteImport } from './routes/ui/docs/components/$component'
+import { Route as UiDocsHooksHookRouteImport } from './routes/ui/docs/hooks/$hook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,40 +32,153 @@ const CossProtoRoute = CossProtoRouteImport.update({
   path: '/coss-proto',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StudioShellProtoRoute = StudioShellProtoRouteImport.update({
   id: '/studio-shell-proto',
   path: '/studio-shell-proto',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UiRoute = UiRouteImport.update({
+  id: '/ui',
+  path: '/ui',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UiDocsRoute = UiDocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => UiRoute,
+} as any)
+const UiParticlesRoute = UiParticlesRouteImport.update({
+  id: '/particles',
+  path: '/particles',
+  getParentRoute: () => UiRoute,
+} as any)
+const UiDocsGetStartedRoute = UiDocsGetStartedRouteImport.update({
+  id: '/get-started',
+  path: '/get-started',
+  getParentRoute: () => UiDocsRoute,
+} as any)
+const UiDocsRadixShadcnMigrationRoute =
+  UiDocsRadixShadcnMigrationRouteImport.update({
+    id: '/radix-shadcn-migration',
+    path: '/radix-shadcn-migration',
+    getParentRoute: () => UiDocsRoute,
+  } as any)
+const UiDocsRoadmapRoute = UiDocsRoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
+  getParentRoute: () => UiDocsRoute,
+} as any)
+const UiDocsComponentsComponentRoute =
+  UiDocsComponentsComponentRouteImport.update({
+    id: '/components/$component',
+    path: '/components/$component',
+    getParentRoute: () => UiDocsRoute,
+  } as any)
+const UiDocsHooksHookRoute = UiDocsHooksHookRouteImport.update({
+  id: '/hooks/$hook',
+  path: '/hooks/$hook',
+  getParentRoute: () => UiDocsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/coss-proto': typeof CossProtoRoute
+  '/docs': typeof DocsRoute
   '/studio-shell-proto': typeof StudioShellProtoRoute
+  '/ui': typeof UiRouteWithChildren
+  '/ui/docs': typeof UiDocsRouteWithChildren
+  '/ui/particles': typeof UiParticlesRoute
+  '/ui/docs/get-started': typeof UiDocsGetStartedRoute
+  '/ui/docs/radix-shadcn-migration': typeof UiDocsRadixShadcnMigrationRoute
+  '/ui/docs/roadmap': typeof UiDocsRoadmapRoute
+  '/ui/docs/components/$component': typeof UiDocsComponentsComponentRoute
+  '/ui/docs/hooks/$hook': typeof UiDocsHooksHookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/coss-proto': typeof CossProtoRoute
+  '/docs': typeof DocsRoute
   '/studio-shell-proto': typeof StudioShellProtoRoute
+  '/ui': typeof UiRouteWithChildren
+  '/ui/docs': typeof UiDocsRouteWithChildren
+  '/ui/particles': typeof UiParticlesRoute
+  '/ui/docs/get-started': typeof UiDocsGetStartedRoute
+  '/ui/docs/radix-shadcn-migration': typeof UiDocsRadixShadcnMigrationRoute
+  '/ui/docs/roadmap': typeof UiDocsRoadmapRoute
+  '/ui/docs/components/$component': typeof UiDocsComponentsComponentRoute
+  '/ui/docs/hooks/$hook': typeof UiDocsHooksHookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/coss-proto': typeof CossProtoRoute
+  '/docs': typeof DocsRoute
   '/studio-shell-proto': typeof StudioShellProtoRoute
+  '/ui': typeof UiRouteWithChildren
+  '/ui/docs': typeof UiDocsRouteWithChildren
+  '/ui/particles': typeof UiParticlesRoute
+  '/ui/docs/get-started': typeof UiDocsGetStartedRoute
+  '/ui/docs/radix-shadcn-migration': typeof UiDocsRadixShadcnMigrationRoute
+  '/ui/docs/roadmap': typeof UiDocsRoadmapRoute
+  '/ui/docs/components/$component': typeof UiDocsComponentsComponentRoute
+  '/ui/docs/hooks/$hook': typeof UiDocsHooksHookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/coss-proto' | '/studio-shell-proto'
+  fullPaths:
+    | '/'
+    | '/coss-proto'
+    | '/docs'
+    | '/studio-shell-proto'
+    | '/ui'
+    | '/ui/docs'
+    | '/ui/particles'
+    | '/ui/docs/get-started'
+    | '/ui/docs/radix-shadcn-migration'
+    | '/ui/docs/roadmap'
+    | '/ui/docs/components/$component'
+    | '/ui/docs/hooks/$hook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/coss-proto' | '/studio-shell-proto'
-  id: '__root__' | '/' | '/coss-proto' | '/studio-shell-proto'
+  to:
+    | '/'
+    | '/coss-proto'
+    | '/docs'
+    | '/studio-shell-proto'
+    | '/ui'
+    | '/ui/docs'
+    | '/ui/particles'
+    | '/ui/docs/get-started'
+    | '/ui/docs/radix-shadcn-migration'
+    | '/ui/docs/roadmap'
+    | '/ui/docs/components/$component'
+    | '/ui/docs/hooks/$hook'
+  id:
+    | '__root__'
+    | '/'
+    | '/coss-proto'
+    | '/docs'
+    | '/studio-shell-proto'
+    | '/ui'
+    | '/ui/docs'
+    | '/ui/particles'
+    | '/ui/docs/get-started'
+    | '/ui/docs/radix-shadcn-migration'
+    | '/ui/docs/roadmap'
+    | '/ui/docs/components/$component'
+    | '/ui/docs/hooks/$hook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CossProtoRoute: typeof CossProtoRoute
+  DocsRoute: typeof DocsRoute
   StudioShellProtoRoute: typeof StudioShellProtoRoute
+  UiRoute: typeof UiRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -75,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CossProtoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/studio-shell-proto': {
       id: '/studio-shell-proto'
       path: '/studio-shell-proto'
@@ -82,13 +211,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioShellProtoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ui': {
+      id: '/ui'
+      path: '/ui'
+      fullPath: '/ui'
+      preLoaderRoute: typeof UiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ui/docs': {
+      id: '/ui/docs'
+      path: '/docs'
+      fullPath: '/ui/docs'
+      preLoaderRoute: typeof UiDocsRouteImport
+      parentRoute: typeof UiRoute
+    }
+    '/ui/particles': {
+      id: '/ui/particles'
+      path: '/particles'
+      fullPath: '/ui/particles'
+      preLoaderRoute: typeof UiParticlesRouteImport
+      parentRoute: typeof UiRoute
+    }
+    '/ui/docs/get-started': {
+      id: '/ui/docs/get-started'
+      path: '/get-started'
+      fullPath: '/ui/docs/get-started'
+      preLoaderRoute: typeof UiDocsGetStartedRouteImport
+      parentRoute: typeof UiDocsRoute
+    }
+    '/ui/docs/radix-shadcn-migration': {
+      id: '/ui/docs/radix-shadcn-migration'
+      path: '/radix-shadcn-migration'
+      fullPath: '/ui/docs/radix-shadcn-migration'
+      preLoaderRoute: typeof UiDocsRadixShadcnMigrationRouteImport
+      parentRoute: typeof UiDocsRoute
+    }
+    '/ui/docs/roadmap': {
+      id: '/ui/docs/roadmap'
+      path: '/roadmap'
+      fullPath: '/ui/docs/roadmap'
+      preLoaderRoute: typeof UiDocsRoadmapRouteImport
+      parentRoute: typeof UiDocsRoute
+    }
+    '/ui/docs/components/$component': {
+      id: '/ui/docs/components/$component'
+      path: '/components/$component'
+      fullPath: '/ui/docs/components/$component'
+      preLoaderRoute: typeof UiDocsComponentsComponentRouteImport
+      parentRoute: typeof UiDocsRoute
+    }
+    '/ui/docs/hooks/$hook': {
+      id: '/ui/docs/hooks/$hook'
+      path: '/hooks/$hook'
+      fullPath: '/ui/docs/hooks/$hook'
+      preLoaderRoute: typeof UiDocsHooksHookRouteImport
+      parentRoute: typeof UiDocsRoute
+    }
   }
 }
+
+interface UiDocsRouteChildren {
+  UiDocsGetStartedRoute: typeof UiDocsGetStartedRoute
+  UiDocsRadixShadcnMigrationRoute: typeof UiDocsRadixShadcnMigrationRoute
+  UiDocsRoadmapRoute: typeof UiDocsRoadmapRoute
+  UiDocsComponentsComponentRoute: typeof UiDocsComponentsComponentRoute
+  UiDocsHooksHookRoute: typeof UiDocsHooksHookRoute
+}
+
+const UiDocsRouteChildren: UiDocsRouteChildren = {
+  UiDocsGetStartedRoute: UiDocsGetStartedRoute,
+  UiDocsRadixShadcnMigrationRoute: UiDocsRadixShadcnMigrationRoute,
+  UiDocsRoadmapRoute: UiDocsRoadmapRoute,
+  UiDocsComponentsComponentRoute: UiDocsComponentsComponentRoute,
+  UiDocsHooksHookRoute: UiDocsHooksHookRoute,
+}
+
+const UiDocsRouteWithChildren =
+  UiDocsRoute._addFileChildren(UiDocsRouteChildren)
+
+interface UiRouteChildren {
+  UiDocsRoute: typeof UiDocsRouteWithChildren
+  UiParticlesRoute: typeof UiParticlesRoute
+}
+
+const UiRouteChildren: UiRouteChildren = {
+  UiDocsRoute: UiDocsRouteWithChildren,
+  UiParticlesRoute: UiParticlesRoute,
+}
+
+const UiRouteWithChildren = UiRoute._addFileChildren(UiRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CossProtoRoute: CossProtoRoute,
+  DocsRoute: DocsRoute,
   StudioShellProtoRoute: StudioShellProtoRoute,
+  UiRoute: UiRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

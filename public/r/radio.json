@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "radio",
+  "title": "Radio",
+  "description": "A single selectable radio control.",
+  "registryDependencies": [
+    "@raya/radio-group"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/radio.tsx",
+      "content": "export { Radio } from \"@/registry/default/ui/radio-group\"\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

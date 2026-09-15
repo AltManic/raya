@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "navigation-menu",
+  "title": "Navigation Menu",
+  "description": "A semantic primary navigation surface for related routes.",
+  "files": [
+    {
+      "path": "registry/default/ui/navigation-menu.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function NavigationMenu({ className, ...props }: ComponentProps<\"nav\">) { return <nav aria-label=\"Primary navigation\" data-slot=\"navigation-menu\" className={cn(\"flex items-center gap-1\", className)} {...props} /> }\nexport function NavigationMenuLink({ className, active, ...props }: ComponentProps<\"a\"> & { active?: boolean }) { return <a aria-current={active ? \"page\" : undefined} data-slot=\"navigation-menu-link\" className={cn(\"rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground\", active && \"bg-accent font-medium text-accent-foreground\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

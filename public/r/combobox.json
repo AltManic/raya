@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "combobox",
+  "title": "Combobox",
+  "description": "An input and listbox for choosing from known options.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/combobox.tsx",
+      "content": "\"use client\"\n\nimport { Combobox as Primitive } from \"@base-ui/react/combobox\"\nimport type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport const Combobox = Primitive.Root\nexport const ComboboxInput = Primitive.Input\nexport const ComboboxTrigger = Primitive.Trigger\nexport const ComboboxValue = Primitive.Value\nexport const ComboboxItem = Primitive.Item\nexport const ComboboxPortal = Primitive.Portal\nexport const ComboboxPositioner = Primitive.Positioner\nexport const ComboboxEmpty = Primitive.Empty\nexport function ComboboxPopup({ className, ...props }: ComponentProps<typeof Primitive.Popup>) { return <Primitive.Popup data-slot=\"combobox-popup\" className={cn(\"z-50 min-w-48 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md\", className)} {...props} /> }\nexport function ComboboxList({ className, ...props }: ComponentProps<typeof Primitive.List>) { return <Primitive.List data-slot=\"combobox-list\" className={cn(\"max-h-56 overflow-auto p-1\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

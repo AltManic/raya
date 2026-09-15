@@ -1,3 +1,5 @@
+"use client"
+
 import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog"
 import type { ComponentProps } from "react"
 
@@ -42,6 +44,6 @@ export function AlertDialogCancel({ className, ...props }: ComponentProps<typeof
   return <AlertDialogPrimitive.Close data-slot="alert-dialog-cancel" className={cx("raya-button cursor-pointer", className)} {...props} />
 }
 
-export function AlertDialogAction({ className, ...props }: ComponentProps<"button">) {
-  return <button data-slot="alert-dialog-action" className={cx("raya-button cursor-pointer", className)} {...props} />
+export function AlertDialogAction({ className, ...props }: ComponentProps<typeof AlertDialogPrimitive.Close>) {
+  return <AlertDialogPrimitive.Close data-slot="alert-dialog-action" className={cx("raya-button cursor-pointer", className)} {...props} />
 }

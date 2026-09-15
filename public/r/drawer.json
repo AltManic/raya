@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "drawer",
+  "title": "Drawer",
+  "description": "A side surface for navigation or focused editing tasks.",
+  "registryDependencies": [
+    "@raya/sheet"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/drawer.tsx",
+      "content": "export {\n  Sheet as Drawer,\n  SheetContent as DrawerContent,\n  SheetDescription as DrawerDescription,\n  SheetTitle as DrawerTitle,\n  SheetTrigger as DrawerTrigger,\n  SheetClose as DrawerClose,\n} from \"@/registry/default/ui/sheet\"\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

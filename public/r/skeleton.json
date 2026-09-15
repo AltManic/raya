@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "description": "A quiet loading placeholder that preserves layout while content is arriving.",
+  "files": [
+    {
+      "path": "registry/default/ui/skeleton.tsx",
+      "content": "import type { HTMLAttributes } from \"react\"\n\nexport function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>) {\n  return <div data-slot=\"skeleton\" aria-hidden=\"true\" className={[\"animate-pulse rounded-md bg-muted\", className].filter(Boolean).join(\" \")} {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Use Skeleton to reserve the shape of content while an async view is loading.",
+  "type": "registry:ui"
+}

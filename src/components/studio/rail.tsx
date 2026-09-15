@@ -1,6 +1,7 @@
 import { useState } from "react"
 import type { Knobs, SemanticToken } from "@/lib/model/model"
 import { KNOBBED_COMPONENTS } from "@/lib/model/model"
+import { COMPONENT_GROUPS } from "@/lib/model/components"
 import type { Studio } from "@/lib/studio/use-studio"
 
 const cx = (...parts: unknown[]) => parts.filter((p): p is string => typeof p === "string").join(" ")
@@ -16,6 +17,38 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{title}</h3>
       {children}
     </section>
+  )
+}
+
+function ComponentNav({ studio, onSelect }: { studio: Studio; onSelect?: () => void }) {
+  return (
+    <Section title="Components">
+      <nav className="flex flex-col gap-3">
+        {COMPONENT_GROUPS.map((group) => (
+          <div key={group.title}>
+            <p className="mb-1 px-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/75">{group.title}</p>
+            <div className="flex flex-col gap-0.5">
+              {group.items.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => { studio.setView("focus"); studio.setFocusComponent(item); onSelect?.() }}
+                  aria-current={studio.view === "focus" && studio.focusComponent === item ? "page" : undefined}
+                  className={cx(
+                    "cursor-pointer rounded-md px-2 py-1 text-left text-xs transition-colors hover:bg-sidebar-accent hover:text-foreground",
+                    studio.view === "focus" && studio.focusComponent === item
+                      ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </nav>
+    </Section>
   )
 }
 
@@ -224,11 +257,26 @@ function KnobsAccordion({ studio }: { studio: Studio }) {
   )
 }
 
-export function Rail({ studio }: { studio: Studio }) {
+export function Rail({ studio, open = false, onClose }: { studio: Studio; open?: boolean; onClose?: () => void }) {
   const hasOverrides = Object.keys(studio.overrides[studio.activeSlug]?.light ?? {}).length > 0 ||
     Object.keys(studio.overrides[studio.activeSlug]?.dark ?? {}).length > 0
   return (
-    <aside className="w-72 shrink-0 overflow-y-auto border-r border-border bg-card">
+    <>
+    {open && onClose && <button type="button" aria-label="Close token tuner" onClick={onClose} className="fixed inset-0 z-40 bg-black/20 lg:hidden" />}
+    <aside className={cx(
+      "w-72 shrink-0 overflow-y-auto border-r border-border/70 bg-sidebar",
+      "hidden lg:block",
+      open && "fixed inset-y-0 right-0 z-50 block shadow-xl lg:static lg:shadow-none",
+    )}>
+      {open && onClose && (
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/70 bg-sidebar px-4 py-3 lg:hidden">
+          <span className="font-heading text-sm font-semibold">Tune System</span>
+          <button type="button" onClick={onClose} className="cursor-pointer rounded-md border border-border px-2 py-1 text-xs text-muted-foreground hover:text-foreground">
+            Close
+          </button>
+        </div>
+      )}
+      <ComponentNav studio={studio} onSelect={onClose} />
       <Section title="Accent ramp">
         <RampControls studio={studio} />
       </Section>
@@ -255,5 +303,6 @@ export function Rail({ studio }: { studio: Studio }) {
         <KnobsAccordion studio={studio} />
       </Section>
     </aside>
+    </>
   )
 }

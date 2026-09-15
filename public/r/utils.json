@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "utils",
   "title": "Utils (cn)",
-  "description": "PROTOTYPE coss port: the `cn` class-merge helper (clsx + tailwind-merge) every ported component imports.",
+  "description": "Shared `cn` class-merge helper (clsx + tailwind-merge) used by the COSS-aligned components.",
   "dependencies": [
     "clsx",
     "tailwind-merge"

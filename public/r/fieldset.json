@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "fieldset",
+  "title": "Fieldset",
+  "description": "A labeled group of related form controls.",
+  "files": [
+    {
+      "path": "registry/default/ui/fieldset.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function Fieldset({ className, ...props }: ComponentProps<\"fieldset\">) { return <fieldset data-slot=\"fieldset\" className={cn(\"flex min-w-0 flex-col gap-4 rounded-lg border border-border p-4\", className)} {...props} /> }\nexport function FieldsetLegend({ className, ...props }: ComponentProps<\"legend\">) { return <legend data-slot=\"fieldset-legend\" className={cn(\"-ml-1 px-1 text-sm font-medium\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

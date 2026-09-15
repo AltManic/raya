@@ -97,7 +97,7 @@
       ],
       "files": [
         {
-          "path": "registry/default/ui/button.tsx",
+          "path": "registry/default/ui/coss-button.tsx",
           "type": "registry:ui"
         }
       ],
@@ -113,7 +113,7 @@
       ],
       "files": [
         {
-          "path": "registry/default/ui/input.tsx",
+          "path": "registry/default/ui/coss-input.tsx",
           "type": "registry:ui"
         }
       ],
@@ -166,6 +166,13 @@
       "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
     },
     {
+      "name": "checkbox-group",
+      "type": "registry:ui",
+      "title": "Checkbox Group",
+      "description": "A semantic group of related checkbox controls.",
+      "files": [{ "path": "registry/default/ui/checkbox-group.tsx", "type": "registry:ui" }]
+    },
+    {
       "name": "switch",
       "type": "registry:ui",
       "title": "Switch",
@@ -198,6 +205,14 @@
       "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
     },
     {
+      "name": "radio",
+      "type": "registry:ui",
+      "title": "Radio",
+      "description": "A single selectable radio control.",
+      "registryDependencies": ["@raya/radio-group"],
+      "files": [{ "path": "registry/default/ui/radio.tsx", "type": "registry:ui" }]
+    },
+    {
       "name": "slider",
       "type": "registry:ui",
       "title": "Slider",
@@ -214,6 +229,80 @@
       "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
     },
     {
+      "name": "form",
+      "type": "registry:ui",
+      "title": "Form",
+      "description": "A semantic layout primitive for submitting related controls.",
+      "files": [{ "path": "registry/default/ui/form.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "fieldset",
+      "type": "registry:ui",
+      "title": "Fieldset",
+      "description": "A labeled group of related form controls.",
+      "files": [{ "path": "registry/default/ui/fieldset.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "A composed input with leading or trailing addons.",
+      "files": [{ "path": "registry/default/ui/input-group.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "autocomplete",
+      "type": "registry:ui",
+      "title": "Autocomplete",
+      "description": "An input that suggests filtered options as you type.",
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "registry/default/ui/autocomplete.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "An input and listbox for choosing from known options.",
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "registry/default/ui/combobox.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "number-field",
+      "type": "registry:ui",
+      "title": "Number Field",
+      "description": "A numeric input with accessible increment and decrement controls.",
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "registry/default/ui/number-field.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "otp-field",
+      "type": "registry:ui",
+      "title": "OTP Field",
+      "description": "A segmented numeric input for one-time verification codes.",
+      "files": [{ "path": "registry/default/ui/otp-field.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "A month grid for choosing and reviewing dates.",
+      "files": [{ "path": "registry/default/ui/calendar.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "title": "Date Picker",
+      "description": "A popover date selection flow built on Calendar.",
+      "registryDependencies": ["@raya/calendar", "@raya/popover", "@raya/button"],
+      "files": [{ "path": "registry/default/ui/date-picker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "An accessible label for a form control.",
+      "files": [{ "path": "registry/default/ui/label.tsx", "type": "registry:ui" }]
+    },
+    {
       "name": "field",
       "type": "registry:ui",
       "title": "Field",
@@ -223,7 +312,7 @@
       ],
       "files": [
         {
-          "path": "registry/default/ui/field.tsx",
+          "path": "registry/default/ui/coss-field.tsx",
           "type": "registry:ui"
         }
       ],
@@ -239,7 +328,7 @@
       ],
       "files": [
         {
-          "path": "registry/default/ui/card.tsx",
+          "path": "registry/default/ui/coss-card.tsx",
           "type": "registry:ui"
         }
       ],
@@ -373,6 +462,246 @@
       "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
     },
     {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "A visual divider for separating groups of related content.",
+      "files": [{
+        "path": "registry/default/ui/separator.tsx",
+        "type": "registry:ui"
+      }],
+      "docs": "A standalone structural primitive with horizontal and vertical orientations."
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "A determinate progress indicator for work moving toward completion.",
+      "files": [{
+        "path": "registry/default/ui/progress.tsx",
+        "type": "registry:ui"
+      }],
+      "docs": "Pass `value` and optional `max` to render an accessible progressbar."
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "A quiet loading placeholder that preserves layout while content is arriving.",
+      "files": [{
+        "path": "registry/default/ui/skeleton.tsx",
+        "type": "registry:ui"
+      }],
+      "docs": "Use Skeleton to reserve the shape of content while an async view is loading."
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "A semantic callout for important status or feedback.",
+      "files": [{
+        "path": "registry/default/ui/alert.tsx",
+        "type": "registry:ui"
+      }],
+      "docs": "A dependency-free semantic alert with title and description slots."
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "A calm placeholder for views with no content yet.",
+      "files": [{
+        "path": "registry/default/ui/empty.tsx",
+        "type": "registry:ui"
+      }],
+      "docs": "Use Empty for first-run, no-result, and cleared-content states."
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "A compact button that exposes an on or off pressed state.",
+      "files": [{ "path": "registry/default/ui/toggle.tsx", "type": "registry:ui" }],
+      "docs": "A dependency-free toggle button with aria-pressed state."
+    },
+    {
+      "name": "meter",
+      "type": "registry:ui",
+      "title": "Meter",
+      "description": "A semantic gauge for a scalar value within a known range.",
+      "files": [{ "path": "registry/default/ui/meter.tsx", "type": "registry:ui" }],
+      "docs": "Pass value, min, and max to render an accessible meter."
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "A stack of collapsible sections for progressively disclosed content.",
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "registry/default/ui/accordion.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "A single content section that can be expanded or tucked away.",
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "registry/default/ui/collapsible.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Hierarchical navigation that shows the current location.",
+      "files": [{ "path": "registry/default/ui/breadcrumb.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "A compact keyboard-key label for shortcuts and command hints.",
+      "files": [{ "path": "registry/default/ui/kbd.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "group",
+      "type": "registry:ui",
+      "title": "Group",
+      "description": "A semantic grouping primitive for related controls.",
+      "files": [{ "path": "registry/default/ui/group.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "segmented-control",
+      "type": "registry:ui",
+      "title": "Segmented Control",
+      "description": "A compact control for related choices, navigation, or view selection.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "registry/default/ui/segmented-control.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item. Set `data-raya` on <html> or a wrapper to activate a System."
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "A coordinated set of pressed controls for one or more choices.",
+      "files": [{ "path": "registry/default/ui/toggle-group.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Navigation controls for moving through a collection of pages.",
+      "files": [{ "path": "registry/default/ui/pagination.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "frame",
+      "type": "registry:ui",
+      "title": "Frame",
+      "description": "A bordered surface for presenting content with an optional header.",
+      "files": [{ "path": "registry/default/ui/frame.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "A constrained region with predictable overflow scrolling.",
+      "files": [{ "path": "registry/default/ui/scroll-area.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "menu",
+      "type": "registry:ui",
+      "title": "Menu",
+      "description": "A discoverable list of actions anchored to a trigger.",
+      "registryDependencies": ["@raya/dropdown-menu"],
+      "files": [{ "path": "registry/default/ui/menu.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "A persistent navigation surface for application sections.",
+      "files": [{ "path": "registry/default/ui/sidebar.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "A modal side surface for focused navigation or editing tasks.",
+      "registryDependencies": ["@raya/dialog"],
+      "files": [{ "path": "registry/default/ui/sheet.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "A side surface for navigation or focused editing tasks.",
+      "registryDependencies": ["@raya/sheet"],
+      "files": [{ "path": "registry/default/ui/drawer.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "A pointer-anchored menu of actions for the current context.",
+      "registryDependencies": ["@raya/dropdown-menu"],
+      "files": [{ "path": "registry/default/ui/context-menu.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "A transient notification for completed actions and important updates.",
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "registry/default/ui/toast.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "preview-card",
+      "type": "registry:ui",
+      "title": "Preview Card",
+      "description": "An anchored rich preview for a linked resource.",
+      "registryDependencies": ["@raya/popover"],
+      "files": [{ "path": "registry/default/ui/preview-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation Menu",
+      "description": "A semantic primary navigation surface for related routes.",
+      "files": [{ "path": "registry/default/ui/navigation-menu.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "toolbar",
+      "type": "registry:ui",
+      "title": "Toolbar",
+      "description": "A semantic row of grouped actions and controls.",
+      "files": [{ "path": "registry/default/ui/toolbar.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "A horizontal menu of top-level application actions.",
+      "files": [{ "path": "registry/default/ui/menubar.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "filterable-menu",
+      "type": "registry:ui",
+      "title": "Filterable Menu",
+      "description": "A searchable list of actions for dense command surfaces.",
+      "files": [{ "path": "registry/default/ui/filterable-menu.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "A keyboard-first searchable surface for application commands.",
+      "files": [{ "path": "registry/default/ui/command.tsx", "type": "registry:ui" }]
+    },
+    {
       "name": "chart-line",
       "type": "registry:ui",
       "title": "Chart: Line",
@@ -498,6 +827,13 @@
       "docs": "Requires the @raya/core item. Knob values come from your System's stylesheet."
     },
     {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "A lightweight compositional table for ordinary tabular content.",
+      "files": [{ "path": "registry/default/ui/table.tsx", "type": "registry:ui" }]
+    },
+    {
       "name": "filter-bar",
       "type": "registry:block",
       "title": "Filter Bar",
@@ -524,7 +860,7 @@
       "name": "utils",
       "type": "registry:lib",
       "title": "Utils (cn)",
-      "description": "PROTOTYPE coss port: the `cn` class-merge helper (clsx + tailwind-merge) every ported component imports.",
+      "description": "Shared `cn` class-merge helper (clsx + tailwind-merge) used by the COSS-aligned components.",
       "dependencies": [
         "clsx",
         "tailwind-merge"
@@ -538,10 +874,25 @@
       "docs": "Internal helper item for the coss-ported components; the real port ships this as `utils`."
     },
     {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "COSS-aligned loading indicator authored with the HugeIcons IconPlaceholder.",
+      "registryDependencies": [
+        "@raya/utils"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "coss-spinner",
       "type": "registry:ui",
       "title": "Spinner",
-      "description": "PROTOTYPE coss port: loading indicator authored with the HugeIcons IconPlaceholder.",
+      "description": "Compatibility alias for the canonical `@raya/spinner` COSS port.",
       "registryDependencies": [
         "@raya/utils"
       ],
@@ -556,7 +907,7 @@
       "name": "coss-button",
       "type": "registry:ui",
       "title": "Button (coss port)",
-      "description": "PROTOTYPE coss port: cva variants + useRender, with the loading-state Spinner.",
+      "description": "Compatibility alias for the canonical COSS Button port: cva variants + useRender with loading state.",
       "dependencies": [
         "@base-ui/react",
         "class-variance-authority"
@@ -571,13 +922,13 @@
           "type": "registry:ui"
         }
       ],
-      "docs": "Requires @raya/core for tokens. Prototype item name; the real port replaces raya's `button`."
+      "docs": "Compatibility alias for the canonical `@raya/button` COSS port. Requires @raya/core for tokens."
     },
     {
       "name": "coss-input",
       "type": "registry:ui",
       "title": "Input (coss port)",
-      "description": "PROTOTYPE coss port: Base UI input in a bordered control shell.",
+      "description": "Compatibility alias for the canonical COSS Input port: Base UI input in a bordered control shell.",
       "dependencies": [
         "@base-ui/react"
       ],
@@ -595,7 +946,7 @@
       "name": "coss-field",
       "type": "registry:ui",
       "title": "Field (coss port)",
-      "description": "PROTOTYPE coss port: Base UI Field parts (label/description/error).",
+      "description": "Compatibility alias for the canonical COSS Field port: Base UI label, description, and error parts.",
       "dependencies": [
         "@base-ui/react"
       ],
@@ -613,7 +964,7 @@
       "name": "coss-card",
       "type": "registry:ui",
       "title": "Card (coss port)",
-      "description": "PROTOTYPE coss port: Card + CardFrame families with useRender.",
+      "description": "Compatibility alias for the canonical COSS Card port: Card and CardFrame families with useRender.",
       "registryDependencies": [
         "@raya/utils"
       ],
@@ -623,6 +974,20 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "use-copy-to-clipboard",
+      "type": "registry:hook",
+      "title": "useCopyToClipboard",
+      "description": "Copy text to the clipboard with a temporary copied state and optional callback.",
+      "files": [{ "path": "registry/default/hooks/use-copy-to-clipboard.ts", "type": "registry:hook" }]
+    },
+    {
+      "name": "use-media-query",
+      "type": "registry:hook",
+      "title": "useMediaQuery",
+      "description": "Reactively match breakpoints, pointer types, or any CSS media query.",
+      "files": [{ "path": "registry/default/hooks/use-media-query.ts", "type": "registry:hook" }]
     }
   ]
 }

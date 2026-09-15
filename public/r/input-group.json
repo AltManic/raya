@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input-group",
+  "title": "Input Group",
+  "description": "A composed input with leading or trailing addons.",
+  "files": [
+    {
+      "path": "registry/default/ui/input-group.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function InputGroup({ className, ...props }: ComponentProps<\"div\">) { return <div data-slot=\"input-group\" className={cn(\"flex w-full items-center rounded-md border border-input bg-background focus-within:ring-2 focus-within:ring-ring/30\", className)} {...props} /> }\nexport function InputGroupAddon({ className, ...props }: ComponentProps<\"div\">) { return <div data-slot=\"input-group-addon\" className={cn(\"flex shrink-0 items-center px-3 text-sm text-muted-foreground\", className)} {...props} /> }\nexport function InputGroupInput({ className, ...props }: ComponentProps<\"input\">) { return <input data-slot=\"input-group-input\" className={cn(\"min-w-0 flex-1 border-0 bg-transparent px-3 py-2 text-sm outline-none placeholder:text-muted-foreground\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert",
+  "title": "Alert",
+  "description": "A semantic callout for important status or feedback.",
+  "files": [
+    {
+      "path": "registry/default/ui/alert.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function Alert({ className, ...props }: ComponentProps<\"div\">) {\n  return <div role=\"alert\" data-slot=\"alert\" className={cn(\"flex w-full gap-3 rounded-lg border border-border bg-card p-4 text-card-foreground shadow-sm\", className)} {...props} />\n}\n\nexport function AlertTitle({ className, ...props }: ComponentProps<\"h5\">) {\n  return <h5 data-slot=\"alert-title\" className={cn(\"font-medium leading-none\", className)} {...props} />\n}\n\nexport function AlertDescription({ className, ...props }: ComponentProps<\"div\">) {\n  return <div data-slot=\"alert-description\" className={cn(\"text-sm text-muted-foreground [&_p]:leading-relaxed\", className)} {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "A dependency-free semantic alert with title and description slots.",
+  "type": "registry:ui"
+}

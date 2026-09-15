@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "number-field",
+  "title": "Number Field",
+  "description": "A numeric input with accessible increment and decrement controls.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/number-field.tsx",
+      "content": "\"use client\"\n\nimport { NumberField as Primitive } from \"@base-ui/react/number-field\"\nimport type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport const NumberField = Primitive.Root\nexport const NumberFieldGroup = Primitive.Group\nexport const NumberFieldInput = Primitive.Input\nexport function NumberFieldIncrement({ className, ...props }: ComponentProps<typeof Primitive.Increment>) { return <Primitive.Increment data-slot=\"number-field-increment\" className={cn(\"px-2 text-muted-foreground hover:text-foreground\", className)} {...props} /> }\nexport function NumberFieldDecrement({ className, ...props }: ComponentProps<typeof Primitive.Decrement>) { return <Primitive.Decrement data-slot=\"number-field-decrement\" className={cn(\"px-2 text-muted-foreground hover:text-foreground\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

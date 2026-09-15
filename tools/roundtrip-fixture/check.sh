@@ -10,20 +10,33 @@ SERVER_PID=""
 cleanup() { [ -n "$SERVER_PID" ] && kill "$SERVER_PID" 2>/dev/null; }
 trap cleanup EXIT
 
+start_server() {
+  nohup python3 -m http.server "$PORT" --directory "$ROOT/public" </dev/null >/dev/null 2>&1 &
+  SERVER_PID=$!
+  for _ in $(seq 1 50); do
+    curl -sf "http://127.0.0.1:$PORT/r/registry.json" >/dev/null 2>&1 && return 0
+    sleep 0.2
+  done
+  return 1
+}
+
 cd "$ROOT"
 echo "[fixture] rebuilding registry…"
 npx shadcn build
 
-python3 -m http.server "$PORT" --directory "$ROOT/public" >/dev/null 2>&1 &
-SERVER_PID=$!
-for _ in $(seq 1 50); do
-  curl -sf "http://127.0.0.1:$PORT/r/registry.json" >/dev/null 2>&1 && break
-  sleep 0.2
-done
-curl -sf "http://127.0.0.1:$PORT/r/registry.json" >/dev/null 2>&1 || {
+start_server || {
   echo "✗ fixture registry server failed to start on port $PORT" >&2
   exit 1
 }
+
+node -e "
+const fs = require('fs');
+const path = '$FIXTURE/components.json';
+const value = JSON.parse(fs.readFileSync(path, 'utf8'));
+value.registries ??= {};
+value.registries['@raya'] = 'http://127.0.0.1:$PORT/r/{name}.json';
+fs.writeFileSync(path, JSON.stringify(value, null, 2) + '\\n');
+"
 
 if [ ! -d "$FIXTURE/node_modules" ]; then
   echo "[fixture] installing dependencies (cold)…"
@@ -35,6 +48,10 @@ echo "[fixture] installing all registry items…"
 ITEMS=$(node -e "const r=require('$ROOT/public/r/registry.json'); console.log(r.items.map(i=>i.name).join(' '))")
 for item in $ITEMS; do
   echo "  + @raya/$item"
+  if ! curl -sf "http://127.0.0.1:$PORT/r/registry.json" >/dev/null 2>&1; then
+    echo "[fixture] registry server stopped; restarting…"
+    start_server || { echo "✗ fixture registry server stopped on port $PORT" >&2; exit 1; }
+  fi
   (cd "$FIXTURE" && npx shadcn add "@raya/$item" --overwrite --yes)
 done
 

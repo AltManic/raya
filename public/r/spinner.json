@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "title": "Spinner",
+  "description": "COSS-aligned loading indicator authored with the HugeIcons IconPlaceholder.",
+  "registryDependencies": [
+    "@raya/utils"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/spinner.tsx",
+      "content": "/* COSS-aligned loading indicator, ported from coss ui's spinner surface. */\nimport type React from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\nimport { IconPlaceholder } from \"@/registry/internal/icon-placeholder\"\n\nexport interface SpinnerProps {\n  className?: string\n}\n\nexport function Spinner({ className, ...props }: SpinnerProps): React.ReactElement {\n  return (\n    <IconPlaceholder\n      aria-label=\"Loading\"\n      className={cn(\"animate-spin\", className)}\n      hugeicons=\"Loading03Icon\"\n      lucide=\"Loader2Icon\"\n      phosphor=\"SpinnerGap\"\n      remixicon=\"RiLoader4Line\"\n      role=\"status\"\n      tabler=\"IconLoader2\"\n      {...props}\n    />\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

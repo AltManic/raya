@@ -7,6 +7,11 @@ shadcn-style Registry.
 - **Site:** https://raya.alfrizk.dev
 - **Status:** built and deployed — spec locked in [`BUILD-SPEC.md`](./BUILD-SPEC.md)
 
+The public surfaces are `/` (Studio), `/ui` (component catalog), `/ui/docs`
+(documentation), `/ui/particles` (composed patterns), and `/r/registry.json`
+(copyable registry). COSS-derived source attribution is recorded in
+[`NOTICE`](./NOTICE).
+
 ## Stack
 
 TanStack Start (SSR) · React 19 · TypeScript · Tailwind v4 · Base UI primitives
@@ -18,9 +23,11 @@ TanStack Start (SSR) · React 19 · TypeScript · Tailwind v4 · Base UI primiti
 npm install
 npm run dev              # Studio on http://localhost:3000
 npm run typecheck
+npm run check:coss-parity # compare official COSS UI sources with Raya
+npm run check:website     # smoke-test every published sitemap URL
 npm run registry:build   # regenerate public/r (committed)
 npm run check:fixture    # tier 4 consumer round-trip harness
-npm run deploy           # registry build + vite build + wrangler deploy
+npm run deploy           # parity check + registry build + vite build + deploy
 ```
 
 Guardrails run locally via husky: pre-commit runs typecheck → `shadcn registry

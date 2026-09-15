@@ -7,10 +7,12 @@
     "dev": "vite dev --port 3000",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run registry:build && vite build && wrangler deploy",
+    "deploy": "npm run registry:build && npm run check:coss-parity && vite build && wrangler deploy",
     "cf-typegen": "wrangler types",
     "typecheck": "tsc --noEmit",
     "registry:build": "shadcn build",
+    "check:coss-parity": "node tools/check-coss-parity.mjs",
+    "check:website": "node tools/check-website.mjs",
     "prepare": "husky",
     "check:fixture": "bash tools/roundtrip-fixture/check.sh"
   },

@@ -1,5 +1,5 @@
 /*
- * PROTOTYPE (#25) — port of coss ui's `registry/default/ui/field.tsx` @ e937bec (MIT surface).
+ * COSS-aligned port of coss ui's `registry/default/ui/field.tsx` @ e937bec (MIT surface).
  */
 "use client";
 

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-media-query",
+  "title": "useMediaQuery",
+  "description": "Reactively match breakpoints, pointer types, or any CSS media query.",
+  "files": [
+    {
+      "path": "registry/default/hooks/use-media-query.ts",
+      "content": "\"use client\"\n\nimport { useCallback, useSyncExternalStore } from \"react\"\n\nconst BREAKPOINTS = { \"2xl\": 1536, \"3xl\": 1600, \"4xl\": 2000, lg: 1024, md: 800, sm: 640, xl: 1280 } as const\ntype Breakpoint = keyof typeof BREAKPOINTS\ntype BreakpointQuery = Breakpoint | `max-${Breakpoint}` | `${Breakpoint}:max-${Breakpoint}`\nexport type MediaQueryInput = { min?: Breakpoint | number; max?: Breakpoint | number; pointer?: \"coarse\" | \"fine\" }\n\nconst resolve = (value: Breakpoint | number, kind: \"min\" | \"max\") => {\n  const px = typeof value === \"number\" ? value : BREAKPOINTS[value]\n  return `(${kind}-width: ${kind === \"max\" ? px - 1 : px}px)`\n}\n\nfunction parseQuery(query: BreakpointQuery | MediaQueryInput | (string & {})) {\n  if (typeof query !== \"string\") {\n    const parts = []\n    if (query.min != null) parts.push(resolve(query.min, \"min\"))\n    if (query.max != null) parts.push(resolve(query.max, \"max\"))\n    if (query.pointer) parts.push(`(pointer: ${query.pointer})`)\n    return parts.join(\" and \") || \"(min-width: 0px)\"\n  }\n  if (query.startsWith(\"(\")) return query\n  const parts = query.split(\":\").flatMap((segment) => segment.startsWith(\"max-\") ? [resolve(segment.slice(4) as Breakpoint, \"max\")] : segment in BREAKPOINTS ? [resolve(segment as Breakpoint, \"min\")] : [])\n  return parts.join(\" and \") || query\n}\n\nexport function useMediaQuery(query: BreakpointQuery | MediaQueryInput | (string & {})) {\n  const mediaQuery = parseQuery(query)\n  const subscribe = useCallback((callback: () => void) => {\n    if (typeof window === \"undefined\") return () => {}\n    const mql = window.matchMedia(mediaQuery)\n    mql.addEventListener(\"change\", callback)\n    return () => mql.removeEventListener(\"change\", callback)\n  }, [mediaQuery])\n  const getSnapshot = useCallback(() => typeof window !== \"undefined\" && window.matchMedia(mediaQuery).matches, [mediaQuery])\n  return useSyncExternalStore(subscribe, getSnapshot, () => false)\n}\n\nexport function useIsMobile() {\n  return useMediaQuery(\"max-md\")\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

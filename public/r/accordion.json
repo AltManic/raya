@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "accordion",
+  "title": "Accordion",
+  "description": "A stack of collapsible sections for progressively disclosed content.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/accordion.tsx",
+      "content": "\"use client\"\n\nimport { Accordion as Primitive } from \"@base-ui/react/accordion\"\nimport type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport const Accordion = Primitive.Root\nexport function AccordionItem({ className, ...props }: ComponentProps<typeof Primitive.Item>) { return <Primitive.Item data-slot=\"accordion-item\" className={cn(\"border-b border-border\", className)} {...props} /> }\nexport function AccordionHeader({ className, ...props }: ComponentProps<typeof Primitive.Header>) { return <Primitive.Header data-slot=\"accordion-header\" className={cn(\"flex\", className)} {...props} /> }\nexport function AccordionTrigger({ className, ...props }: ComponentProps<typeof Primitive.Trigger>) { return <Primitive.Trigger data-slot=\"accordion-trigger\" className={cn(\"flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-colors hover:text-primary\", className)} {...props} /> }\nexport function AccordionPanel({ className, ...props }: ComponentProps<typeof Primitive.Panel>) { return <Primitive.Panel data-slot=\"accordion-panel\" className={cn(\"overflow-hidden pb-4 text-sm text-muted-foreground\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,6 +1,5 @@
 /*
- * PROTOTYPE (#26) — floating variant switcher for throwaway UI routes.
- * Not production. Hidden in production builds; drop from main with the prototype.
+ * Development-only floating layout switcher for the docs shell.
  */
 import { useEffect } from "react"
 
@@ -59,7 +58,7 @@ export function PrototypeSwitcher({
           ←
         </button>
         <span className="min-w-[13rem] px-2 text-center">
-          <span className="font-semibold uppercase tracking-wider text-white/60">proto</span>{" "}
+          <span className="font-semibold uppercase tracking-wider text-white/60">layout</span>{" "}
           <span className="font-semibold">{active?.key}</span>
           <span className="text-white/70"> — {active?.name}</span>
         </span>

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toolbar",
+  "title": "Toolbar",
+  "description": "A semantic row of grouped actions and controls.",
+  "files": [
+    {
+      "path": "registry/default/ui/toolbar.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function Toolbar({ className, ...props }: ComponentProps<\"div\">) { return <div role=\"toolbar\" data-slot=\"toolbar\" className={cn(\"flex items-center gap-1 rounded-md border border-border bg-card p-1\", className)} {...props} /> }\nexport function ToolbarSeparator({ className, ...props }: ComponentProps<\"span\">) { return <span aria-hidden=\"true\" data-slot=\"toolbar-separator\" className={cn(\"mx-1 h-5 w-px bg-border\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

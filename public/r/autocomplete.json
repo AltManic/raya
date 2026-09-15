@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "autocomplete",
+  "title": "Autocomplete",
+  "description": "An input that suggests filtered options as you type.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/autocomplete.tsx",
+      "content": "\"use client\"\n\nimport { Autocomplete as Primitive } from \"@base-ui/react/autocomplete\"\nimport type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport const Autocomplete = Primitive.Root\nexport const AutocompleteInput = Primitive.Input\nexport const AutocompleteItem = Primitive.Item\nexport function AutocompleteList({ className, ...props }: ComponentProps<typeof Primitive.List>) { return <Primitive.List data-slot=\"autocomplete-list\" className={cn(\"max-h-56 overflow-auto p-1\", className)} {...props} /> }\nexport function AutocompletePopup({ className, ...props }: ComponentProps<typeof Primitive.Popup>) { return <Primitive.Popup data-slot=\"autocomplete-popup\" className={cn(\"z-50 min-w-48 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md\", className)} {...props} /> }\nexport const AutocompletePortal = Primitive.Portal\nexport const AutocompletePositioner = Primitive.Positioner\nexport const AutocompleteEmpty = Primitive.Empty\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

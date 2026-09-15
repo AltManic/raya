@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "empty",
+  "title": "Empty",
+  "description": "A calm placeholder for views with no content yet.",
+  "files": [
+    {
+      "path": "registry/default/ui/empty.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function Empty({ className, ...props }: ComponentProps<\"section\">) {\n  return <section data-slot=\"empty\" className={cn(\"flex min-h-48 w-full flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-muted/20 p-6 text-center\", className)} {...props} />\n}\n\nexport function EmptyTitle({ className, ...props }: ComponentProps<\"h3\">) {\n  return <h3 data-slot=\"empty-title\" className={cn(\"font-medium\", className)} {...props} />\n}\n\nexport function EmptyDescription({ className, ...props }: ComponentProps<\"p\">) {\n  return <p data-slot=\"empty-description\" className={cn(\"max-w-sm text-sm text-muted-foreground\", className)} {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Use Empty for first-run, no-result, and cleared-content states.",
+  "type": "registry:ui"
+}

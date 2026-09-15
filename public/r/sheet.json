@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sheet",
+  "title": "Sheet",
+  "description": "A modal side surface for focused navigation or editing tasks.",
+  "registryDependencies": [
+    "@raya/dialog"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/sheet.tsx",
+      "content": "export {\n  Dialog as Sheet,\n  DialogBackdrop as SheetBackdrop,\n  DialogClose as SheetClose,\n  DialogDescription as SheetDescription,\n  DialogPopup as SheetContent,\n  DialogTitle as SheetTitle,\n  DialogTrigger as SheetTrigger,\n} from \"@/registry/default/ui/dialog\"\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

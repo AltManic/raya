@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "group",
+  "title": "Group",
+  "description": "A semantic grouping primitive for related controls.",
+  "files": [
+    {
+      "path": "registry/default/ui/group.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function Group({ className, ...props }: ComponentProps<\"div\">) { return <div role=\"group\" data-slot=\"group\" className={cn(\"flex items-center gap-2\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

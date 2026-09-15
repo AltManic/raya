@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "form",
+  "title": "Form",
+  "description": "A semantic layout primitive for submitting related controls.",
+  "files": [
+    {
+      "path": "registry/default/ui/form.tsx",
+      "content": "import type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport function Form({ className, ...props }: ComponentProps<\"form\">) { return <form data-slot=\"form\" className={cn(\"flex flex-col gap-5\", className)} {...props} /> }\nexport function FormActions({ className, ...props }: ComponentProps<\"div\">) { return <div data-slot=\"form-actions\" className={cn(\"flex items-center justify-end gap-2\", className)} {...props} /> }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

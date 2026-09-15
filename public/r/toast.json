@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toast",
+  "title": "Toast",
+  "description": "A transient notification for completed actions and important updates.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/toast.tsx",
+      "content": "\"use client\"\n\nimport { Toast as Primitive } from \"@base-ui/react/toast\"\nimport type { ComponentProps } from \"react\"\nimport { cn } from \"@/registry/default/lib/utils\"\n\nexport const ToastProvider = Primitive.Provider\nexport const ToastRoot = Primitive.Root\nexport function ToastViewport({ className, ...props }: ComponentProps<typeof Primitive.Viewport>) { return <Primitive.Viewport data-slot=\"toast-viewport\" className={cn(\"fixed right-4 bottom-4 z-50 flex w-[min(22rem,calc(100vw-2rem))] flex-col gap-2\", className)} {...props} /> }\nexport function ToastContent({ className, ...props }: ComponentProps<typeof Primitive.Content>) { return <Primitive.Content data-slot=\"toast-content\" className={cn(\"flex items-center gap-3 rounded-lg border border-border bg-card p-3 text-card-foreground shadow-lg\", className)} {...props} /> }\nexport const ToastTitle = Primitive.Title\nexport const ToastDescription = Primitive.Description\nexport const ToastClose = Primitive.Close\nexport const ToastPortal = Primitive.Portal\nexport const useToastManager = Primitive.useToastManager\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

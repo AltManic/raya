@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { lazy, Suspense, useState } from "react"
 import { Header } from "@/components/studio/header"
 import { Rail } from "@/components/studio/rail"
 import { Canvas } from "@/components/studio/canvas"
-import { ExportSlideOver } from "@/components/studio/export-panel"
+const ExportSlideOver = lazy(() => import("@/components/studio/export-panel").then((module) => ({ default: module.ExportSlideOver })))
 import { useStudio } from "@/lib/studio/use-studio"
 
 export const Route = createFileRoute("/")({
@@ -11,17 +12,18 @@ export const Route = createFileRoute("/")({
 
 function StudioPage() {
   const studio = useStudio()
+  const [railOpen, setRailOpen] = useState(false)
   return (
     <div
-      className={`flex h-dvh flex-col overflow-hidden ${studio.dark ? "dark" : ""}`}
+      className={`coss-theme flex h-dvh flex-col overflow-hidden bg-sidebar font-sans text-foreground ${studio.dark ? "dark" : ""}`}
       data-raya={studio.activeSlug}
     >
-      <Header studio={studio} />
-      <div className="flex min-h-0 flex-1">
-        <Rail studio={studio} />
+      <Header studio={studio} onToggleRail={() => setRailOpen(true)} />
+      <div className="coss-container flex min-h-0 flex-1">
+        <Rail studio={studio} open={railOpen} onClose={() => setRailOpen(false)} />
         <Canvas studio={studio} />
       </div>
-      <ExportSlideOver studio={studio} />
+      {studio.exportOpen && <Suspense fallback={null}><ExportSlideOver studio={studio} /></Suspense>}
     </div>
   )
 }
