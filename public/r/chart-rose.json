@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-rose",
+  "title": "Chart: Rose",
+  "description": "Rose chart composition for analytics dashboards.",
+  "dependencies": [],
+  "registryDependencies": [
+    "@raya/chart-variants"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/chart-rose.tsx",
+      "content": "import { VariantChart } from \"./chart-variants\"\n\nexport function RoseChart(props: { className?: string }) {\n  return <VariantChart variant=\"chart-rose\" {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:ui"
+}

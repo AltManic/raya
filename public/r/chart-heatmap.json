@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-heatmap",
+  "title": "Chart: Heatmap",
+  "description": "Compact intensity grid for cohorts, weekdays, and retention analysis.",
+  "files": [
+    {
+      "path": "registry/default/ui/chart-heatmap.tsx",
+      "content": "import type { CSSProperties } from \"react\"\n\nexport interface HeatmapRow { label: string; values: number[] }\nexport interface HeatmapChartProps { data: HeatmapRow[]; columns?: string[]; className?: string }\n\nexport function HeatmapChart({ data, columns = [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\", \"Sat\", \"Sun\"], className }: HeatmapChartProps) {\n  const max = Math.max(...data.flatMap((row) => row.values), 1)\n  return (\n    <div className={`w-full overflow-x-auto ${className ?? \"\"}`} data-slot=\"heatmap-chart\">\n      <div className=\"min-w-[30rem] space-y-2 text-xs\">\n        <div className=\"grid grid-cols-[5rem_repeat(7,minmax(1.5rem,1fr))] gap-1 text-center text-muted-foreground\">\n          <span />{columns.map((column) => <span key={column}>{column}</span>)}\n        </div>\n        {data.map((row) => (\n          <div key={row.label} className=\"grid grid-cols-[5rem_repeat(7,minmax(1.5rem,1fr))] items-center gap-1\">\n            <span className=\"truncate text-muted-foreground\">{row.label}</span>\n            {row.values.map((value, index) => <span key={`${row.label}-${index}`} title={`${row.label}, ${columns[index] ?? index + 1}: ${value}`} className=\"aspect-square rounded-sm\" style={{ background: `color-mix(in oklch, var(--chart-1) ${Math.max(10, Math.round((value / max) * 100))}%, var(--muted))` } as CSSProperties} />)}\n          </div>\n        ))}\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:ui"
+}

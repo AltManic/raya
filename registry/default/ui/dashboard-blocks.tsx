@@ -1,0 +1,33 @@
+const cx = (...parts: unknown[]) => parts.filter((part): part is string => typeof part === "string").join(" ")
+const rows = [
+  { initials: "PR", name: "Priya Raman", action: "published a new System", time: "4m ago", color: "var(--chart-1)" },
+  { initials: "JM", name: "Jon Moore", action: "invited 3 teammates", time: "18m ago", color: "var(--chart-2)" },
+  { initials: "AK", name: "Ari Kim", action: "exported production tokens", time: "42m ago", color: "var(--chart-3)" },
+  { initials: "SL", name: "Sam Lee", action: "updated the Baseline System", time: "1h ago", color: "var(--chart-4)" },
+]
+
+export function DashboardActivity({ className }: { className?: string }) {
+  return <section className={cx("rounded-xl border border-border/70 bg-card/80 p-4", className)} data-slot="dashboard-activity"><BlockTitle eyebrow="Workspace" title="Recent activity" action="View all" /><div className="mt-4 divide-y divide-border/60">{rows.map((row) => <div key={row.name} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0"><span className="grid size-8 shrink-0 place-items-center rounded-full text-[10px] font-semibold text-primary-foreground" style={{ background: row.color }}>{row.initials}</span><div className="min-w-0 flex-1"><p className="truncate text-sm"><strong>{row.name}</strong> {row.action}</p><p className="mt-0.5 text-xs text-muted-foreground">{row.time}</p></div></div>)}</div></section>
+}
+
+export function DashboardAlerts({ className }: { className?: string }) {
+  const alerts = [{ tone: "warning", title: "Usage is nearing the limit", body: "API requests are at 82% of your monthly allowance." }, { tone: "success", title: "Backup completed", body: "All workspace tokens were backed up 12 minutes ago." }, { tone: "info", title: "New System available", body: "Try the Contrast preset in your component gallery." }]
+  return <section className={cx("rounded-xl border border-border/70 bg-card/80 p-4", className)} data-slot="dashboard-alerts"><BlockTitle eyebrow="Monitor" title="Attention needed" /><div className="mt-4 space-y-2">{alerts.map((alert) => <div key={alert.title} className="rounded-lg border border-border/60 bg-background/50 p-3"><div className="flex items-center gap-2 text-sm font-medium"><span className={cx("size-2 rounded-full", alert.tone === "warning" ? "bg-amber-500" : alert.tone === "success" ? "bg-emerald-500" : "bg-sky-500")} />{alert.title}</div><p className="mt-1 pl-4 text-xs leading-5 text-muted-foreground">{alert.body}</p></div>)}</div></section>
+}
+
+export function DashboardComparison({ className }: { className?: string }) {
+  const items = [{ name: "Baseline", users: "12,480", conversion: "8.4%", revenue: "$48,220", status: "Live" }, { name: "Terminal", users: "8,920", conversion: "6.9%", revenue: "$31,840", status: "Live" }, { name: "Editorial", users: "5,210", conversion: "5.2%", revenue: "$19,440", status: "Draft" }]
+  return <section className={cx("rounded-xl border border-border/70 bg-card/80 p-4", className)} data-slot="dashboard-comparison"><BlockTitle eyebrow="Systems" title="Performance comparison" action="Export" /><div className="mt-4 overflow-x-auto"><table className="w-full min-w-[32rem] text-left text-sm"><thead className="text-xs text-muted-foreground"><tr>{["System", "Users", "Conversion", "Revenue", "Status"].map((head) => <th key={head} className="border-b border-border/60 px-3 py-2 font-medium first:pl-0">{head}</th>)}</tr></thead><tbody>{items.map((item) => <tr key={item.name}><td className="border-b border-border/50 px-3 py-3 pl-0 font-medium">{item.name}</td><td className="border-b border-border/50 px-3 py-3 tabular-nums">{item.users}</td><td className="border-b border-border/50 px-3 py-3 tabular-nums">{item.conversion}</td><td className="border-b border-border/50 px-3 py-3 tabular-nums">{item.revenue}</td><td className="border-b border-border/50 px-3 py-3"><span className="rounded-full bg-muted px-2 py-1 text-xs">{item.status}</span></td></tr>)}</tbody></table></div></section>
+}
+
+export function DashboardTimeline({ className }: { className?: string }) {
+  const events = [{ date: "Today", title: "System published", body: "Baseline v2.4 is now live for 18 workspaces." }, { date: "Yesterday", title: "Review requested", body: "Ari requested feedback on the Contrast tokens." }, { date: "Mar 18", title: "Import completed", body: "324 components imported from the shared registry." }]
+  return <section className={cx("rounded-xl border border-border/70 bg-card/80 p-4", className)} data-slot="dashboard-timeline"><BlockTitle eyebrow="Changelog" title="Workspace timeline" /><div className="mt-4 space-y-5">{events.map((event, index) => <div key={event.title} className="relative flex gap-3"><div className="flex flex-col items-center"><span className="mt-1 size-2.5 rounded-full bg-primary ring-4 ring-primary/10" />{index < events.length - 1 && <span className="mt-1 h-full w-px bg-border" />}</div><div className="pb-1"><p className="text-xs text-muted-foreground">{event.date}</p><p className="mt-1 text-sm font-medium">{event.title}</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{event.body}</p></div></div>)}</div></section>
+}
+
+export function DashboardCommandCenter({ className }: { className?: string }) {
+  const actions = [{ label: "Create a new System", hint: "Start from a preset", icon: "+" }, { label: "Import components", hint: "From a registry URL", icon: "↓" }, { label: "Export production code", hint: "Ready for your app", icon: "↑" }]
+  return <section className={cx("rounded-xl border border-border/70 bg-card/80 p-4", className)} data-slot="dashboard-command-center"><BlockTitle eyebrow="Quick actions" title="Command center" /><div className="mt-4 grid gap-2 sm:grid-cols-3">{actions.map((action) => <button key={action.label} type="button" className="group rounded-lg border border-border/60 bg-background/50 p-3 text-left transition-colors hover:border-primary/50 hover:bg-accent/40"><span className="grid size-7 place-items-center rounded-md bg-primary text-sm text-primary-foreground">{action.icon}</span><span className="mt-3 block text-sm font-medium">{action.label}</span><span className="mt-1 block text-xs text-muted-foreground">{action.hint}</span></button>)}</div></section>
+}
+
+function BlockTitle({ eyebrow, title, action }: { eyebrow: string; title: string; action?: string }) { return <header className="flex items-end justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{eyebrow}</p><h3 className="mt-1 text-base font-semibold tracking-tight">{title}</h3></div>{action && <button type="button" className="text-xs text-muted-foreground hover:text-foreground">{action} →</button>}</header> }

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-retention",
+  "title": "Chart: Retention",
+  "description": "Retention chart composition for analytics dashboards.",
+  "dependencies": [],
+  "registryDependencies": [
+    "@raya/chart-variants"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/chart-retention.tsx",
+      "content": "import { VariantChart } from \"./chart-variants\"\n\nexport function RetentionChart(props: { className?: string }) {\n  return <VariantChart variant=\"chart-retention\" {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:ui"
+}

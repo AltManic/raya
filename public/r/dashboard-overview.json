@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dashboard-overview",
+  "title": "Dashboard Overview",
+  "description": "Composed SaaS analytics dashboard with KPIs, revenue, acquisition, plan mix, funnel, and retention charts.",
+  "dependencies": [
+    "recharts"
+  ],
+  "registryDependencies": [
+    "@raya/kpi-card",
+    "@raya/chart-area",
+    "@raya/chart-bar",
+    "@raya/chart-pie",
+    "@raya/chart-funnel",
+    "@raya/chart-heatmap"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/dashboard-overview.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { AreaChartWrapper } from \"./chart-area\"\nimport { BarChartWrapper } from \"./chart-bar\"\nimport { PieChartWrapper } from \"./chart-pie\"\nimport { FunnelChart, type FunnelDatum } from \"./chart-funnel\"\nimport { HeatmapChart, type HeatmapRow } from \"./chart-heatmap\"\nimport { KpiCard } from \"./kpi-card\"\n\nexport interface DashboardMetric { id: string; label: string; value: string; delta?: { value: string; direction: \"up\" | \"down\" }; sparkline?: ReactNode }\nexport interface DashboardOverviewProps { metrics: DashboardMetric[]; revenue: Array<Record<string, unknown>>; revenueKey?: string; revenueLabel?: string; channels: Array<Record<string, unknown>>; channelKey?: string; channelValueKey?: string; channelLabel?: string; plans: Array<Record<string, unknown>>; planNameKey?: string; planValueKey?: string; funnel: FunnelDatum[]; retention: HeatmapRow[] }\n\nexport function DashboardOverview({ metrics, revenue, revenueKey = \"mrr\", revenueLabel = \"Revenue\", channels, channelKey = \"channel\", channelValueKey = \"signups\", channelLabel = \"Signups\", plans, planNameKey = \"plan\", planValueKey = \"accounts\", funnel, retention }: DashboardOverviewProps) {\n  return (\n    <section className=\"grid gap-4\" data-slot=\"dashboard-overview\">\n      <div className=\"grid gap-3 sm:grid-cols-2 xl:grid-cols-4\">{metrics.map(({ id, ...metric }) => <KpiCard key={id} {...metric} />)}</div>\n      <div className=\"grid gap-4 xl:grid-cols-[1.55fr_1fr]\">\n        <DashboardPanel title=\"Revenue trajectory\"><AreaChartWrapper data={revenue} xKey=\"month\" series={[{ key: revenueKey, label: revenueLabel }]} height={260} /></DashboardPanel>\n        <DashboardPanel title=\"Acquisition mix\"><BarChartWrapper data={channels} xKey={channelKey} series={[{ key: channelValueKey, label: channelLabel }]} height={260} /></DashboardPanel>\n      </div>\n      <div className=\"grid gap-4 lg:grid-cols-[1fr_1fr_1.2fr]\">\n        <DashboardPanel title=\"Plan mix\"><PieChartWrapper data={plans} nameKey={planNameKey} valueKey={planValueKey} slices={plans.map((plan, index) => ({ key: String(plan[planNameKey]), label: String(plan[planNameKey]), colorVar: `--chart-${(index % 5) + 1}` }))} height={220} /></DashboardPanel>\n        <DashboardPanel title=\"Conversion funnel\"><FunnelChart data={funnel} /></DashboardPanel>\n        <DashboardPanel title=\"Weekly retention\"><HeatmapChart data={retention} /></DashboardPanel>\n      </div>\n    </section>\n  )\n}\n\nfunction DashboardPanel({ title, children }: { title: string; children: ReactNode }) { return <article className=\"rounded-xl border border-border/70 bg-card/80 p-4 shadow-sm/5\"><h3 className=\"mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground\">{title}</h3>{children}</article> }\n",
+      "type": "registry:block"
+    }
+  ],
+  "docs": "Pass deterministic data arrays to compose a responsive analytics overview.",
+  "type": "registry:block"
+}

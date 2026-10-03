@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-radial",
+  "title": "Chart: Radial",
+  "description": "Radial progress chart for comparing attainment against a shared target.",
+  "dependencies": [
+    "recharts"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/chart-radial.tsx",
+      "content": "import { RadialBarChart, RadialBar, PolarAngleAxis, ResponsiveContainer } from \"recharts\"\nimport type { CSSProperties } from \"react\"\n\nexport interface RadialDatum { label: string; value: number; max?: number; colorVar?: string }\nexport interface RadialChartProps { data: RadialDatum[]; height?: number; className?: string }\n\nexport function RadialChart({ data, height = 240, className }: RadialChartProps) {\n  return (\n    <div className={`w-full ${className ?? \"\"}`} style={{ height }} data-slot=\"radial-chart\">\n      <ResponsiveContainer width=\"100%\" height=\"100%\">\n        <RadialBarChart innerRadius=\"18%\" outerRadius=\"88%\" barSize={16} data={data} startAngle={90} endAngle={-270} cx=\"50%\" cy=\"50%\">\n          <PolarAngleAxis type=\"number\" domain={[0, 100]} tick={false} axisLine={false} />\n          {data.map((item, index) => <RadialBar key={item.label} dataKey=\"value\" cornerRadius={4} background={{ fill: \"var(--muted)\" }} fill={`var(${item.colorVar ?? `--chart-${(index % 5) + 1}`})`} />)}\n        </RadialBarChart>\n      </ResponsiveContainer>\n      <div className=\"-mt-[calc(50%+1.25rem)] flex flex-col items-center justify-center gap-1 text-center\">\n        <span className=\"text-2xl font-semibold tabular-nums\">{Math.round(data.reduce((sum, item) => sum + item.value, 0) / Math.max(data.length, 1))}%</span>\n        <span className=\"text-xs text-muted-foreground\">average attainment</span>\n      </div>\n      <div className=\"mt-[calc(50%-1rem)] flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground\">\n        {data.map((item, index) => <span key={item.label} className=\"inline-flex items-center gap-1.5\"><i className=\"size-2 rounded-full\" style={{ background: `var(${item.colorVar ?? `--chart-${(index % 5) + 1}`})` } as CSSProperties} />{item.label} {item.value}%</span>)}\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:ui"
+}

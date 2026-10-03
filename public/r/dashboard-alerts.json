@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dashboard-alerts",
+  "title": "Dashboard: Alerts",
+  "description": "Reusable dashboard alerts block for analytics products.",
+  "registryDependencies": [
+    "@raya/dashboard-blocks"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/dashboard-alerts.tsx",
+      "content": "import { DashboardAlerts } from \"./dashboard-blocks\"\n\nexport { DashboardAlerts }\n",
+      "type": "registry:block"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:block"
+}

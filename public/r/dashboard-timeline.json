@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dashboard-timeline",
+  "title": "Dashboard: Timeline",
+  "description": "Reusable dashboard timeline block for analytics products.",
+  "registryDependencies": [
+    "@raya/dashboard-blocks"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/dashboard-timeline.tsx",
+      "content": "import { DashboardTimeline } from \"./dashboard-blocks\"\n\nexport { DashboardTimeline }\n",
+      "type": "registry:block"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:block"
+}

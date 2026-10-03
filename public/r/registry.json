@@ -45,7 +45,7 @@
       "name": "baseline",
       "type": "registry:theme",
       "title": "Raya System: Baseline",
-      "description": "Raya's default look — quiet, rounded, blue-violet accent.",
+      "description": "Raya's default look \u2014 quiet, rounded, blue-violet accent.",
       "meta": {
         "raya": "system",
         "slug": "baseline"
@@ -170,7 +170,12 @@
       "type": "registry:ui",
       "title": "Checkbox Group",
       "description": "A semantic group of related checkbox controls.",
-      "files": [{ "path": "registry/default/ui/checkbox-group.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/checkbox-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "switch",
@@ -209,8 +214,15 @@
       "type": "registry:ui",
       "title": "Radio",
       "description": "A single selectable radio control.",
-      "registryDependencies": ["@raya/radio-group"],
-      "files": [{ "path": "registry/default/ui/radio.tsx", "type": "registry:ui" }]
+      "registryDependencies": [
+        "@raya/radio-group"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/radio.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "slider",
@@ -233,74 +245,134 @@
       "type": "registry:ui",
       "title": "Form",
       "description": "A semantic layout primitive for submitting related controls.",
-      "files": [{ "path": "registry/default/ui/form.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/form.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "fieldset",
       "type": "registry:ui",
       "title": "Fieldset",
       "description": "A labeled group of related form controls.",
-      "files": [{ "path": "registry/default/ui/fieldset.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/fieldset.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "input-group",
       "type": "registry:ui",
       "title": "Input Group",
       "description": "A composed input with leading or trailing addons.",
-      "files": [{ "path": "registry/default/ui/input-group.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "autocomplete",
       "type": "registry:ui",
       "title": "Autocomplete",
       "description": "An input that suggests filtered options as you type.",
-      "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "registry/default/ui/autocomplete.tsx", "type": "registry:ui" }]
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/autocomplete.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
       "description": "An input and listbox for choosing from known options.",
-      "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "registry/default/ui/combobox.tsx", "type": "registry:ui" }]
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/combobox.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "number-field",
       "type": "registry:ui",
       "title": "Number Field",
       "description": "A numeric input with accessible increment and decrement controls.",
-      "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "registry/default/ui/number-field.tsx", "type": "registry:ui" }]
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/number-field.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "otp-field",
       "type": "registry:ui",
       "title": "OTP Field",
       "description": "A segmented numeric input for one-time verification codes.",
-      "files": [{ "path": "registry/default/ui/otp-field.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/otp-field.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "calendar",
       "type": "registry:ui",
       "title": "Calendar",
       "description": "A month grid for choosing and reviewing dates.",
-      "files": [{ "path": "registry/default/ui/calendar.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/calendar.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "date-picker",
       "type": "registry:ui",
       "title": "Date Picker",
       "description": "A popover date selection flow built on Calendar.",
-      "registryDependencies": ["@raya/calendar", "@raya/popover", "@raya/button"],
-      "files": [{ "path": "registry/default/ui/date-picker.tsx", "type": "registry:ui" }]
+      "registryDependencies": [
+        "@raya/calendar",
+        "@raya/popover",
+        "@raya/button"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/date-picker.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "label",
       "type": "registry:ui",
       "title": "Label",
       "description": "An accessible label for a form control.",
-      "files": [{ "path": "registry/default/ui/label.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "field",
@@ -466,10 +538,12 @@
       "type": "registry:ui",
       "title": "Separator",
       "description": "A visual divider for separating groups of related content.",
-      "files": [{
-        "path": "registry/default/ui/separator.tsx",
-        "type": "registry:ui"
-      }],
+      "files": [
+        {
+          "path": "registry/default/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ],
       "docs": "A standalone structural primitive with horizontal and vertical orientations."
     },
     {
@@ -477,10 +551,12 @@
       "type": "registry:ui",
       "title": "Progress",
       "description": "A determinate progress indicator for work moving toward completion.",
-      "files": [{
-        "path": "registry/default/ui/progress.tsx",
-        "type": "registry:ui"
-      }],
+      "files": [
+        {
+          "path": "registry/default/ui/progress.tsx",
+          "type": "registry:ui"
+        }
+      ],
       "docs": "Pass `value` and optional `max` to render an accessible progressbar."
     },
     {
@@ -488,10 +564,12 @@
       "type": "registry:ui",
       "title": "Skeleton",
       "description": "A quiet loading placeholder that preserves layout while content is arriving.",
-      "files": [{
-        "path": "registry/default/ui/skeleton.tsx",
-        "type": "registry:ui"
-      }],
+      "files": [
+        {
+          "path": "registry/default/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ],
       "docs": "Use Skeleton to reserve the shape of content while an async view is loading."
     },
     {
@@ -499,10 +577,12 @@
       "type": "registry:ui",
       "title": "Alert",
       "description": "A semantic callout for important status or feedback.",
-      "files": [{
-        "path": "registry/default/ui/alert.tsx",
-        "type": "registry:ui"
-      }],
+      "files": [
+        {
+          "path": "registry/default/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ],
       "docs": "A dependency-free semantic alert with title and description slots."
     },
     {
@@ -510,10 +590,12 @@
       "type": "registry:ui",
       "title": "Empty",
       "description": "A calm placeholder for views with no content yet.",
-      "files": [{
-        "path": "registry/default/ui/empty.tsx",
-        "type": "registry:ui"
-      }],
+      "files": [
+        {
+          "path": "registry/default/ui/empty.tsx",
+          "type": "registry:ui"
+        }
+      ],
       "docs": "Use Empty for first-run, no-result, and cleared-content states."
     },
     {
@@ -521,7 +603,12 @@
       "type": "registry:ui",
       "title": "Toggle",
       "description": "A compact button that exposes an on or off pressed state.",
-      "files": [{ "path": "registry/default/ui/toggle.tsx", "type": "registry:ui" }],
+      "files": [
+        {
+          "path": "registry/default/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
       "docs": "A dependency-free toggle button with aria-pressed state."
     },
     {
@@ -529,7 +616,12 @@
       "type": "registry:ui",
       "title": "Meter",
       "description": "A semantic gauge for a scalar value within a known range.",
-      "files": [{ "path": "registry/default/ui/meter.tsx", "type": "registry:ui" }],
+      "files": [
+        {
+          "path": "registry/default/ui/meter.tsx",
+          "type": "registry:ui"
+        }
+      ],
       "docs": "Pass value, min, and max to render an accessible meter."
     },
     {
@@ -537,37 +629,66 @@
       "type": "registry:ui",
       "title": "Accordion",
       "description": "A stack of collapsible sections for progressively disclosed content.",
-      "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "registry/default/ui/accordion.tsx", "type": "registry:ui" }]
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "collapsible",
       "type": "registry:ui",
       "title": "Collapsible",
       "description": "A single content section that can be expanded or tucked away.",
-      "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "registry/default/ui/collapsible.tsx", "type": "registry:ui" }]
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "breadcrumb",
       "type": "registry:ui",
       "title": "Breadcrumb",
       "description": "Hierarchical navigation that shows the current location.",
-      "files": [{ "path": "registry/default/ui/breadcrumb.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "kbd",
       "type": "registry:ui",
       "title": "Kbd",
       "description": "A compact keyboard-key label for shortcuts and command hints.",
-      "files": [{ "path": "registry/default/ui/kbd.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "group",
       "type": "registry:ui",
       "title": "Group",
       "description": "A semantic grouping primitive for related controls.",
-      "files": [{ "path": "registry/default/ui/group.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/group.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "segmented-control",
@@ -588,118 +709,210 @@
       "type": "registry:ui",
       "title": "Toggle Group",
       "description": "A coordinated set of pressed controls for one or more choices.",
-      "files": [{ "path": "registry/default/ui/toggle-group.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "pagination",
       "type": "registry:ui",
       "title": "Pagination",
       "description": "Navigation controls for moving through a collection of pages.",
-      "files": [{ "path": "registry/default/ui/pagination.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "frame",
       "type": "registry:ui",
       "title": "Frame",
       "description": "A bordered surface for presenting content with an optional header.",
-      "files": [{ "path": "registry/default/ui/frame.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/frame.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "scroll-area",
       "type": "registry:ui",
       "title": "Scroll Area",
       "description": "A constrained region with predictable overflow scrolling.",
-      "files": [{ "path": "registry/default/ui/scroll-area.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "menu",
       "type": "registry:ui",
       "title": "Menu",
       "description": "A discoverable list of actions anchored to a trigger.",
-      "registryDependencies": ["@raya/dropdown-menu"],
-      "files": [{ "path": "registry/default/ui/menu.tsx", "type": "registry:ui" }]
+      "registryDependencies": [
+        "@raya/dropdown-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "sidebar",
       "type": "registry:ui",
       "title": "Sidebar",
       "description": "A persistent navigation surface for application sections.",
-      "files": [{ "path": "registry/default/ui/sidebar.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "sheet",
       "type": "registry:ui",
       "title": "Sheet",
       "description": "A modal side surface for focused navigation or editing tasks.",
-      "registryDependencies": ["@raya/dialog"],
-      "files": [{ "path": "registry/default/ui/sheet.tsx", "type": "registry:ui" }]
+      "registryDependencies": [
+        "@raya/dialog"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "drawer",
       "type": "registry:ui",
       "title": "Drawer",
       "description": "A side surface for navigation or focused editing tasks.",
-      "registryDependencies": ["@raya/sheet"],
-      "files": [{ "path": "registry/default/ui/drawer.tsx", "type": "registry:ui" }]
+      "registryDependencies": [
+        "@raya/sheet"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/drawer.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "context-menu",
       "type": "registry:ui",
       "title": "Context Menu",
       "description": "A pointer-anchored menu of actions for the current context.",
-      "registryDependencies": ["@raya/dropdown-menu"],
-      "files": [{ "path": "registry/default/ui/context-menu.tsx", "type": "registry:ui" }]
+      "registryDependencies": [
+        "@raya/dropdown-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "toast",
       "type": "registry:ui",
       "title": "Toast",
       "description": "A transient notification for completed actions and important updates.",
-      "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "registry/default/ui/toast.tsx", "type": "registry:ui" }]
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/toast.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "preview-card",
       "type": "registry:ui",
       "title": "Preview Card",
       "description": "An anchored rich preview for a linked resource.",
-      "registryDependencies": ["@raya/popover"],
-      "files": [{ "path": "registry/default/ui/preview-card.tsx", "type": "registry:ui" }]
+      "registryDependencies": [
+        "@raya/popover"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/preview-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "navigation-menu",
       "type": "registry:ui",
       "title": "Navigation Menu",
       "description": "A semantic primary navigation surface for related routes.",
-      "files": [{ "path": "registry/default/ui/navigation-menu.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/navigation-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "toolbar",
       "type": "registry:ui",
       "title": "Toolbar",
       "description": "A semantic row of grouped actions and controls.",
-      "files": [{ "path": "registry/default/ui/toolbar.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/toolbar.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "menubar",
       "type": "registry:ui",
       "title": "Menubar",
       "description": "A horizontal menu of top-level application actions.",
-      "files": [{ "path": "registry/default/ui/menubar.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/menubar.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "filterable-menu",
       "type": "registry:ui",
       "title": "Filterable Menu",
       "description": "A searchable list of actions for dense command surfaces.",
-      "files": [{ "path": "registry/default/ui/filterable-menu.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/filterable-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "command",
       "type": "registry:ui",
       "title": "Command",
       "description": "A keyboard-first searchable surface for application commands.",
-      "files": [{ "path": "registry/default/ui/command.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/command.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "chart-line",
@@ -831,7 +1044,913 @@
       "type": "registry:ui",
       "title": "Table",
       "description": "A lightweight compositional table for ordinary tabular content.",
-      "files": [{ "path": "registry/default/ui/table.tsx", "type": "registry:ui" }]
+      "files": [
+        {
+          "path": "registry/default/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chart-funnel",
+      "type": "registry:ui",
+      "title": "Chart: Funnel",
+      "description": "Staged conversion chart for visualizing drop-off across a journey.",
+      "files": [
+        {
+          "path": "registry/default/ui/chart-funnel.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-heatmap",
+      "type": "registry:ui",
+      "title": "Chart: Heatmap",
+      "description": "Compact intensity grid for cohorts, weekdays, and retention analysis.",
+      "files": [
+        {
+          "path": "registry/default/ui/chart-heatmap.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "dashboard-overview",
+      "type": "registry:block",
+      "title": "Dashboard Overview",
+      "description": "Composed SaaS analytics dashboard with KPIs, revenue, acquisition, plan mix, funnel, and retention charts.",
+      "dependencies": [
+        "recharts"
+      ],
+      "registryDependencies": [
+        "@raya/kpi-card",
+        "@raya/chart-area",
+        "@raya/chart-bar",
+        "@raya/chart-pie",
+        "@raya/chart-funnel",
+        "@raya/chart-heatmap"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/dashboard-overview.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "docs": "Pass deterministic data arrays to compose a responsive analytics overview."
+    },
+    {
+      "name": "chart-radial",
+      "type": "registry:ui",
+      "title": "Chart: Radial",
+      "description": "Radial progress chart for comparing attainment against a shared target.",
+      "dependencies": [
+        "recharts"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-radial.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-variants",
+      "type": "registry:ui",
+      "title": "Chart Variant Renderer",
+      "description": "Shared renderer used by the dashboard chart family examples.",
+      "files": [
+        {
+          "path": "registry/default/ui/chart-variants.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chart-stacked-area",
+      "type": "registry:ui",
+      "title": "Chart: Stacked Area",
+      "description": "Stacked Area chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-stacked-area.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-grouped-bar",
+      "type": "registry:ui",
+      "title": "Chart: Grouped Bar",
+      "description": "Grouped Bar chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-grouped-bar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-normalized-bar",
+      "type": "registry:ui",
+      "title": "Chart: Normalized Bar",
+      "description": "Normalized Bar chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-normalized-bar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-composed",
+      "type": "registry:ui",
+      "title": "Chart: Composed",
+      "description": "Composed chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-composed.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-radar",
+      "type": "registry:ui",
+      "title": "Chart: Radar",
+      "description": "Radar chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-radar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-scatter",
+      "type": "registry:ui",
+      "title": "Chart: Scatter",
+      "description": "Scatter chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-scatter.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-bubble",
+      "type": "registry:ui",
+      "title": "Chart: Bubble",
+      "description": "Bubble chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-bubble.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-treemap",
+      "type": "registry:ui",
+      "title": "Chart: Treemap",
+      "description": "Treemap chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-treemap.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-gauge",
+      "type": "registry:ui",
+      "title": "Chart: Gauge",
+      "description": "Gauge chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-gauge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-progress",
+      "type": "registry:ui",
+      "title": "Chart: Progress",
+      "description": "Progress chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-progress.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-waterfall",
+      "type": "registry:ui",
+      "title": "Chart: Waterfall",
+      "description": "Waterfall chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-waterfall.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-lollipop",
+      "type": "registry:ui",
+      "title": "Chart: Lollipop",
+      "description": "Lollipop chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-lollipop.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-dumbbell",
+      "type": "registry:ui",
+      "title": "Chart: Dumbbell",
+      "description": "Dumbbell chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-dumbbell.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-bullet",
+      "type": "registry:ui",
+      "title": "Chart: Bullet",
+      "description": "Bullet chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-bullet.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-slope",
+      "type": "registry:ui",
+      "title": "Chart: Slope",
+      "description": "Slope chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-slope.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-stream",
+      "type": "registry:ui",
+      "title": "Chart: Stream",
+      "description": "Stream chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-stream.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-calendar",
+      "type": "registry:ui",
+      "title": "Chart: Calendar",
+      "description": "Calendar chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-calendar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-sankey",
+      "type": "registry:ui",
+      "title": "Chart: Sankey",
+      "description": "Sankey chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-sankey.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-chord",
+      "type": "registry:ui",
+      "title": "Chart: Chord",
+      "description": "Chord chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-chord.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-boxplot",
+      "type": "registry:ui",
+      "title": "Chart: Boxplot",
+      "description": "Boxplot chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-boxplot.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-violin",
+      "type": "registry:ui",
+      "title": "Chart: Violin",
+      "description": "Violin chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-violin.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-density",
+      "type": "registry:ui",
+      "title": "Chart: Density",
+      "description": "Density chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-density.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-histogram",
+      "type": "registry:ui",
+      "title": "Chart: Histogram",
+      "description": "Histogram chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-histogram.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-dot",
+      "type": "registry:ui",
+      "title": "Chart: Dot",
+      "description": "Dot chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-dot.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-pareto",
+      "type": "registry:ui",
+      "title": "Chart: Pareto",
+      "description": "Pareto chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-pareto.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-control",
+      "type": "registry:ui",
+      "title": "Chart: Control",
+      "description": "Control chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-control.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-multi-axis",
+      "type": "registry:ui",
+      "title": "Chart: Multi Axis",
+      "description": "Multi Axis chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-multi-axis.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-step",
+      "type": "registry:ui",
+      "title": "Chart: Step",
+      "description": "Step chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-step.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-range",
+      "type": "registry:ui",
+      "title": "Chart: Range",
+      "description": "Range chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-range.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-band",
+      "type": "registry:ui",
+      "title": "Chart: Band",
+      "description": "Band chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-band.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-rose",
+      "type": "registry:ui",
+      "title": "Chart: Rose",
+      "description": "Rose chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-rose.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-polar",
+      "type": "registry:ui",
+      "title": "Chart: Polar",
+      "description": "Polar chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-polar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-timeline",
+      "type": "registry:ui",
+      "title": "Chart: Timeline",
+      "description": "Timeline chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-timeline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-interval",
+      "type": "registry:ui",
+      "title": "Chart: Interval",
+      "description": "Interval chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-interval.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-candlestick",
+      "type": "registry:ui",
+      "title": "Chart: Candlestick",
+      "description": "Candlestick chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-candlestick.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-funnel-horizontal",
+      "type": "registry:ui",
+      "title": "Chart: Funnel Horizontal",
+      "description": "Funnel Horizontal chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-funnel-horizontal.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-metric-grid",
+      "type": "registry:ui",
+      "title": "Chart: Metric Grid",
+      "description": "Metric Grid chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-metric-grid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-cohort",
+      "type": "registry:ui",
+      "title": "Chart: Cohort",
+      "description": "Cohort chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-cohort.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-retention",
+      "type": "registry:ui",
+      "title": "Chart: Retention",
+      "description": "Retention chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-retention.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-geo",
+      "type": "registry:ui",
+      "title": "Chart: Geo",
+      "description": "Geo chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-geo.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-live",
+      "type": "registry:ui",
+      "title": "Chart: Live",
+      "description": "Live chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-live.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-small-multiples",
+      "type": "registry:ui",
+      "title": "Chart: Small Multiples",
+      "description": "Small Multiples chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-small-multiples.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "chart-stacked-bar",
+      "type": "registry:ui",
+      "title": "Chart: Stacked Bar",
+      "description": "Stacked Bar chart composition for analytics dashboards.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@raya/chart-variants"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/chart-stacked-bar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "dashboard-blocks",
+      "type": "registry:ui",
+      "title": "Dashboard Block Primitives",
+      "description": "Shared composition primitives for dashboard blocks.",
+      "files": [
+        {
+          "path": "registry/default/ui/dashboard-blocks.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-activity",
+      "type": "registry:block",
+      "title": "Dashboard: Activity",
+      "description": "Reusable dashboard activity block for analytics products.",
+      "registryDependencies": [
+        "@raya/dashboard-blocks"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/dashboard-activity.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "dashboard-alerts",
+      "type": "registry:block",
+      "title": "Dashboard: Alerts",
+      "description": "Reusable dashboard alerts block for analytics products.",
+      "registryDependencies": [
+        "@raya/dashboard-blocks"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/dashboard-alerts.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "dashboard-comparison",
+      "type": "registry:block",
+      "title": "Dashboard: Comparison",
+      "description": "Reusable dashboard comparison block for analytics products.",
+      "registryDependencies": [
+        "@raya/dashboard-blocks"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/dashboard-comparison.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "dashboard-timeline",
+      "type": "registry:block",
+      "title": "Dashboard: Timeline",
+      "description": "Reusable dashboard timeline block for analytics products.",
+      "registryDependencies": [
+        "@raya/dashboard-blocks"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/dashboard-timeline.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
+    },
+    {
+      "name": "dashboard-command-center",
+      "type": "registry:block",
+      "title": "Dashboard: Command Center",
+      "description": "Reusable dashboard command center block for analytics products.",
+      "registryDependencies": [
+        "@raya/dashboard-blocks"
+      ],
+      "files": [
+        {
+          "path": "registry/default/ui/dashboard-command-center.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "docs": "Requires the @raya/core item."
     },
     {
       "name": "filter-bar",
@@ -980,14 +2099,24 @@
       "type": "registry:hook",
       "title": "useCopyToClipboard",
       "description": "Copy text to the clipboard with a temporary copied state and optional callback.",
-      "files": [{ "path": "registry/default/hooks/use-copy-to-clipboard.ts", "type": "registry:hook" }]
+      "files": [
+        {
+          "path": "registry/default/hooks/use-copy-to-clipboard.ts",
+          "type": "registry:hook"
+        }
+      ]
     },
     {
       "name": "use-media-query",
       "type": "registry:hook",
       "title": "useMediaQuery",
       "description": "Reactively match breakpoints, pointer types, or any CSS media query.",
-      "files": [{ "path": "registry/default/hooks/use-media-query.ts", "type": "registry:hook" }]
+      "files": [
+        {
+          "path": "registry/default/hooks/use-media-query.ts",
+          "type": "registry:hook"
+        }
+      ]
     }
   ]
 }

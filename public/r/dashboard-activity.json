@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dashboard-activity",
+  "title": "Dashboard: Activity",
+  "description": "Reusable dashboard activity block for analytics products.",
+  "registryDependencies": [
+    "@raya/dashboard-blocks"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/dashboard-activity.tsx",
+      "content": "import { DashboardActivity } from \"./dashboard-blocks\"\n\nexport { DashboardActivity }\n",
+      "type": "registry:block"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:block"
+}

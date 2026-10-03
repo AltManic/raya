@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-live",
+  "title": "Chart: Live",
+  "description": "Live chart composition for analytics dashboards.",
+  "dependencies": [],
+  "registryDependencies": [
+    "@raya/chart-variants"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/chart-live.tsx",
+      "content": "import { VariantChart } from \"./chart-variants\"\n\nexport function LiveChart(props: { className?: string }) {\n  return <VariantChart variant=\"chart-live\" {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:ui"
+}

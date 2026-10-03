@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dashboard-comparison",
+  "title": "Dashboard: Comparison",
+  "description": "Reusable dashboard comparison block for analytics products.",
+  "registryDependencies": [
+    "@raya/dashboard-blocks"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/dashboard-comparison.tsx",
+      "content": "import { DashboardComparison } from \"./dashboard-blocks\"\n\nexport { DashboardComparison }\n",
+      "type": "registry:block"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:block"
+}

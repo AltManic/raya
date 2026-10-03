@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-progress",
+  "title": "Chart: Progress",
+  "description": "Progress chart composition for analytics dashboards.",
+  "dependencies": [],
+  "registryDependencies": [
+    "@raya/chart-variants"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/chart-progress.tsx",
+      "content": "import { VariantChart } from \"./chart-variants\"\n\nexport function ProgressChart(props: { className?: string }) {\n  return <VariantChart variant=\"chart-progress\" {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:ui"
+}

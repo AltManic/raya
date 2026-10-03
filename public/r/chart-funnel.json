@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-funnel",
+  "title": "Chart: Funnel",
+  "description": "Staged conversion chart for visualizing drop-off across a journey.",
+  "files": [
+    {
+      "path": "registry/default/ui/chart-funnel.tsx",
+      "content": "import type { CSSProperties } from \"react\"\n\nexport interface FunnelDatum { label: string; value: number; colorVar?: string }\nexport interface FunnelChartProps { data: FunnelDatum[]; height?: number; className?: string }\n\nexport function FunnelChart({ data, height = 240, className }: FunnelChartProps) {\n  const max = Math.max(...data.map((item) => item.value), 1)\n  return (\n    <div className={`w-full ${className ?? \"\"}`} style={{ minHeight: height }} data-slot=\"funnel-chart\">\n      <div className=\"flex h-full flex-col justify-center gap-2 py-2\">\n        {data.map((item, index) => {\n          const width = Math.max(18, (item.value / max) * 100)\n          return (\n            <div key={item.label} className=\"grid grid-cols-[7rem_1fr_3rem] items-center gap-3 text-xs\">\n              <span className=\"truncate text-muted-foreground\">{item.label}</span>\n              <div className=\"h-7 overflow-hidden rounded-sm bg-muted/60\">\n                <div className=\"flex h-full items-center rounded-sm px-2 font-medium text-primary-foreground transition-[width] duration-500\" style={{ width: `${width}%`, background: `var(${item.colorVar ?? `--chart-${(index % 5) + 1}`})` } as CSSProperties}>\n                  {width > 35 ? item.value.toLocaleString() : null}\n                </div>\n              </div>\n              <span className=\"text-right tabular-nums text-muted-foreground\">{item.value.toLocaleString()}</span>\n            </div>\n          )\n        })}\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:ui"
+}

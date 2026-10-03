@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-cohort",
+  "title": "Chart: Cohort",
+  "description": "Cohort chart composition for analytics dashboards.",
+  "dependencies": [],
+  "registryDependencies": [
+    "@raya/chart-variants"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/chart-cohort.tsx",
+      "content": "import { VariantChart } from \"./chart-variants\"\n\nexport function CohortChart(props: { className?: string }) {\n  return <VariantChart variant=\"chart-cohort\" {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:ui"
+}

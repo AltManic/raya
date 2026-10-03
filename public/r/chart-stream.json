@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-stream",
+  "title": "Chart: Stream",
+  "description": "Stream chart composition for analytics dashboards.",
+  "dependencies": [],
+  "registryDependencies": [
+    "@raya/chart-variants"
+  ],
+  "files": [
+    {
+      "path": "registry/default/ui/chart-stream.tsx",
+      "content": "import { VariantChart } from \"./chart-variants\"\n\nexport function StreamChart(props: { className?: string }) {\n  return <VariantChart variant=\"chart-stream\" {...props} />\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "docs": "Requires the @raya/core item.",
+  "type": "registry:ui"
+}
