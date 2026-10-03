@@ -59,6 +59,12 @@ import { AreaChartWrapper } from "@/registry/default/ui/chart-area"
 import { BarChartWrapper } from "@/registry/default/ui/chart-bar"
 import { PieChartWrapper } from "@/registry/default/ui/chart-pie"
 import { Sparkline } from "@/registry/default/ui/chart-sparkline"
+import { FunnelChart } from "@/registry/default/ui/chart-funnel"
+import { HeatmapChart } from "@/registry/default/ui/chart-heatmap"
+import { RadialChart } from "@/registry/default/ui/chart-radial"
+import { VariantChart } from "@/registry/default/ui/chart-variants"
+import { DashboardActivity, DashboardAlerts, DashboardComparison, DashboardTimeline, DashboardCommandCenter } from "@/registry/default/ui/dashboard-blocks"
+import { DashboardOverview } from "@/registry/default/ui/dashboard-overview"
 import { KpiCard } from "@/registry/default/ui/kpi-card"
 import { DataTable } from "@/registry/default/ui/data-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/default/ui/table"
@@ -178,6 +184,23 @@ function Gallery() {
       </Tile>
       <Tile title="Bar — Signups by channel" wide>
         <BarChartWrapper data={signupsByChannel as unknown as Array<Record<string, unknown>>} xKey="channel" series={[{ key: "signups", label: "Signups" }]} />
+      </Tile>
+      <Tile title="Funnel — Conversion" wide>
+        <FunnelChart data={[{ label: "Visitors", value: 12480 }, { label: "Signups", value: 4860 }, { label: "Activated", value: 2740 }, { label: "Paid", value: 1130 }]} />
+      </Tile>
+      <Tile title="Heatmap — Retention" wide>
+        <HeatmapChart data={[{ label: "Week 1", values: [90, 72, 68, 64, 58, 53, 48] }, { label: "Week 2", values: [76, 64, 59, 52, 48, 42, 38] }, { label: "Week 3", values: [61, 54, 47, 43, 37, 32, 29] }, { label: "Week 4", values: [48, 40, 35, 31, 27, 23, 19] }]} />
+      </Tile>
+      <Tile title="Radial — Target attainment">
+        <RadialChart data={[{ label: "Activation", value: 82 }, { label: "Retention", value: 68 }, { label: "Expansion", value: 54 }]} />
+      </Tile>
+      <Tile title="Dashboard — Activity"><DashboardActivity /></Tile>
+      <Tile title="Dashboard — Alerts"><DashboardAlerts /></Tile>
+      <Tile title="Dashboard — Comparison" wide><DashboardComparison /></Tile>
+      <Tile title="Dashboard — Timeline"><DashboardTimeline /></Tile>
+      <Tile title="Dashboard — Command center" wide><DashboardCommandCenter /></Tile>
+      <Tile title="Dashboard — Overview" wide>
+        <DashboardOverview metrics={kpiCards} revenue={mrrTrend as unknown as Array<Record<string, unknown>>} channels={signupsByChannel as unknown as Array<Record<string, unknown>>} plans={planMix as unknown as Array<Record<string, unknown>>} funnel={[{ label: "Visitors", value: 12480 }, { label: "Signups", value: 4860 }, { label: "Activated", value: 2740 }, { label: "Paid", value: 1130 }]} retention={[{ label: "Week 1", values: [90, 72, 68, 64, 58, 53, 48] }, { label: "Week 2", values: [76, 64, 59, 52, 48, 42, 38] }, { label: "Week 3", values: [61, 54, 47, 43, 37, 32, 29] }, { label: "Week 4", values: [48, 40, 35, 31, 27, 23, 19] }]} />
       </Tile>
       <Tile title="Donut — Plan mix">
         <PieChartWrapper
@@ -333,6 +356,16 @@ export function FocusPreview({ component }: { component: string }) {
   if (component === "chart-area") return <div className="w-full max-w-2xl"><AreaChartWrapper data={traffic as unknown as Array<Record<string, unknown>>} xKey="month" series={[{ key: "organic", label: "Organic" }]} /></div>
   if (component === "chart-bar") return <div className="w-full max-w-2xl"><BarChartWrapper data={signupsByChannel as unknown as Array<Record<string, unknown>>} xKey="channel" series={[{ key: "signups", label: "Signups" }]} /></div>
   if (component === "chart-pie") return <PieChartWrapper data={planMix as unknown as Array<Record<string, unknown>>} nameKey="plan" valueKey="accounts" slices={planMix.map((p, i) => ({ key: p.plan, label: p.plan, colorVar: `--chart-${i + 1}` }))} height={220} />
+  if (component === "chart-funnel") return <div className="w-full max-w-2xl"><FunnelChart data={[{ label: "Visitors", value: 12480 }, { label: "Signups", value: 4860 }, { label: "Activated", value: 2740 }, { label: "Paid", value: 1130 }]} /></div>
+  if (component === "chart-radial") return <div className="w-full max-w-sm"><RadialChart data={[{ label: "Activation", value: 82 }, { label: "Retention", value: 68 }, { label: "Expansion", value: 54 }]} /></div>
+  if (component === "chart-heatmap") return <div className="w-full max-w-2xl"><HeatmapChart data={[{ label: "Week 1", values: [90, 72, 68, 64, 58, 53, 48] }, { label: "Week 2", values: [76, 64, 59, 52, 48, 42, 38] }, { label: "Week 3", values: [61, 54, 47, 43, 37, 32, 29] }, { label: "Week 4", values: [48, 40, 35, 31, 27, 23, 19] }]} /></div>
+  if (component === "dashboard-overview") return <div className="w-full max-w-6xl"><DashboardOverview metrics={kpiCards} revenue={mrrTrend as unknown as Array<Record<string, unknown>>} channels={signupsByChannel as unknown as Array<Record<string, unknown>>} plans={planMix as unknown as Array<Record<string, unknown>>} funnel={[{ label: "Visitors", value: 12480 }, { label: "Signups", value: 4860 }, { label: "Activated", value: 2740 }, { label: "Paid", value: 1130 }]} retention={[{ label: "Week 1", values: [90, 72, 68, 64, 58, 53, 48] }, { label: "Week 2", values: [76, 64, 59, 52, 48, 42, 38] }, { label: "Week 3", values: [61, 54, 47, 43, 37, 32, 29] }, { label: "Week 4", values: [48, 40, 35, 31, 27, 23, 19] }]} /></div>
+  if (component.startsWith("chart-") && !["chart-line", "chart-area", "chart-bar", "chart-pie", "chart-sparkline", "chart-funnel", "chart-heatmap", "chart-radial"].includes(component)) return <div className="w-full max-w-2xl"><VariantChart variant={component} /></div>
+  if (component === "dashboard-activity") return <div className="w-full max-w-xl"><DashboardActivity /></div>
+  if (component === "dashboard-alerts") return <div className="w-full max-w-xl"><DashboardAlerts /></div>
+  if (component === "dashboard-comparison") return <div className="w-full max-w-3xl"><DashboardComparison /></div>
+  if (component === "dashboard-timeline") return <div className="w-full max-w-xl"><DashboardTimeline /></div>
+  if (component === "dashboard-command-center") return <div className="w-full max-w-3xl"><DashboardCommandCenter /></div>
   if (component === "chart-sparkline") return <Sparkline height={44} valueKey="v" data={kpiCards[0].sparkline.map((v, i) => ({ i, v }))} colorVar="--chart-1" />
   if (component === "kpi-card") return <KpiCard label={kpiCards[0].label} value={kpiCards[0].value} delta={kpiCards[0].delta} />
   if (component === "filter-bar") return <div className="w-full max-w-3xl"><FilterBar search="" onSearchChange={() => undefined} filters={[{ key: "plan", placeholder: "All plans", options: ["Starter", "Growth", "Scale"] }]} onReset={() => undefined} /></div>
